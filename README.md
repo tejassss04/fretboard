@@ -1,6 +1,14 @@
 # Fretboard
 
-Fretboard is a responsive, warm-studio guitar practice companion. Its first release includes a dashboard, chord and scale explorers, practice timer, saved-song library, tuner, metronome, and progress view.
+As a guitar player and enthusiast myself, I've always wanted to build something around this beautiful instrument. I wanted to create something that could make guitar practice easier and bring all the useful tools a guitarist needs into one place.
+
+That's how Fretboard started.
+
+Fretboard is a guitar practice companion where you can explore chords and scales, practise with a timer, tune your guitar, keep track of rhythm with a metronome, save your favourite songs, and track your progress over time.
+
+The idea behind Fretboard is simple: to make practising guitar more enjoyable and help guitar players keep learning and improving at their own pace.
+
+This project brings together two things I love: playing guitar and building things. I'm excited to keep working on it and make it better, one step at a time. 🎶
 
 ## Run it locally
 
