@@ -26,6 +26,13 @@ const instrumentSerif = Instrument_Serif({
 export const metadata: Metadata = {
   title: "Fretboard — Your Personal Guitar Studio",
   description: "An interactive guitar practice and music exploration platform built with modern web technologies and native Web Audio synthesis.",
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+    apple: '/apple-icon.png',
+  },
 };
 
 export default function RootLayout({
