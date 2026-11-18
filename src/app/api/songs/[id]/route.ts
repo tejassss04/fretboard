@@ -3,8 +3,6 @@ import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { songUpdateSchema } from '@/schemas';
 
-export const dynamic = 'force-dynamic';
-
 interface RouteContext {
   params: Promise<{ id: string }>;
 }

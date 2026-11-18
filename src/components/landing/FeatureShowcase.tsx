@@ -4,14 +4,14 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Lightbulb, MusicNotes, Play } from '@phosphor-icons/react';
 import BlurReveal from '@/components/ui/BlurReveal';
-import { 
-  TUNINGS, 
-  SCALES, 
-  NOTES, 
-  FRET_MARKERS, 
-  DOUBLE_FRET_MARKERS, 
+import {
+  TUNINGS,
+  SCALES,
+  NOTES,
+  FRET_MARKERS,
+  DOUBLE_FRET_MARKERS,
   getFretInfo,
-  NoteName 
+  NoteName
 } from '@/lib/guitar';
 import { getAudioEngine, GuitarTone } from '@/lib/audio';
 
@@ -147,7 +147,7 @@ export default function FeatureShowcase() {
   return (
     <section id="features" className="relative w-full py-10 sm:py-14 lg:py-16 overflow-hidden scroll-mt-14">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
-        
+
         {/* Section Header */}
         <div className="max-w-3xl mb-8 sm:mb-10">
           <BlurReveal
@@ -190,11 +190,10 @@ export default function FeatureShowcase() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as FeatureTab)}
-                className={`relative flex-1 py-2 sm:py-2.5 px-1.5 sm:px-3 rounded-xl text-[11px] sm:text-xs font-semibold tracking-tight transition-colors duration-200 cursor-pointer flex flex-col items-center justify-center whitespace-nowrap ${
-                  isActive
+                className={`relative flex-1 py-2 sm:py-2.5 px-1.5 sm:px-3 rounded-xl text-[11px] sm:text-xs font-semibold tracking-tight transition-colors duration-200 cursor-pointer flex flex-col items-center justify-center whitespace-nowrap ${isActive
                     ? 'text-[#171717] dark:text-[#F5F5F4]'
                     : 'text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717] dark:hover:text-[#F5F5F4]'
-                }`}
+                  }`}
               >
                 {isActive && (
                   <motion.div
@@ -211,9 +210,9 @@ export default function FeatureShowcase() {
 
         {/* Unified Interactive Feature Container */}
         <div className="rounded-3xl bg-white/80 dark:bg-[#15111B]/75 backdrop-blur-md border border-[#EAE8E4]/50 dark:border-white/[0.04] hover:border-[#D4AD61]/25 dark:hover:border-[#D4AD61]/25 p-4 sm:p-8 lg:p-10 shadow-[0_20px_50px_rgba(23,23,23,0.04)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.35)] hover:shadow-[0_16px_36px_rgba(212,173,97,0.04)] dark:hover:shadow-[0_0_16px_rgba(212,173,97,0.06),0_25px_60px_rgba(0,0,0,0.35)] transition-all duration-300 min-h-[460px] flex flex-col justify-between overflow-hidden">
-          
+
           <AnimatePresence mode="wait">
-            
+
             {/* ======================================================== */}
             {/* EXPERIENCE A: EXPLORE (Anatomy & Tunings) */}
             {/* ======================================================== */}
@@ -245,11 +244,10 @@ export default function FeatureShowcase() {
                         <button
                           key={tuning.id}
                           onClick={() => setExploreTuningKey(tuning.id)}
-                          className={`px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
-                            exploreTuningKey === tuning.id
+                          className={`px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${exploreTuningKey === tuning.id
                               ? 'bg-[#171717] dark:bg-[#F5F5F4] text-white dark:text-[#171717] shadow-xs'
                               : 'bg-[#F7F6F3] dark:bg-[#201D1A] text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717]'
-                          }`}
+                            }`}
                         >
                           {tuning.name.split(' (')[0]}
                         </button>
@@ -261,11 +259,10 @@ export default function FeatureShowcase() {
                         <button
                           key={count}
                           onClick={() => setExploreFretCount(count)}
-                          className={`px-2 py-0.5 text-xs font-mono font-medium rounded transition-all cursor-pointer ${
-                            exploreFretCount === count
+                          className={`px-2 py-0.5 text-xs font-mono font-medium rounded transition-all cursor-pointer ${exploreFretCount === count
                               ? 'bg-[#D4AD61] text-zinc-950 font-bold shadow-xs'
                               : 'text-[#77746F] dark:text-[#A8A29E]'
-                          }`}
+                            }`}
                         >
                           {count}F
                         </button>
@@ -277,7 +274,7 @@ export default function FeatureShowcase() {
                 {/* Large Fretboard Visualizer */}
                 <div className="w-full relative overflow-x-auto no-scrollbar rounded-2xl bg-[#201513] p-4 sm:p-5 shadow-inner border border-[#38211F]/40 select-none">
                   <div className="min-w-[720px] relative">
-                    
+
                     {/* Fret Numbers Header */}
                     <div className="relative h-5 mb-1.5 text-[10px] font-mono text-zinc-400">
                       <div className="absolute left-0 w-[42px] text-center font-bold text-zinc-500 uppercase text-[9px]">
@@ -288,13 +285,12 @@ export default function FeatureShowcase() {
                           <div
                             key={fret}
                             style={{ left: `${centerPercent}%` }}
-                            className={`absolute top-0 -translate-x-1/2 text-center ${
-                              hasDoubleMarker
+                            className={`absolute top-0 -translate-x-1/2 text-center ${hasDoubleMarker
                                 ? 'text-[#D4AD61] font-bold'
                                 : hasSingleMarker
-                                ? 'text-zinc-200 font-semibold'
-                                : 'text-zinc-500'
-                            }`}
+                                  ? 'text-zinc-200 font-semibold'
+                                  : 'text-zinc-500'
+                              }`}
                           >
                             {fret}
                           </div>
@@ -318,7 +314,7 @@ export default function FeatureShowcase() {
                             {hasSingleMarker && (
                               <div
                                 style={{ left: `${centerPercent}%`, top: '50%' }}
-                                className="absolute -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-gradient-to-br from-[#FAF9F5] via-[#E4E0D5] to-[#BDB7A6] border border-[#A8A190]/60 opacity-85"
+                                className="absolute -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-linear-to-br from-[#FAF9F5] via-[#E4E0D5] to-[#BDB7A6] border border-[#A8A190]/60 opacity-85"
                               />
                             )}
                             {hasDoubleMarker && (
@@ -377,11 +373,10 @@ export default function FeatureShowcase() {
                                 <button
                                   type="button"
                                   onClick={() => handlePluckNote(stringIdx, 0)}
-                                  className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold tracking-tight transition-all cursor-pointer ${
-                                    isCurrent
+                                  className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold tracking-tight transition-all cursor-pointer ${isCurrent
                                       ? 'bg-[#D4AD61] text-zinc-950 scale-110 shadow-lg ring-2 ring-white'
                                       : 'bg-black/25 hover:bg-black/40 text-zinc-300'
-                                  }`}
+                                    }`}
                                 >
                                   {openInfo.note}
                                 </button>
@@ -408,11 +403,10 @@ export default function FeatureShowcase() {
                                     <button
                                       type="button"
                                       onClick={() => handlePluckNote(stringIdx, fret)}
-                                      className={`w-5 h-5 rounded-full flex items-center justify-center font-mono text-[9px] transition-all cursor-pointer ${
-                                        isCurrent
+                                      className={`w-5 h-5 rounded-full flex items-center justify-center font-mono text-[9px] transition-all cursor-pointer ${isCurrent
                                           ? 'bg-[#D4AD61] text-zinc-950 font-bold scale-125 shadow-[0_0_12px_rgba(212,173,97,0.9)] z-40 ring-1 ring-white'
                                           : 'opacity-0 hover:opacity-100 bg-white/90 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm'
-                                      }`}
+                                        }`}
                                       title={`Fret ${fret}, String ${stringIdx + 1}: ${fretInfo.note}${fretInfo.octave}`}
                                     >
                                       {fretInfo.note}
@@ -495,11 +489,10 @@ export default function FeatureShowcase() {
                         <button
                           key={mode}
                           onClick={() => setTheoryDisplayMode(mode)}
-                          className={`px-2.5 py-0.5 text-xs font-medium rounded capitalize transition-all cursor-pointer ${
-                            theoryDisplayMode === mode
+                          className={`px-2.5 py-0.5 text-xs font-medium rounded capitalize transition-all cursor-pointer ${theoryDisplayMode === mode
                               ? 'bg-[#171717] dark:bg-[#F5F5F4] text-white dark:text-[#171717] shadow-xs'
                               : 'text-[#77746F] dark:text-[#A8A29E]'
-                          }`}
+                            }`}
                         >
                           {mode}
                         </button>
@@ -560,19 +553,18 @@ export default function FeatureShowcase() {
                                       onClick={() => {
                                         try {
                                           getAudioEngine().playNote(fretInfo.frequency, 0.85);
-                                        } catch {}
+                                        } catch { }
                                         setTheoryActiveNote(keyStr);
                                         setTimeout(() => setTheoryActiveNote(null), 500);
                                       }}
-                                      className={`rounded-full flex items-center justify-center font-mono font-semibold transition-all cursor-pointer ${
-                                        theoryDisplayMode === 'clean'
+                                      className={`rounded-full flex items-center justify-center font-mono font-semibold transition-all cursor-pointer ${theoryDisplayMode === 'clean'
                                           ? isRoot
                                             ? 'w-3 h-3 bg-[#D4AD61] shadow-[0_0_8px_rgba(212,173,97,0.8)]'
                                             : 'w-2 h-2 bg-white/70'
                                           : isRoot
-                                          ? 'w-6 h-6 bg-[#D4AD61] text-zinc-950 text-[10px] font-bold shadow-[0_0_10px_rgba(212,173,97,0.8)] ring-1 ring-white/70'
-                                          : 'w-5 h-5 bg-white/90 dark:bg-zinc-800 text-[#171717] dark:text-[#F5F5F4] text-[9px] border border-black/10 dark:border-white/10'
-                                      } ${isClicked ? 'scale-125 ring-2 ring-white z-20' : 'hover:scale-115'}`}
+                                            ? 'w-6 h-6 bg-[#D4AD61] text-zinc-950 text-[10px] font-bold shadow-[0_0_10px_rgba(212,173,97,0.8)] ring-1 ring-white/70'
+                                            : 'w-5 h-5 bg-white/90 dark:bg-zinc-800 text-[#171717] dark:text-[#F5F5F4] text-[9px] border border-black/10 dark:border-white/10'
+                                        } ${isClicked ? 'scale-125 ring-2 ring-white z-20' : 'hover:scale-115'}`}
                                       title={`String ${stringIdx + 1}, Fret ${fret}: ${fretInfo.note} (${fretInfo.intervalName || 'R'})`}
                                     >
                                       {theoryDisplayMode !== 'clean' && (
@@ -633,11 +625,10 @@ export default function FeatureShowcase() {
                         key={tone.id}
                         type="button"
                         onClick={() => handleSelectTone(tone.id as GuitarTone)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
-                          selectedTone === tone.id
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${selectedTone === tone.id
                             ? 'bg-[#171717] dark:bg-[#F5F5F4] text-white dark:text-[#171717] shadow-xs'
                             : 'text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717]'
-                        }`}
+                          }`}
                       >
                         <span className={`w-1.5 h-1.5 rounded-full ${selectedTone === tone.id ? 'bg-[#D4AD61]' : 'bg-transparent'}`} />
                         <span>{tone.label}</span>
@@ -666,18 +657,16 @@ export default function FeatureShowcase() {
                         onClick={() => handleStrumChord(chord)}
                         whileHover={{ y: -3 }}
                         whileTap={{ scale: 0.94 }}
-                        className={`group relative flex flex-col items-center justify-between p-3.5 rounded-2xl border text-center transition-all duration-200 cursor-pointer shadow-xs ${
-                          isStrumming
+                        className={`group relative flex flex-col items-center justify-between p-3.5 rounded-2xl border text-center transition-all duration-200 cursor-pointer shadow-xs ${isStrumming
                             ? 'bg-[#E9D8B7]/30 dark:bg-[#D4AD61]/25 border-[#D4AD61] shadow-md ring-2 ring-[#D4AD61]/60'
                             : 'bg-[#F7F6F3] dark:bg-[#1C1A17] hover:bg-white dark:hover:bg-[#24201D] border-[#EAE8E4] dark:border-white/10 hover:border-[#D4AD61]/50'
-                        }`}
+                          }`}
                       >
                         <span className="text-[10px] font-mono uppercase text-[#77746F] dark:text-[#A8A29E] mb-1">
                           Chord
                         </span>
-                        <span className={`text-base font-bold transition-colors mb-1 ${
-                          isStrumming ? 'text-[#D4AD61]' : 'text-[#171717] dark:text-[#F5F5F4] group-hover:text-[#D4AD61]'
-                        }`}>
+                        <span className={`text-base font-bold transition-colors mb-1 ${isStrumming ? 'text-[#D4AD61]' : 'text-[#171717] dark:text-[#F5F5F4] group-hover:text-[#D4AD61]'
+                          }`}>
                           {chord.name.split(' ')[0]}
                         </span>
                         <span className="text-[9px] font-mono text-[#77746F] dark:text-[#A8A29E] bg-white dark:bg-[#141210] px-1.5 py-0.5 rounded border border-[#EAE8E4] dark:border-white/5">

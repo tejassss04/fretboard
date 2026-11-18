@@ -3,8 +3,6 @@ import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { studioSettingsSchema } from '@/schemas';
 
-export const dynamic = 'force-dynamic';
-
 const DEFAULT_SETTINGS = {
   defaultTuning: 'standard',
   fretCount: 15,
@@ -15,11 +13,12 @@ const DEFAULT_SETTINGS = {
   timeSignature: '4/4',
 };
 
-export async function GET() {
+export async function GET(_request: Request) {
   try {
     const session = await auth();
+    const userId = session?.user?.id;
 
-    if (!session?.user?.id) {
+    if (!userId) {
       return NextResponse.json({
         authenticated: false,
         settings: DEFAULT_SETTINGS,
@@ -27,13 +26,13 @@ export async function GET() {
     }
 
     let settings = await prisma.studioSettings.findUnique({
-      where: { userId: session.user.id },
+      where: { userId },
     });
 
     if (!settings) {
       settings = await prisma.studioSettings.create({
         data: {
-          userId: session.user.id,
+          userId,
           ...DEFAULT_SETTINGS,
         },
       });
@@ -55,7 +54,9 @@ export async function GET() {
 export async function PUT(request: Request) {
   try {
     const session = await auth();
-    if (!session?.user?.id) {
+    const userId = session?.user?.id;
+
+    if (!userId) {
       return NextResponse.json(
         { error: 'Authentication required to save studio settings.' },
         { status: 401 }
@@ -78,9 +79,9 @@ export async function PUT(request: Request) {
     }
 
     const updated = await prisma.studioSettings.upsert({
-      where: { userId: session.user.id },
+      where: { userId },
       create: {
-        userId: session.user.id,
+        userId,
         defaultTuning: parsed.data.defaultTuning || DEFAULT_SETTINGS.defaultTuning,
         fretCount: parsed.data.fretCount || DEFAULT_SETTINGS.fretCount,
         tonePreset: parsed.data.tonePreset || DEFAULT_SETTINGS.tonePreset,

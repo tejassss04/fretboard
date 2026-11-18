@@ -4,9 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { chords as defaultChords } from '@/lib/data';
 import { chordSaveSchema } from '@/schemas';
 
-export const dynamic = 'force-dynamic';
-
-export async function GET() {
+export async function GET(_request: Request) {
   try {
     const session = await auth();
 

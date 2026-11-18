@@ -3,9 +3,7 @@ import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { practiceSessionCreateSchema } from '@/schemas';
 
-export const dynamic = 'force-dynamic';
-
-export async function GET() {
+export async function GET(_request: Request) {
   try {
     const session = await auth();
 

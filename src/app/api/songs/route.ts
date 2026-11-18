@@ -4,9 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { songCreateSchema } from '@/schemas';
 import { songs as initialSongs } from '@/lib/data';
 
-export const dynamic = 'force-dynamic';
-
-export async function GET() {
+export async function GET(_request: Request) {
   try {
     const session = await auth();
 
