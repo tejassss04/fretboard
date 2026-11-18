@@ -1,0 +1,223 @@
+// Prisma 6 schema for Fretboard Studio with Auth.js v5 (@auth/prisma-adapter)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// =============================================================================
+// 1. AUTHENTICATION & IDENTITY (Auth.js v5 / NextAuth)
+// =============================================================================
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  role          String    @default("USER")
+  accounts      Account[]
+  sessions      Session[]
+
+  // Studio Relations
+  songs            Song[]
+  collections      SongCollection[]
+  practiceSessions PracticeSession[]
+  studioSettings   StudioSettings?
+  savedChords      SavedChord[]
+  hostedJamRooms   JamRoom[]
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+// =============================================================================
+// 2. SONGS & REPERTOIRE VAULT (/songs)
+// =============================================================================
+
+model Song {
+  id              String               @id @default(cuid())
+  userId          String
+  title           String
+  artist          String               @default("Traditional / Unknown")
+  difficulty      String               @default("Beginner") // Beginner, Intermediate, Advanced
+  progress        Int                  @default(0) // 0-100% mastery
+  chords          String               // Progression e.g. "C#m · A · E · B"
+  tuning          String               @default("standard")
+  tempo           Int?                 @default(108) // BPM
+  notes           String?              // Fingerstyle, capo, picking notes
+  audioPreviewKey String?              // Root key for Web Audio arpeggio
+  isFavorite      Boolean              @default(false)
+  lastPracticedAt DateTime?
+  
+  user            User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  collections     SongCollectionItem[]
+
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+
+  @@index([userId])
+}
+
+model SongCollection {
+  id          String               @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  isPinned    Boolean              @default(false)
+  
+  user        User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items       SongCollectionItem[]
+
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+
+  @@index([userId])
+}
+
+model SongCollectionItem {
+  id           String         @id @default(cuid())
+  collectionId String
+  songId       String
+  order        Int            @default(0)
+  
+  collection   SongCollection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  song         Song           @relation(fields: [songId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime       @default(now())
+
+  @@unique([collectionId, songId])
+  @@index([collectionId])
+  @@index([songId])
+}
+
+// =============================================================================
+// 3. PRACTICE SESSIONS & ROUTINE TELEMETRY (/practice & /progress)
+// =============================================================================
+
+model PracticeSession {
+  id              String   @id @default(cuid())
+  userId          String
+  durationMinutes Int      // Total minutes logged
+  tasksCompleted  Int      @default(0)
+  totalTasks      Int      @default(0)
+  routineType     String   @default("General Routine") // Warmup, Chords, Scales, Songs
+  targetBpm       Int?     @default(108)
+  completedTasks  String?  // JSON stringified task details
+  reflectionNotes String?
+  date            String   // YYYY-MM-DD for fast heatmap aggregation
+  
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId, date])
+}
+
+// =============================================================================
+// 4. STUDIO PREFERENCES & INSTRUMENT SETTINGS (/fretboard)
+// =============================================================================
+
+model StudioSettings {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  defaultTuning String   @default("standard") // standard, dropD, dadgad, openD
+  fretCount     Int      @default(15)        // 12, 15, 21, 24
+  tonePreset    String   @default("acoustic") // acoustic, electric, nylon
+  displayMode   String   @default("notes")    // notes, intervals, clean
+  masterVolume  Float    @default(0.8)
+  metronomeBpm  Int      @default(108)
+  timeSignature String   @default("4/4")
+  
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// =============================================================================
+// 5. SAVED CHORD VOICINGS & SHAPES (/chords)
+// =============================================================================
+
+model SavedChord {
+  id         String   @id @default(cuid())
+  userId     String
+  name       String   // e.g. "C#m7"
+  shortName  String?  // e.g. "C#m"
+  voicing    String   // e.g. "x-4-6-6-5-4"
+  difficulty String   @default("Intermediate")
+  notes      String?  // e.g. "C#, E, G#, B"
+  
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// =============================================================================
+// 6. REAL-TIME JAM ROOMS (/jam)
+// =============================================================================
+
+model JamRoom {
+  id          String   @id @default(cuid())
+  code        String   @unique // e.g. "JAM-8402"
+  title       String   @default("Jam Session")
+  hostUserId  String
+  tempo       Int      @default(108)
+  rootKey     String   @default("A")
+  scale       String   @default("Minor Pentatonic")
+  isActive    Boolean  @default(true)
+  
+  host        User     @relation(fields: [hostUserId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([hostUserId])
+}

@@ -1,0 +1,337 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+:root,
+.dark {
+  --background: #0C0A09;
+  --foreground: #F5F5F4;
+  color-scheme: dark;
+  --nav-stuck-bg: rgba(18, 14, 24, 0.92);
+  --nav-stuck-border: rgba(255, 255, 255, 0.1);
+  --nav-stuck-shadow: 0 12px 36px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --nav-fallback-bg: rgba(14, 11, 20, 0.88);
+  --nav-fallback-border: rgba(255, 255, 255, 0.08);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-serif: var(--font-instrument-serif), Georgia, serif;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Enforce tabular figure alignment across numeric readouts, fretboards & metadata */
+@utility font-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Amber Light Ribbons Ambient Lighting & Gradients - Light Mode */
+.hero-beside-ambient {
+  background:
+    radial-gradient(
+      ellipse 65% 50% at 10% 5%,
+      rgba(212, 173, 97, 0.14),
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 55% 45% at 88% 20%,
+      rgba(245, 158, 11, 0.12),
+      transparent 65%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 65%,
+      rgba(252, 251, 249, 0.5) 100%
+    );
+}
+
+/* Amber Light Ribbons Ambient Lighting & Gradients - Dark Mode */
+.dark .hero-beside-ambient {
+  background:
+    radial-gradient(
+      ellipse 65% 50% at 10% 8%,
+      rgba(212, 173, 97, 0.26),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 45% at 90% 18%,
+      rgba(245, 158, 11, 0.22),
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 65%,
+      rgba(14, 11, 20, 0.6) 100%
+    );
+}
+
+/* Amber Light Ribbons Section Ambient Accents */
+.amber-ribbons-ambient-features,
+.crimson-violet-ambient-features {
+  background:
+    radial-gradient(
+      ellipse 50% 40% at 85% 25%,
+      rgba(245, 158, 11, 0.08),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 45% 35% at 12% 70%,
+      rgba(212, 173, 97, 0.08),
+      transparent 60%
+    );
+}
+
+.dark .amber-ribbons-ambient-features,
+.dark .crimson-violet-ambient-features {
+  background:
+    radial-gradient(
+      ellipse 50% 40% at 85% 25%,
+      rgba(245, 158, 11, 0.18),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 45% 35% at 12% 70%,
+      rgba(212, 173, 97, 0.16),
+      transparent 60%
+    );
+}
+
+.amber-ribbons-ambient-multiplayer,
+.crimson-violet-ambient-multiplayer {
+  background:
+    radial-gradient(
+      ellipse 55% 45% at 20% 35%,
+      rgba(245, 158, 11, 0.07),
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 40% 35% at 80% 65%,
+      rgba(212, 173, 97, 0.06),
+      transparent 60%
+    );
+}
+
+.dark .amber-ribbons-ambient-multiplayer,
+.dark .crimson-violet-ambient-multiplayer {
+  background:
+    radial-gradient(
+      ellipse 55% 45% at 20% 35%,
+      rgba(245, 158, 11, 0.18),
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 40% 35% at 80% 65%,
+      rgba(212, 173, 97, 0.15),
+      transparent 60%
+    );
+}
+
+.amber-ribbons-ambient-practice,
+.crimson-violet-ambient-practice {
+  background:
+    radial-gradient(
+      ellipse 45% 40% at 75% 25%,
+      rgba(245, 158, 11, 0.07),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 45% 35% at 25% 75%,
+      rgba(212, 173, 97, 0.07),
+      transparent 60%
+    );
+}
+
+.dark .amber-ribbons-ambient-practice,
+.dark .crimson-violet-ambient-practice {
+  background:
+    radial-gradient(
+      ellipse 45% 40% at 75% 25%,
+      rgba(245, 158, 11, 0.16),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 45% 35% at 25% 75%,
+      rgba(212, 173, 97, 0.16),
+      transparent 60%
+    );
+}
+
+/* Realistic Physical String Vibration Keyframes by Gauge */
+@keyframes stringPluckBass {
+  0% { transform: translateY(0); }
+  15% { transform: translateY(-2.8px); }
+  30% { transform: translateY(2.5px); }
+  45% { transform: translateY(-1.8px); }
+  60% { transform: translateY(1.4px); }
+  75% { transform: translateY(-0.8px); }
+  90% { transform: translateY(0.5px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes stringPluckMid {
+  0% { transform: translateY(0); }
+  15% { transform: translateY(-2.0px); }
+  30% { transform: translateY(1.8px); }
+  45% { transform: translateY(-1.2px); }
+  60% { transform: translateY(0.9px); }
+  75% { transform: translateY(-0.5px); }
+  90% { transform: translateY(0.3px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes stringPluckTreble {
+  0% { transform: translateY(0); }
+  15% { transform: translateY(-1.4px); }
+  30% { transform: translateY(1.2px); }
+  45% { transform: translateY(-0.8px); }
+  60% { transform: translateY(0.5px); }
+  75% { transform: translateY(-0.3px); }
+  100% { transform: translateY(0); }
+}
+
+.animate-string-pluck-bass {
+  animation: stringPluckBass 0.48s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.animate-string-pluck-mid {
+  animation: stringPluckMid 0.42s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.animate-string-pluck-treble {
+  animation: stringPluckTreble 0.36s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Fretboard subtle wood texture grain emulation */
+.fretboard-wood {
+  background-color: #271A19;
+  background-image: 
+    linear-gradient(90deg, rgba(56, 33, 31, 0.8) 0%, rgba(39, 26, 25, 0.98) 50%, rgba(56, 33, 31, 0.8) 100%),
+    repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 0, 0, 0.15) 3px, rgba(0, 0, 0, 0.15) 6px);
+}
+
+/* Hide scrollbar for clean horizontal scroll on smaller viewports */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ========================================================================== */
+/* CSS-Native Sticky Morphing Navbar (Container Query Level 2 scroll-state)    */
+/* ========================================================================== */
+
+.navbar-shell {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+
+  container-type: scroll-state;
+  container-name: fretboard-nav;
+}
+
+.navbar-inner {
+  pointer-events: auto;
+  position: relative;
+  width: 100%;
+  max-width: 80rem; /* 1280px / max-w-7xl */
+  margin-inline: auto;
+  height: 4.25rem; /* 68px */
+  padding-inline: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  /* Default / fallback styling for browsers without scroll-state support */
+  background-color: var(--nav-fallback-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--nav-fallback-border);
+  box-shadow: 0 4px 20px rgba(23, 23, 23, 0.03);
+}
+
+/* Progressive Enhancement when scroll-state container queries are supported */
+@supports (container-type: scroll-state) {
+  /* State A: At the top of the page (Spacious & Transparent) */
+  .navbar-inner {
+    max-width: 80rem;
+    height: 4.25rem;
+    margin-top: 0;
+    padding-inline: 1.5rem;
+    border-radius: 0;
+
+    background-color: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid transparent;
+    box-shadow: none;
+
+    transition:
+      max-width 380ms cubic-bezier(0.16, 1, 0.3, 1),
+      height 380ms cubic-bezier(0.16, 1, 0.3, 1),
+      margin-top 380ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-radius 380ms cubic-bezier(0.16, 1, 0.3, 1),
+      padding-inline 380ms cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 350ms ease,
+      backdrop-filter 350ms ease,
+      -webkit-backdrop-filter 350ms ease,
+      border-color 350ms ease,
+      box-shadow 350ms ease;
+  }
+
+  /* State B: When the navbar becomes stuck (Compact Floating Square-Rounded Container) */
+  @container fretboard-nav (scroll-state(stuck: top)) {
+    .navbar-inner {
+      max-width: min(calc(100% - 2rem), 58.5rem);
+      height: 3.25rem; /* 52px */
+      margin-top: 0.75rem; /* 12px floating inset from top */
+      padding-inline: 1.25rem;
+      border-radius: 14px; /* Square-rounded per user reference */
+
+      background-color: var(--nav-stuck-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--nav-stuck-border);
+      box-shadow: var(--nav-stuck-shadow);
+    }
+  }
+
+  /* Responsive compact container for mobile/tablet viewports (< 1024px) when stuck */
+  @container fretboard-nav (scroll-state(stuck: top)) {
+    @media (max-width: 1023px) {
+      .navbar-inner {
+        max-width: min(calc(100% - 1.5rem), 32rem);
+        height: 3rem; /* 48px */
+        padding-inline: 0.875rem;
+        border-radius: 12px;
+      }
+    }
+  }
+}
+
+/* Accessibility: respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .navbar-inner {
+    transition: none !important;
+  }
+}
+
