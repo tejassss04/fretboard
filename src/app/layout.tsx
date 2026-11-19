@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import AuthSessionProvider from "@/components/providers/session-provider";
 import "./globals.css";
 
@@ -48,6 +49,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-[#0C0A09] text-[#F5F5F4] selection:bg-[#E9D8B7] selection:text-[#171717]">
         <AuthSessionProvider>{children}</AuthSessionProvider>
+        <Analytics />
       </body>
     </html>
   );
