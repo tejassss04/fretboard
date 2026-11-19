@@ -12,8 +12,17 @@
 
 ## Overview
 
-**Fretboard** is a zero-plugin, local-first guitar studio and music exploration web application. Set against a continuous **Crimson Violet Haze** backdrop with light and dark theme transitions, it pairs an editorial landing showcase with a dedicated Virtual Fretboard Studio and a full suite of interactive practice tools powered by native Web Audio synthesis.
+# 🎸 Fretboard
 
+As a guitar player and enthusiast myself, I've always wanted to build something around this beautiful instrument. I wanted to create something that could make guitar practice easier and bring all the useful tools a guitarist needs into one place.
+
+That's how **Fretboard** started.
+
+Fretboard is a guitar practice companion where you can explore chords and scales, practise with a timer, tune your guitar, keep track of rhythm with a metronome, save your favourite songs, and track your progress over time.
+
+The idea behind Fretboard is simple: to make practising guitar more enjoyable and help guitar players keep learning and improving at their own pace.
+
+This project brings together two things I love: playing guitar and building things. I'm excited to keep working on it and make it better, one step at a time. 🎶
 ---
 
 ## Key Features
