@@ -2,13 +2,6 @@
 
 An interactive guitar practice and music theory app to explore the fretboard, learn chords and scales, improve your timing, and make practising guitar more enjoyable.
 
-"Live Demo" (https://fretboard01.vercel.app/)
-
-""Next.js" (https://img.shields.io/badge/Next.js-16.4.5-black?style=flat&logo=next.js)" (https://nextjs.org/)
-""React" (https://img.shields.io/badge/React-19.3-blue?style=flat&logo=react)" (https://react.dev/)
-""TypeScript" (https://img.shields.io/badge/TypeScript-5-blue?style=flat&logo=typescript)" (https://www.typescriptlang.org/)
-""Tailwind CSS" (https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?style=flat&logo=tailwind-css)" (https://tailwindcss.com/)
-
 ---
 
 About Fretboard
