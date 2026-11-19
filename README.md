@@ -156,46 +156,6 @@ One of the things I wanted to explore with this project was how much could be do
 
 ---
 
-Project Structure
-
-fretboard/
-├── public/
-│   └── images/
-│       └── screenshots/
-│
-├── src/
-│   ├── app/
-│   │   ├── chords/
-│   │   ├── fretboard/
-│   │   ├── metronome/
-│   │   ├── practice/
-│   │   ├── progress/
-│   │   ├── scales/
-│   │   ├── signup/
-│   │   ├── songs/
-│   │   ├── tuner/
-│   │   ├── globals.css
-│   │   ├── layout.tsx
-│   │   └── page.tsx
-│   │
-│   ├── components/
-│   │   ├── landing/
-│   │   └── tools/
-│   │
-│   └── lib/
-│       ├── audio.ts
-│       ├── data.ts
-│       ├── guitar.ts
-│       ├── music.ts
-│       ├── storage.ts
-│       └── use-stored-state.ts
-│
-├── skills.md
-├── package.json
-└── tsconfig.json
-
----
-
 Getting Started
 
 Want to run Fretboard locally? Follow these steps.
