@@ -96,7 +96,7 @@ export default function ScaleExplorer() {
             <Stack size={12} weight="regular" />
             <span>Scalar Theory Studio</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-serif font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.025em] leading-[1.12]">
+          <h1 className="text-3xl sm:text-4xl font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.025em] leading-[1.12]">
             Scale &amp; Mode <span className="font-serif italic text-[#D4AD61]">Matrix</span>
           </h1>
           <p className="text-xs sm:text-sm text-[#77746F] dark:text-[#A8A29E] mt-1">

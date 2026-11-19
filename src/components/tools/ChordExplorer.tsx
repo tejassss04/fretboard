@@ -73,7 +73,7 @@ export default function ChordExplorer() {
             <BookOpen size={12} weight="regular" />
             <span>Harmonic Voicings</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-serif font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.025em] leading-[1.12]">
+          <h1 className="text-3xl sm:text-4xl font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.025em] leading-[1.12]">
             Chord <span className="font-serif italic text-[#D4AD61]">Voicings &amp; Shapes</span>
           </h1>
           <p className="text-xs sm:text-sm text-[#77746F] dark:text-[#A8A29E] mt-1">

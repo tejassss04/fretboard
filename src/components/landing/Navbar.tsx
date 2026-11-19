@@ -19,8 +19,10 @@ import {
   PlayCircle,
   Sparkle,
   BookmarkSimple,
+  Broadcast,
 } from '@phosphor-icons/react';
 import AuthNav from '@/components/auth/AuthNav';
+import StartPlayingButton from '@/components/landing/StartPlayingButton';
 
 interface NavbarProps {
   onStartPlaying?: () => void;
@@ -566,7 +568,15 @@ export default function Navbar({ onStartPlaying }: NavbarProps = {}) {
         {/* ===================================================================== */}
         {/* RIGHT SECTION — UTILITY AND AUTHENTICATION                            */}
         {/* ===================================================================== */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+          {/* Jam Button (Styled like Hero StartPlayingButton) */}
+          <StartPlayingButton
+            href="/jam"
+            label="Jam"
+            size="compact"
+            className="hidden sm:inline-flex"
+          />
+
           {/* Desktop Authentication Controls (Sign in + Sign up / User Profile) */}
           <div className="hidden lg:flex items-center">
             <AuthNav variant="desktop" />
@@ -621,6 +631,20 @@ export default function Navbar({ onStartPlaying }: NavbarProps = {}) {
               >
                 <Guitar size={16} weight="regular" className={isFretboardActive ? 'text-[#D4AD61]' : 'opacity-70'} />
                 <span>Fretboard Studio</span>
+              </Link>
+
+              {/* Direct Link: Jam Room */}
+              <Link
+                href="/jam"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-medium transition-colors ${
+                  pathname === '/jam'
+                    ? 'bg-black/[0.06] dark:bg-white/[0.08] text-[#171717] dark:text-[#F5F5F4] font-semibold'
+                    : 'text-[#64605B] dark:text-[#A8A29E] hover:text-[#171717] dark:hover:text-[#F5F5F4] hover:bg-black/[0.03] dark:hover:bg-white/[0.04]'
+                }`}
+              >
+                <Broadcast size={16} weight="regular" className={pathname === '/jam' ? 'text-[#D4AD61]' : 'opacity-70'} />
+                <span>Jam Room Alpha</span>
               </Link>
 
               {/* Expandable Accordion: Resources */}

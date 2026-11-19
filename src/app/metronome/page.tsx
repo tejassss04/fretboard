@@ -43,7 +43,7 @@ export default function MetronomePage() {
             <BlurReveal
               as="h1"
               immediate
-              className="text-3xl sm:text-4xl font-serif font-normal text-[#171717] dark:text-[#F5F5F4] tracking-tight leading-[1.12]"
+              className="text-3xl sm:text-4xl font-normal text-[#171717] dark:text-[#F5F5F4] tracking-tight leading-[1.12]"
             >
               Precision <span className="font-serif italic text-[#D4AD61]">Metronome</span>
             </BlurReveal>

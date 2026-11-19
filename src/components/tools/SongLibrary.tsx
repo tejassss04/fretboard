@@ -409,7 +409,7 @@ export default function SongLibrary() {
             <MusicNotes size={12} weight="regular" />
             <span>Repertoire Vault</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-serif font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.025em] leading-[1.15]">
+          <h2 className="text-3xl sm:text-4xl font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.025em] leading-[1.15]">
             Song <span className="font-serif italic text-[#D4AD61]">Library</span>
           </h2>
           <p className="text-xs sm:text-sm text-[#77746F] dark:text-[#A8A29E] mt-1">
