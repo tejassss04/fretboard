@@ -8,7 +8,6 @@ import GuitarPreview from '@/components/landing/GuitarPreview';
 import StudioMiniDock from '@/components/tools/StudioMiniDock';
 import {
   ArrowLeft,
-  Sparkle,
   Microphone,
   Metronome,
   BookOpen,
@@ -37,11 +36,6 @@ export default function FretboardPage() {
                 <ArrowLeft size={13} />
                 <span>Overview</span>
               </Link>
-              <span className="text-zinc-300 dark:text-zinc-700">/</span>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono uppercase tracking-wider bg-[#F5EEDF] dark:bg-[#201D1A] text-[#9E7A32] dark:text-[#D4AD61] border border-[#E9D8B7] dark:border-white/10">
-                <Sparkle size={11} weight="regular" />
-                <span>Virtual Instrument</span>
-              </span>
             </div>
 
             <BlurReveal
@@ -49,7 +43,7 @@ export default function FretboardPage() {
               immediate
               className="text-3xl sm:text-4xl font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.025em] leading-[1.12]"
             >
-              Interactive <span className="font-serif italic text-[#D4AD61]">Fretboard Studio</span>
+              Interactive <span className="font-serif italic text-[#E9D8B7]">Fretboard Studio</span>
             </BlurReveal>
             <p className="text-xs sm:text-sm text-[#77746F] dark:text-[#A8A29E] mt-1">
               Pluck strings, explore scale degree intervals, trigger real-time chord strum pads, and test Web Audio synthesis.

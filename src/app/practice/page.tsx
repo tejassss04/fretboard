@@ -8,7 +8,6 @@ import PracticeSession from '@/components/tools/PracticeSession';
 import StudioMiniDock from '@/components/tools/StudioMiniDock';
 import {
   ArrowLeft,
-  Sparkle,
   Microphone,
   Metronome,
   Guitar,
@@ -33,11 +32,6 @@ export default function PracticePage() {
                 <ArrowLeft size={13} />
                 <span>Overview</span>
               </Link>
-              <span className="text-zinc-300 dark:text-zinc-700">/</span>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono uppercase tracking-wider bg-[#F5EEDF] dark:bg-[#201D1A] text-[#9E7A32] dark:text-[#D4AD61] border border-[#E9D8B7] dark:border-white/10">
-                <Sparkle size={11} weight="regular" />
-                <span>Guided Practice</span>
-              </span>
             </div>
 
             <BlurReveal
@@ -45,7 +39,7 @@ export default function PracticePage() {
               immediate
               className="text-3xl sm:text-4xl font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.025em] leading-[1.12]"
             >
-              Daily Practice <span className="font-serif italic text-[#D4AD61]">Routine</span>
+              Daily Practice <span className="font-serif italic text-[#E9D8B7]">Routine</span>
             </BlurReveal>
             <p className="text-xs sm:text-sm text-[#77746F] dark:text-[#A8A29E] mt-1">
               Structured daily warmups, precision timer, habit streak tracking, and instant session logging.

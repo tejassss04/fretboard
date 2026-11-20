@@ -78,9 +78,9 @@ export default function HeroSection({ onStartPlaying, onExploreFeatures }: HeroS
               animate="visible"
               className="flex flex-col items-start text-left max-w-xl"
             >
-              {/* Announcement Strip */}
+              {/* Announcement Strip (Still, non-interactive badge) */}
               <motion.div variants={itemVariants} className="mb-6">
-                <AnnouncementBar onClick={onStartPlaying} />
+                <AnnouncementBar />
               </motion.div>
 
               {/* Main Editorial Headline with Kinetic Highlight Pill & Serif Accent */}

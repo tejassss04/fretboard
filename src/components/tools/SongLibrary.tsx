@@ -405,12 +405,8 @@ export default function SongLibrary() {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider bg-[#F5EEDF] dark:bg-[#201D1A] text-[#9E7A32] dark:text-[#D4AD61] border border-[#E9D8B7] dark:border-white/10 mb-2">
-            <MusicNotes size={12} weight="regular" />
-            <span>Repertoire Vault</span>
-          </div>
           <h2 className="text-3xl sm:text-4xl font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.025em] leading-[1.15]">
-            Song <span className="font-serif italic text-[#D4AD61]">Library</span>
+            Song <span className="font-serif italic text-[#E9D8B7]">Library</span>
           </h2>
           <p className="text-xs sm:text-sm text-[#77746F] dark:text-[#A8A29E] mt-1">
             Curate chord progressions, track mastery progress, and practice with real Web Audio feedback.

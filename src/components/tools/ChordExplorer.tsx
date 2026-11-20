@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import {
-  BookOpen,
   CaretRight,
   Play,
   MagnifyingGlass,
@@ -69,12 +68,8 @@ export default function ChordExplorer() {
       {/* 1. Header Toolbar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider bg-[#F5EEDF] dark:bg-[#201D1A] text-[#9E7A32] dark:text-[#D4AD61] border border-[#E9D8B7] dark:border-white/10 mb-2">
-            <BookOpen size={12} weight="regular" />
-            <span>Harmonic Voicings</span>
-          </div>
           <h1 className="text-3xl sm:text-4xl font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.025em] leading-[1.12]">
-            Chord <span className="font-serif italic text-[#D4AD61]">Voicings &amp; Shapes</span>
+            Chord <span className="font-serif italic text-[#E9D8B7]">Voicings &amp; Shapes</span>
           </h1>
           <p className="text-xs sm:text-sm text-[#77746F] dark:text-[#A8A29E] mt-1">
             Physical fretboard fingerings, tab positions, interval degrees, and authentic acoustic strumming.

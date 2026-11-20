@@ -8,7 +8,7 @@ import Navbar from '@/components/landing/Navbar';
 import Footer from '@/components/landing/Footer';
 
 interface AuthShellProps {
-  badge: string;
+  badge?: string;
   headingPrefix: string;
   headingAccent: string;
   subtitle: string;
@@ -55,11 +55,6 @@ export default function AuthShell({
           transition={{ duration: 0.45, ease: CUBIC_EASE }}
           className="rounded-3xl bg-white/90 dark:bg-[#15111B]/85 backdrop-blur-md border border-[#EAE8E4]/80 dark:border-white/10 p-7 sm:p-8 shadow-[0_20px_50px_rgba(23,23,23,0.06)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_25px_60px_rgba(0,0,0,0.45)]"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F7F6F3] dark:bg-[#1A1816] border border-[#EAE8E4] dark:border-white/10 text-[11px] font-medium uppercase tracking-wider text-[#77746F] dark:text-[#A8A29E] mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#D4AD61]" />
-            <span>{badge}</span>
-          </div>
-
           <h1 className="text-3xl sm:text-4xl font-normal tracking-[-0.025em] leading-[1.15] text-[#171717] dark:text-[#F5F5F4] mb-2">
             {headingPrefix}{' '}
             <span className="font-serif italic text-[1.1em] text-[#38211F] dark:text-[#E9D8B7]">

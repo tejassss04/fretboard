@@ -151,14 +151,6 @@ export default function FeatureShowcase() {
         {/* Section Header */}
         <div className="max-w-3xl mb-8 sm:mb-10">
           <BlurReveal
-            delay={0}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F7F6F3] dark:bg-[#1A1816] border border-[#EAE8E4] dark:border-white/10 text-[11px] font-mono font-medium text-[#77746F] dark:text-[#A8A29E] mb-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#D4AD61]" />
-            SECTION 02 • INTERACTIVE STUDIO
-          </BlurReveal>
-
-          <BlurReveal
             as="h2"
             delay={0.08}
             className="text-3xl sm:text-4xl lg:text-5xl font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.03em] leading-[1.14] mb-4 text-balance"

@@ -11,7 +11,6 @@ import {
   MusicNotes,
   TrendUp,
   ArrowRight,
-  Sparkle,
 } from '@phosphor-icons/react';
 import BlurReveal from '@/components/ui/BlurReveal';
 
@@ -93,14 +92,6 @@ export default function PracticeSuiteShowcase() {
         
         {/* Section Header */}
         <div className="max-w-3xl mb-8 sm:mb-10">
-          <BlurReveal
-            delay={0}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F7F6F3] dark:bg-[#1A1816] border border-[#EAE8E4] dark:border-white/10 text-[11px] font-mono font-medium text-[#77746F] dark:text-[#A8A29E] mb-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
-          >
-            <Sparkle size={12} weight="regular" className="text-[#D4AD61]" />
-            <span>PRACTICE COMPANION SUITE</span>
-          </BlurReveal>
-
           <BlurReveal
             as="h2"
             delay={0.08}

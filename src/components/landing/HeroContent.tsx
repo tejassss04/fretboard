@@ -43,9 +43,9 @@ export default function HeroContent({ onStartPlaying, onExploreFeatures }: HeroC
       animate="visible"
       className="flex flex-col items-start text-left max-w-[560px]"
     >
-      {/* Announcement Strip */}
+      {/* Announcement Strip (Still, non-interactive badge) */}
       <div className="mb-6">
-        <AnnouncementBar onClick={onStartPlaying} />
+        <AnnouncementBar />
       </div>
 
       {/* Main Editorial Headline with Serif Italic Pairing */}

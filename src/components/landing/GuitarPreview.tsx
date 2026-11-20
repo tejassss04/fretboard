@@ -18,7 +18,6 @@ import { getAudioEngine, GuitarTone } from '@/lib/audio';
 import {
   SpeakerHigh,
   SpeakerSlash,
-  Sparkle,
   MusicNotes,
   Play,
   Pause,
@@ -309,16 +308,8 @@ export default function GuitarPreview() {
       {/* ======================================================== */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 mb-4 border-b border-[#EAE8E4] dark:border-white/10">
         
-        {/* Left Wing: Instrument Tag, Timbre Presets & Tour Toggle */}
+        {/* Left Wing: Timbre Presets & Tour Toggle */}
         <div className="flex flex-wrap items-center gap-2.5">
-          {/* Identity Pill */}
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#F7F6F3] dark:bg-[#1A1816] border border-[#EAE8E4] dark:border-white/10 text-[11px] font-mono font-medium text-[#77746F] dark:text-[#A8A29E] shadow-xs">
-            <span className={`w-2 h-2 rounded-full ${isDemoRunning ? 'bg-[#D4AD61] animate-pulse' : 'bg-[#D4AD61]'}`} />
-            <span className="font-semibold text-[#171717] dark:text-[#F5F5F4]">Rosewood Studio</span>
-            <span className="text-zinc-400 dark:text-zinc-600">/</span>
-            <span>6-String</span>
-          </div>
-
           {/* 3-Way Timbre Preset Switcher */}
           <div className="inline-flex items-center bg-[#ECEBE7] dark:bg-[#1C1917] p-0.5 rounded-full border border-[#EAE8E4]/60 dark:border-white/5">
             {TONE_PRESETS.map((tone) => (
@@ -557,12 +548,6 @@ export default function GuitarPreview() {
             onHoverNote={setHoveredNote}
             hoveredNote={hoveredNote}
           />
-        </div>
-
-        {/* Tactile Watermark Badge */}
-        <div className="absolute bottom-2 right-3 pointer-events-none inline-flex items-center gap-1.5 text-[10px] font-mono text-[#77746F] dark:text-[#A8A29E] bg-white/70 dark:bg-black/60 backdrop-blur-xs px-2.5 py-0.5 rounded-full border border-black/5 dark:border-white/5">
-          <Sparkle size={10} weight="regular" className="text-[#D4AD61]" />
-          <span>Interactive 2D Neck</span>
         </div>
       </div>
 

@@ -8,7 +8,6 @@ import Metronome from '@/components/tools/Metronome';
 import StudioMiniDock from '@/components/tools/StudioMiniDock';
 import {
   ArrowLeft,
-  Sparkle,
   Microphone,
   Guitar,
   BookOpen,
@@ -33,11 +32,6 @@ export default function MetronomePage() {
                 <ArrowLeft size={13} />
                 <span>Overview</span>
               </Link>
-              <span className="text-zinc-300 dark:text-zinc-700">/</span>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono uppercase tracking-wider bg-[#F5EEDF] dark:bg-[#201D1A] text-[#9E7A32] dark:text-[#D4AD61] border border-[#E9D8B7] dark:border-white/10">
-                <Sparkle size={11} weight="regular" />
-                <span>Rhythm Studio</span>
-              </span>
             </div>
 
             <BlurReveal
@@ -45,7 +39,7 @@ export default function MetronomePage() {
               immediate
               className="text-3xl sm:text-4xl font-normal text-[#171717] dark:text-[#F5F5F4] tracking-tight leading-[1.12]"
             >
-              Precision <span className="font-serif italic text-[#D4AD61]">Metronome</span>
+              Precision <span className="font-serif italic text-[#E9D8B7]">Metronome</span>
             </BlurReveal>
             <p className="text-xs sm:text-sm text-[#77746F] dark:text-[#A8A29E] mt-1">
               Micro-timed clicks, Italian tempo presets, mechanical swing simulation, and tap tempo detection.

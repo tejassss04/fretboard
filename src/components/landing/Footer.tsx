@@ -73,11 +73,6 @@ export default function Footer({ onStartPlaying }: FooterProps = {}) {
                   <span className="text-[#D4AD61] transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none">→</span>
                 </Link>
               )}
-
-              <div className="inline-flex items-center gap-2 text-[10.5px] sm:text-[11px] font-mono text-[#D4AD61] bg-[#F7F6F3]/80 dark:bg-[#1A1816]/80 px-3 py-1.5 min-h-[32px] rounded-full border border-[#EAE8E4] dark:border-white/10 shadow-xs max-w-full">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse motion-reduce:animate-none shrink-0" />
-                <span className="truncate">48 kHz Web Audio · Zero Plugins</span>
-              </div>
             </div>
           </div>
 
@@ -235,9 +230,6 @@ export default function Footer({ onStartPlaying }: FooterProps = {}) {
 
         {/* ─── Trove-Inspired Credits, Copyright & Back-to-Top Strip ─── */}
         <div className="border-t border-[#EAE8E4]/70 dark:border-white/10 py-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 text-[11px]">
-          <p className="text-[#77746F]/85 dark:text-[#A8A29E]/75 max-w-md leading-relaxed">
-            Crafted with Next.js, Instrument Serif, Geist, and native Web Audio synthesis. Local-first persistence with zero external plugins.
-          </p>
 
           <div className="w-full md:w-auto flex flex-wrap items-center justify-between md:justify-end gap-x-5 gap-y-3 shrink-0">
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[#77746F] dark:text-[#A8A29E]">

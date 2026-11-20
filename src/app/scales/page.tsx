@@ -8,7 +8,6 @@ import ScaleExplorer from '@/components/tools/ScaleExplorer';
 import StudioMiniDock from '@/components/tools/StudioMiniDock';
 import {
   ArrowLeft,
-  Sparkle,
   Microphone,
   Metronome,
   Guitar,
@@ -32,11 +31,6 @@ export default function ScalesPage() {
               <ArrowLeft size={13} />
               <span>Overview</span>
             </Link>
-            <span className="text-zinc-300 dark:text-zinc-700">/</span>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono uppercase tracking-wider bg-[#F5EEDF] dark:bg-[#201D1A] text-[#9E7A32] dark:text-[#D4AD61] border border-[#E9D8B7] dark:border-white/10">
-              <Sparkle size={11} weight="regular" />
-              <span>Modal Theory</span>
-            </span>
           </div>
 
           {/* Quick Studio Practice Launchers */}

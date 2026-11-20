@@ -535,9 +535,6 @@ export default function Navbar({ onStartPlaying }: NavbarProps = {}) {
                       {/* Local-First Repertoire Card (Editorial feature spotlight) */}
                       <div className="col-span-5 flex flex-col justify-between p-4 rounded-2xl bg-[#F7F6F3] dark:bg-[#1A1816] border border-[#EAE8E4] dark:border-white/10">
                         <div>
-                          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold uppercase tracking-wider bg-[#E9D8B7]/30 dark:bg-[#D4AD61]/20 text-[#9E7A32] dark:text-[#D4AD61] border border-[#D4AD61]/30 mb-2.5">
-                            <span>Repertoire Vault</span>
-                          </div>
                           <h4 className="text-sm font-serif font-normal tracking-tight text-[#171717] dark:text-[#F5F5F4] leading-[1.25]">
                             Local-first <span className="italic text-[#D4AD61]">Practice Sync</span>
                           </h4>

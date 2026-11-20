@@ -2,7 +2,7 @@
 
 import React, { useMemo, useSyncExternalStore } from 'react';
 import Link from 'next/link';
-import { Trophy, CalendarBlank, Check, Flame, TrendUp, Guitar, Timer, ArrowRight, Sparkle } from '@phosphor-icons/react';
+import { Trophy, CalendarBlank, Check, Flame, Guitar, Timer, ArrowRight, Sparkle } from '@phosphor-icons/react';
 import { useStoredState } from '@/lib/use-stored-state';
 import type { PracticeSessionRecord } from '@/lib/types';
 import {
@@ -39,12 +39,8 @@ export default function ProgressTelemetry() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider bg-[#F5EEDF] dark:bg-[#201D1A] text-[#9E7A32] dark:text-[#D4AD61] border border-[#E9D8B7] dark:border-white/10 mb-2">
-            <TrendUp size={12} weight="regular" />
-            <span>Practice Telemetry</span>
-          </div>
           <h2 className="text-3xl sm:text-4xl font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.025em] leading-[1.15]">
-            Small work. <span className="font-serif italic text-[#D4AD61]">Real change.</span>
+            Small work. <span className="font-serif italic text-[#E9D8B7]">Real change.</span>
           </h2>
           <p className="text-xs sm:text-sm text-[#77746F] dark:text-[#A8A29E] mt-1">
             Real-time consistency telemetry, weekly volume metrics, and milestone achievements.

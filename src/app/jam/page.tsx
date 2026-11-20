@@ -210,12 +210,6 @@ export default function JamPage() {
                 <ArrowLeft size={13} />
                 <span>Overview</span>
               </Link>
-              <span className="text-zinc-700">/</span>
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono uppercase tracking-wider bg-[#201D1A] text-[#D4AD61] border border-white/10">
-                <Broadcast size={12} weight="fill" className="text-emerald-400 animate-pulse" />
-                <span>Jam Room Alpha</span>
-                <span className="text-zinc-400">#JAM-8402</span>
-              </span>
             </div>
 
             <BlurReveal

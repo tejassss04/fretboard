@@ -20,15 +20,6 @@ export default function FinalCTA({ onStartPlaying }: FinalCTAProps) {
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative text-center z-10">
         <div className="max-w-3xl mx-auto flex flex-col items-center">
           
-          {/* Eyebrow */}
-          <BlurReveal
-            delay={0}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#1A1816] border border-[#EAE8E4] dark:border-white/10 text-[11px] font-mono font-medium text-[#77746F] dark:text-[#A8A29E] mb-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#D4AD61]" />
-            DISCOVER THE INSTRUMENT
-          </BlurReveal>
-
           {/* Headline */}
           <BlurReveal
             as="h2"

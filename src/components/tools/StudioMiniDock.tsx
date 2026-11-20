@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Microphone, Metronome as MetronomeIcon, X, SlidersHorizontal, Sparkle } from '@phosphor-icons/react';
+import { Microphone, Metronome as MetronomeIcon, X, SlidersHorizontal } from '@phosphor-icons/react';
 import Tuner from './Tuner';
 import Metronome from './Metronome';
 
@@ -129,10 +129,6 @@ export default function StudioMiniDock({
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <div className="hidden sm:inline-flex items-center gap-1 text-[10px] font-mono text-[#D4AD61] bg-[#D4AD61]/10 px-2 py-0.5 rounded-full border border-[#D4AD61]/20">
-                    <Sparkle size={10} weight="regular" />
-                    <span>In-Studio Utility</span>
-                  </div>
                   <button
                     type="button"
                     onClick={() => setActiveModal(null)}
