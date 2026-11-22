@@ -24,32 +24,33 @@ export default function CapCalc() {
   const isInvalid = hasTyped && !result.allValid;
 
   return (
-    <div className="w-full max-w-2xl mx-auto py-6 sm:py-12 select-none font-sans">
-      {/* Editorial Title */}
+    <div className="w-full max-w-2xl mx-auto py-6 sm:py-10 select-none font-sans">
+      {/* Editorial Header */}
       <div className="text-center space-y-2 mb-8 sm:mb-10">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider text-[#D4AD61] bg-[#D4AD61]/10 border border-[#D4AD61]/25 mb-1">
+          Resources • Music Theory
+        </div>
         <h1 className="text-3xl sm:text-4xl font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.025em]">
           CapCalc <span className="text-[#D4AD61] font-medium">Capo Calculator</span>
         </h1>
         <p className="text-xs sm:text-sm text-[#77746F] dark:text-[#A8A29E] max-w-md mx-auto">
-          Type any chord or progression (e.g. C, Dmaj7, or C Am F G), select your capo, and see the sounding result.
+          Type any chord or progression, pick your capo fret, and instantly see what it sounds like.
         </p>
       </div>
 
       {/* Main Studio Card */}
-      <div className="bg-[#FCFBF9] dark:bg-[#12100E] border border-[#EAE8E4] dark:border-white/10 rounded-3xl p-6 sm:p-9 shadow-sm space-y-8">
+      <div className="bg-[#FCFBF9] dark:bg-[#12100E] border border-[#EAE8E4] dark:border-white/10 rounded-3xl p-6 sm:p-8 md:p-10 shadow-sm space-y-8">
         
-        {/* Element A: Chord Input (Geist font) */}
-        <div className="space-y-2.5">
-          <div className="flex items-center justify-between">
+        {/* Element A: Chord Input (Geist font, symmetrically aligned) */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between gap-2">
             <label
               htmlFor="chord-input"
-              className="block text-[11px] font-mono uppercase tracking-wider text-[#77746F] dark:text-[#A8A29E] font-semibold"
+              className="text-[11px] font-mono font-bold tracking-[0.14em] uppercase text-[#77746F] dark:text-[#A8A29E]"
             >
               Chord or Progression
             </label>
-            <span className="text-[10px] font-mono text-[#77746F] dark:text-[#A8A29E]">
-              Supports numbers &amp; progressions (e.g. Dmaj7, Cadd9, G7)
-            </span>
+            
           </div>
 
           <div className="relative">
@@ -58,10 +59,10 @@ export default function CapCalc() {
               type="text"
               value={inputChord}
               onChange={(e) => setInputChord(e.target.value)}
-              placeholder="Type your Chord or Progression here"
+              placeholder="Type your chord (e.g. C, Dmaj7, C Am F G)..."
               spellCheck={false}
               autoComplete="off"
-              className={`w-full text-xl sm:text-2xl md:text-3xl font-sans font-medium py-3.5 px-4 pr-12 rounded-2xl bg-white dark:bg-[#1A1816] border text-[#171717] dark:text-[#F5F5F4] placeholder:text-base sm:placeholder:text-lg focus:outline-none transition-all ${
+              className={`w-full text-xl sm:text-2xl font-sans font-medium py-3.5 px-4.5 pr-12 rounded-2xl bg-white dark:bg-[#1A1816] border text-[#171717] dark:text-[#F5F5F4] placeholder:text-[#A8A29E]/45 placeholder:text-sm sm:placeholder:text-base focus:outline-none transition-all shadow-xs ${
                 isInvalid
                   ? 'border-red-400 dark:border-red-500/60 focus:ring-2 focus:ring-red-400/20'
                   : 'border-[#EAE8E4] dark:border-white/10 focus:border-[#D4AD61] focus:ring-2 focus:ring-[#D4AD61]/20'
@@ -87,19 +88,19 @@ export default function CapCalc() {
           )}
         </div>
 
-        {/* Element B: Capo Selector */}
-        <div className="space-y-2.5">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-mono uppercase tracking-wider text-[#77746F] dark:text-[#A8A29E] font-semibold">
-              Capo
+        {/* Element B: Capo Selector (Matching header alignment) */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[11px] font-mono font-bold tracking-[0.14em] uppercase text-[#77746F] dark:text-[#A8A29E]">
+              Capo Position
             </span>
-            <span className="text-[11px] font-mono text-[#D4AD61] font-medium">
-              {capoFret === 0 ? 'No Capo (Concert pitch)' : `Capo Fret ${capoFret}`}
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#D4AD61] bg-[#D4AD61]/10 px-2 py-0.5 rounded border border-[#D4AD61]/25">
+              {capoFret === 0 ? 'No Capo (Open)' : `Capo Fret ${capoFret}`}
             </span>
           </div>
 
           {/* Horizontally scrollable segmented selector */}
-          <div className="overflow-x-auto no-scrollbar touch-pan-x p-1 bg-[#F1F0ED] dark:bg-[#1A1816] rounded-2xl border border-[#EAE8E4] dark:border-white/10 flex items-center gap-1">
+          <div className="overflow-x-auto no-scrollbar touch-pan-x p-1.5 bg-[#F1F0ED] dark:bg-[#1A1816] rounded-2xl border border-[#EAE8E4] dark:border-white/10 flex items-center gap-1">
             <button
               type="button"
               onClick={() => setCapoFret(0)}
@@ -131,9 +132,9 @@ export default function CapCalc() {
           </div>
         </div>
 
-        {/* Element C: Result Display (Same Geist font as input box with generous gaps) */}
+        {/* Element C: Result Display (Aligned, Geist font, generous gaps) */}
         <div className="pt-6 sm:pt-8 border-t border-[#EAE8E4] dark:border-white/10 text-center space-y-4">
-          <span className="block text-xs font-mono uppercase tracking-wider text-[#77746F] dark:text-[#A8A29E]">
+          <span className="block text-[11px] font-mono font-bold tracking-[0.14em] uppercase text-[#77746F] dark:text-[#A8A29E]">
             Your chord{result.chords.length > 1 ? 's' : ''} will sound like
           </span>
 
@@ -151,7 +152,7 @@ export default function CapCalc() {
                     <span
                       className={`font-sans font-bold tracking-tight text-[#171717] dark:text-[#F5F5F4] leading-none ${
                         result.chords.length === 1
-                          ? 'text-6xl sm:text-7xl md:text-8xl lg:text-9xl'
+                          ? 'text-6xl sm:text-7xl md:text-8xl'
                           : result.chords.length <= 3
                           ? 'text-5xl sm:text-6xl md:text-7xl'
                           : 'text-4xl sm:text-5xl md:text-6xl'
