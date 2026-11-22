@@ -58,10 +58,10 @@ export default function CapCalc() {
               type="text"
               value={inputChord}
               onChange={(e) => setInputChord(e.target.value)}
-              placeholder="Type your chord (e.g. C, Dmaj7, C Am F G)..."
+              placeholder="Type your Chord or Progression here"
               spellCheck={false}
               autoComplete="off"
-              className={`w-full text-xl sm:text-2xl md:text-3xl font-sans font-medium py-3.5 px-4 pr-12 rounded-2xl bg-white dark:bg-[#1A1816] border text-[#171717] dark:text-[#F5F5F4] placeholder:text-[#A8A29E]/45 focus:outline-none transition-all ${
+              className={`w-full text-xl sm:text-2xl md:text-3xl font-sans font-medium py-3.5 px-4 pr-12 rounded-2xl bg-white dark:bg-[#1A1816] border text-[#171717] dark:text-[#F5F5F4] placeholder:text-base sm:placeholder:text-lg focus:outline-none transition-all ${
                 isInvalid
                   ? 'border-red-400 dark:border-red-500/60 focus:ring-2 focus:ring-red-400/20'
                   : 'border-[#EAE8E4] dark:border-white/10 focus:border-[#D4AD61] focus:ring-2 focus:ring-[#D4AD61]/20'

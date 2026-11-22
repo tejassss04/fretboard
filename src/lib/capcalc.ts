@@ -48,14 +48,29 @@ export interface SoundingResult {
 /**
  * Split an input string containing one or more chords into individual chord tokens.
  * Handles spaces, commas, dashes, and arrows (preserving slash chords like G/B).
+ * Also handles continuous chords without spaces (e.g. "CAmFG").
  */
 export function tokenizeChords(input: string): string[] {
   // Normalize slash chords that have spaces: e.g. "G / B" -> "G/B"
   const normalized = input.replace(/([A-Ga-g][#b♯♭]?)\s*\/\s*([A-Ga-g][#b♯♭]?)/g, '$1/$2');
-  return normalized
-    .split(/[\s,\-\–\—\>\|]+/)
-    .map((t) => t.trim())
-    .filter((t) => t.length > 0);
+
+  // If user used standard delimiters (spaces, commas, hyphens, arrows, pipes)
+  if (/[\s,\-\–\—\>\|]/.test(normalized)) {
+    return normalized
+      .split(/[\s,\-\–\—\>\|]+/)
+      .map((t) => t.trim())
+      .filter((t) => t.length > 0);
+  }
+
+  // If user typed continuous chords without delimiters (e.g. "CAmFG" or "Cmaj7Am7")
+  const continuousMatches = normalized.match(
+    /([A-G][#b♯♭]?(?:\/[A-G][#b♯♭]?)?(?:maj[0-9]*|min[0-9]*|m[0-9]*|dim[0-9]*|aug[0-9]*|sus[0-9]*|add[0-9]*|[0-9]+)?)/gi
+  );
+  if (continuousMatches && continuousMatches.length > 1) {
+    return continuousMatches.map((t) => t.trim()).filter((t) => t.length > 0);
+  }
+
+  return [normalized.trim()];
 }
 
 /**
