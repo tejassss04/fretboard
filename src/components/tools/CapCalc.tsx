@@ -259,9 +259,23 @@ export default function CapCalc() {
               ))}
             </div>
 
+            {/* Mobile Scroll Hint Affordance */}
+            <div className="sm:hidden flex items-center justify-between text-[10px] font-mono text-[#A8A29E] px-1 mb-1.5 select-none">
+              <span className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#D4AD61] animate-pulse" />
+                <span>Tap any fret or swipe across 12 frets</span>
+              </span>
+              <span className="text-zinc-500">Frets 1–12</span>
+            </div>
+
             {/* Bound Rosewood Neck with Metal Frets & Physical Capo */}
-            <div className="relative fretboard-wood rounded-2xl border-y-2 border-[#52453F] py-3.5 px-1 shadow-[inset_0_2px_10px_rgba(0,0,0,0.7)] overflow-x-auto no-scrollbar touch-pan-x">
-              <div className="min-w-[640px] relative">
+            <div className="relative fretboard-wood rounded-2xl border-y-2 border-[#52453F] py-3.5 px-1 shadow-[inset_0_2px_10px_rgba(0,0,0,0.7)] overflow-hidden group">
+              {/* Horizontal edge gradient shadow cues */}
+              <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-6 sm:w-10 bg-gradient-to-r from-[#140F0E] to-transparent z-40 opacity-70" />
+              <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 sm:w-10 bg-gradient-to-l from-[#140F0E] to-transparent z-40 opacity-70" />
+
+              <div className="overflow-x-auto no-scrollbar touch-pan-x scroll-smooth">
+                <div className="min-w-[640px] relative">
                 {/* 6 Horizontal Strings */}
                 <div className="space-y-3 relative z-10">
                   {[
@@ -340,6 +354,7 @@ export default function CapCalc() {
                     );
                   })}
                 </div>
+              </div>
               </div>
             </div>
 
