@@ -20,6 +20,7 @@ import {
   Sparkle,
   BookmarkSimple,
   Broadcast,
+  SlidersHorizontal,
 } from '@phosphor-icons/react';
 import AuthNav from '@/components/auth/AuthNav';
 import StartPlayingButton from '@/components/landing/StartPlayingButton';
@@ -135,7 +136,7 @@ export default function Navbar({ onStartPlaying }: NavbarProps = {}) {
 
   // Active route helpers
   const isFretboardActive = pathname === '/fretboard';
-  const isResourcesActive = ['/chords', '/scales', '/tuner', '/metronome'].includes(pathname);
+  const isResourcesActive = ['/chords', '/scales', '/tuner', '/metronome', '/capcalc'].includes(pathname);
   const isSongsActive = pathname === '/songs';
   const isPracticeActive = pathname === '/practice';
   const isTelemetryActive = pathname === '/progress';
@@ -365,6 +366,32 @@ export default function Navbar({ onStartPlaying }: NavbarProps = {}) {
                             </div>
                             <p className="text-xs text-[#77746F] dark:text-[#A8A29E] mt-0.5 leading-relaxed">
                               Discover scales, note relationships and patterns across the guitar fretboard.
+                            </p>
+                          </div>
+                        </Link>
+
+                        {/* CapCalc (Capo Chord Calculator) */}
+                        <Link
+                          href="/capcalc"
+                          onClick={() => setActiveDropdown(null)}
+                          className="group flex items-start gap-3 p-3 rounded-2xl hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors"
+                        >
+                          <div className="w-8 h-8 rounded-xl bg-black/[0.04] dark:bg-white/[0.06] border border-black/[0.04] dark:border-white/10 flex items-center justify-center text-[#171717] dark:text-[#F5F5F4] group-hover:scale-105 group-hover:text-[#D4AD61] transition-all shrink-0 mt-0.5">
+                            <SlidersHorizontal size={16} weight="regular" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-1">
+                              <span className="text-sm font-semibold text-[#171717] dark:text-[#F5F5F4] group-hover:text-[#38211F] dark:group-hover:text-[#E9D8B7] transition-colors">
+                                CapCalc
+                              </span>
+                              <ArrowUpRight
+                                size={11}
+                                weight="bold"
+                                className="opacity-0 group-hover:opacity-75 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all text-[#D4AD61]"
+                              />
+                            </div>
+                            <p className="text-xs text-[#77746F] dark:text-[#A8A29E] mt-0.5 leading-relaxed">
+                              Calculate sounding chords and transpose open shapes across frets 1–12.
                             </p>
                           </div>
                         </Link>
@@ -721,6 +748,14 @@ export default function Navbar({ onStartPlaying }: NavbarProps = {}) {
                       >
                         <Metronome size={14} weight="regular" className="text-[#D4AD61]" />
                         <span>Metronome</span>
+                      </Link>
+                      <Link
+                        href="/capcalc"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-[#64605B] dark:text-[#A8A29E] hover:text-[#171717] dark:hover:text-[#F5F5F4] hover:bg-black/[0.03] dark:hover:bg-white/[0.04]"
+                      >
+                        <SlidersHorizontal size={14} weight="regular" className="text-[#D4AD61]" />
+                        <span>Capo Calculator</span>
                       </Link>
                     </motion.div>
                   )}

@@ -190,6 +190,14 @@ export default function Footer({ onStartPlaying }: FooterProps = {}) {
                 </li>
                 <li>
                   <Link
+                    href="/capcalc"
+                    className="inline-flex items-center min-h-[34px] sm:min-h-[28px] py-1 hover:text-[#171717] dark:hover:text-white transition-colors"
+                  >
+                    Capo Calculator
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     href="/progress"
                     className="inline-flex items-center min-h-[34px] sm:min-h-[28px] py-1 hover:text-[#171717] dark:hover:text-white transition-colors"
                   >
