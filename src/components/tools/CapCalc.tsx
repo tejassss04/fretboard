@@ -50,7 +50,6 @@ export default function CapCalc() {
             >
               Chord or Progression
             </label>
-            
           </div>
 
           <div className="relative">
