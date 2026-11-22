@@ -14,26 +14,6 @@ That's how Fretboard started.
 
 It's a project that brings together two things I enjoy: playing guitar and building things. I'm still working on it, learning along the way, and looking forward to adding more to it.
 
-Screenshots
-
-Here are a few glimpses of Fretboard.
-
-<!-- Add actual screenshots to the public/images/screenshots/ directory -->Home
-
-"Fretboard Home" (public/images/screenshots/home.png)
-
-Virtual Fretboard
-
-"Virtual Fretboard" (public/images/screenshots/fretboard.png)
-
-Guitar Tools
-
-"Guitar Tools" (public/images/screenshots/tools.png)
-
-Practice & Songs
-
-"Practice and Songs" (public/images/screenshots/practice.png)
-
 ---
 
 Features
