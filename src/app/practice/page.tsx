@@ -12,6 +12,7 @@ import {
   Metronome,
   Guitar,
   TrendUp,
+  SlidersHorizontal,
 } from '@phosphor-icons/react';
 import BlurReveal from '@/components/ui/BlurReveal';
 
@@ -75,6 +76,13 @@ export default function PracticePage() {
             >
               <TrendUp size={13} weight="regular" className="text-[#D4AD61]" />
               <span>Telemetry</span>
+            </Link>
+            <Link
+              href="/capcalc"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-medium bg-white dark:bg-[#181614] border border-[#EAE8E4] dark:border-white/10 hover:border-[#D4AD61]/50 text-[#171717] dark:text-[#F5F5F4] transition-all shadow-xs"
+            >
+              <SlidersHorizontal size={13} weight="regular" className="text-[#D4AD61]" />
+              <span>CapCalc</span>
             </Link>
           </div>
         </div>

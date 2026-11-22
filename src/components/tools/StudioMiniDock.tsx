@@ -43,6 +43,14 @@ export default function StudioMiniDock({
             <MetronomeIcon size={13} weight="regular" className="text-[#D4AD61]" />
             <span>Metronome</span>
           </button>
+          <a
+            href="/capcalc"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-medium bg-white dark:bg-[#181614] border border-[#EAE8E4] dark:border-white/10 hover:border-[#D4AD61]/50 text-[#171717] dark:text-[#F5F5F4] transition-all shadow-xs cursor-pointer active:scale-95"
+            title="Open CapCalc (Capo Chord Calculator)"
+          >
+            <SlidersHorizontal size={13} weight="regular" className="text-[#D4AD61]" />
+            <span>Capo</span>
+          </a>
         </div>
       )}
 
@@ -84,6 +92,17 @@ export default function StudioMiniDock({
               <MetronomeIcon size={14} weight="regular" className="text-[#D4AD61]" />
               <span>Metronome</span>
             </button>
+
+            <div className="w-[1px] h-4 bg-[#EAE8E4] dark:bg-white/10" />
+
+            <a
+              href="/capcalc"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-medium text-[#171717] dark:text-[#F5F5F4] hover:bg-[#F7F6F3] dark:hover:bg-white/10 transition-colors cursor-pointer"
+              title="Open CapCalc (Capo Chord Calculator)"
+            >
+              <SlidersHorizontal size={14} weight="regular" className="text-[#D4AD61]" />
+              <span>Capo</span>
+            </a>
 
             <button
               type="button"
