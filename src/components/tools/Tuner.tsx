@@ -148,7 +148,7 @@ export default function Tuner() {
       <div className="flex flex-col items-center justify-center py-4 text-center">
         
         {/* Semi-circular Tuning Meter Dial */}
-        <div className="relative w-72 h-36 flex items-end justify-center mb-4 overflow-hidden">
+        <div className="relative w-[260px] sm:w-72 h-[130px] sm:h-36 flex items-end justify-center mb-4 overflow-hidden max-w-full">
           {/* Dial Arc Track */}
           <div className="absolute inset-0 rounded-t-full border-[12px] border-[#F1F0ED] dark:border-[#201D1A] border-b-0" />
           
@@ -157,7 +157,7 @@ export default function Tuner() {
           <div className={`absolute bottom-0 w-2 h-2 rounded-full -translate-y-6 ${isInTune ? 'bg-emerald-500 shadow-[0_0_12px_#10B981]' : 'bg-[#D4AD61]'}`} />
 
           {/* Radial Tick Lines */}
-          <div className="absolute inset-x-8 top-3 flex justify-between text-[9px] font-mono text-[#77746F] dark:text-[#A8A29E] pointer-events-none">
+          <div className="absolute inset-x-6 sm:inset-x-8 top-2 sm:top-3 flex justify-between text-[8px] sm:text-[9px] font-mono text-[#77746F] dark:text-[#A8A29E] pointer-events-none">
             <span>-50¢</span>
             <span>-25¢</span>
             <span className="text-[#D4AD61] font-bold">0¢</span>
@@ -169,7 +169,7 @@ export default function Tuner() {
           <motion.div
             animate={{ rotate: shouldReduceMotion ? 0 : (isListening && frequency > 0 ? needleDeg : 0) }}
             transition={{ type: 'spring', stiffness: 220, damping: 20 }}
-            className="absolute bottom-0 left-1/2 w-1.5 h-32 -translate-x-1/2 origin-bottom rounded-full shadow-md z-10 transition-colors"
+            className="absolute bottom-0 left-1/2 w-1.5 h-28 sm:h-32 -translate-x-1/2 origin-bottom rounded-full shadow-md z-10 transition-colors"
             style={{
               background: isInTune
                 ? '#10B981'
@@ -187,7 +187,7 @@ export default function Tuner() {
 
         {/* Pitch Reading & Big Note Display */}
         <div className="flex flex-col items-center mb-4">
-          <div className={`text-7xl sm:text-8xl font-mono font-bold tracking-tight transition-colors tabular-nums ${
+          <div className={`text-6xl sm:text-7xl md:text-8xl font-mono font-bold tracking-tight transition-colors tabular-nums ${
             isInTune ? 'text-emerald-500' : 'text-[#171717] dark:text-[#F5F5F4]'
           }`}>
             {detectedNote}

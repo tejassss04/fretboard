@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useSyncExternalStore } from 'react';
 import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion';
 import { getAudioEngine, GuitarTone } from '@/lib/audio';
 import { NoteName } from '@/lib/guitar';
@@ -47,6 +47,20 @@ function SpotlightCard({ children, className = '', style }: SpotlightCardProps) 
   );
 }
 
+function subscribeToSm(callback: () => void) {
+  const mq = window.matchMedia('(min-width: 640px)');
+  mq.addEventListener('change', callback);
+  return () => mq.removeEventListener('change', callback);
+}
+
+function getSmSnapshot() {
+  return window.matchMedia('(min-width: 640px)').matches;
+}
+
+function getServerSnapshot() {
+  return false;
+}
+
 export default function HeroBentoGrid() {
   const containerRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
@@ -74,6 +88,7 @@ export default function HeroBentoGrid() {
   const [selectedKey, setSelectedKey] = useState<NoteName>('A');
   const [selectedTone, setSelectedTone] = useState<GuitarTone>('acoustic');
   const [isJamSimActive, setIsJamSimActive] = useState<boolean>(true);
+  const isSmUp = useSyncExternalStore(subscribeToSm, getSmSnapshot, getServerSnapshot);
 
   // Play micro note pluck
   const handlePluckMiniNote = useCallback((note: string, freq: number) => {
@@ -115,7 +130,7 @@ export default function HeroBentoGrid() {
         {/* ======================================================== */}
         {/* SUB-COLUMN 1: TALL ANATOMY CARD + COMPACT TONE CARD */}
         {/* ======================================================== */}
-        <motion.div style={{ y: yCol1 }} className="flex flex-col gap-4 sm:gap-5">
+        <motion.div style={{ y: isSmUp ? yCol1 : 0 }} className="flex flex-col gap-4 sm:gap-5">
           
           {/* Card 1: Virtual Fretboard Anatomy (Taller) */}
           <SpotlightCard className="p-5 sm:p-6 flex flex-col justify-between">
@@ -257,7 +272,7 @@ export default function HeroBentoGrid() {
         {/* ======================================================== */}
         {/* SUB-COLUMN 2: ASYMMETRIC OFFSET (COMPACT THEORY + TALL JAM ROOM) */}
         {/* ======================================================== */}
-        <motion.div style={{ y: yCol2 }} className="flex flex-col gap-4 sm:gap-5 sm:pt-6 lg:pt-8">
+        <motion.div style={{ y: isSmUp ? yCol2 : 0 }} className="flex flex-col gap-4 sm:gap-5 sm:pt-6 lg:pt-8">
           
           {/* Card 2: Scales & Music Theory (Compact) */}
           <SpotlightCard className="p-5 sm:p-6 flex flex-col justify-between">

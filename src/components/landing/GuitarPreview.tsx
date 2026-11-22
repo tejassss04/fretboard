@@ -533,28 +533,43 @@ export default function GuitarPreview() {
       {/* ======================================================== */}
       {/* 3. CENTERPIECE: LIVING 2D FRETBOARD                      */}
       {/* ======================================================== */}
-      <div className="relative w-full rounded-2xl border border-[#38211F]/30 dark:border-white/10 bg-gradient-to-b from-[#2a1d1b]/20 via-transparent to-transparent dark:from-black/50 p-3 sm:p-4 overflow-x-auto no-scrollbar shadow-inner">
-        <div className="min-w-[720px]">
-          <LivingFretboard2D
-            selectedKey={selectedKey}
-            selectedScaleId={selectedScaleId}
-            displayMode={displayMode}
-            tuningKey={tuningKey}
-            fretCount={fretCount}
-            activePlucks={activePlucks}
-            vibratingStrings={vibratingStrings}
-            activeChordNotes={demoStage === 'chords' ? activeChordFrets : []}
-            onNoteClick={handleUserClickNote}
-            onHoverNote={setHoveredNote}
-            hoveredNote={hoveredNote}
-          />
+      {/* Mobile Scroll Hint Affordance */}
+      <div className="sm:hidden flex items-center justify-between text-[10px] font-mono text-[#A8A29E] px-1 mb-1.5 select-none">
+        <span className="flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#D4AD61] animate-pulse" />
+          <span>Swipe horizontally for frets 0–{fretCount}</span>
+        </span>
+        <span className="text-zinc-500">Nut • Frets 1–{fretCount}</span>
+      </div>
+
+      <div className="relative w-full rounded-2xl border border-[#38211F]/30 dark:border-white/10 bg-gradient-to-b from-[#2a1d1b]/20 via-transparent to-transparent dark:from-black/50 p-2 sm:p-4 shadow-inner group">
+        {/* Horizontal edge gradient shadow cues indicating more frets */}
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-6 sm:w-10 bg-gradient-to-r from-black/50 to-transparent z-30 rounded-l-2xl opacity-60 transition-opacity" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 sm:w-10 bg-gradient-to-l from-black/50 to-transparent z-30 rounded-r-2xl opacity-60 transition-opacity" />
+
+        <div className="overflow-x-auto no-scrollbar touch-pan-x scroll-smooth">
+          <div className="min-w-[720px]">
+            <LivingFretboard2D
+              selectedKey={selectedKey}
+              selectedScaleId={selectedScaleId}
+              displayMode={displayMode}
+              tuningKey={tuningKey}
+              fretCount={fretCount}
+              activePlucks={activePlucks}
+              vibratingStrings={vibratingStrings}
+              activeChordNotes={demoStage === 'chords' ? activeChordFrets : []}
+              onNoteClick={handleUserClickNote}
+              onHoverNote={setHoveredNote}
+              hoveredNote={hoveredNote}
+            />
+          </div>
         </div>
       </div>
 
       {/* ======================================================== */}
       {/* 4. REAL-TIME INSPECTOR HUD / PITCH FEEDBACK              */}
       {/* ======================================================== */}
-      <div className="h-7 mt-3 flex items-center justify-between text-xs px-2 font-mono">
+      <div className="min-h-7 mt-3 flex flex-wrap items-center justify-between gap-2 text-xs px-2 font-mono">
         <AnimatePresence mode="wait">
           {hoveredNote ? (
             <motion.div
@@ -563,9 +578,9 @@ export default function GuitarPreview() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -2 }}
               transition={{ duration: 0.15 }}
-              className="flex items-center gap-2 text-xs"
+              className="flex items-center gap-2 text-xs flex-wrap"
             >
-              <span className="w-5 h-5 rounded-full bg-[#D4AD61] text-zinc-950 font-bold flex items-center justify-center text-[10px]">
+              <span className="w-5 h-5 rounded-full bg-[#D4AD61] text-zinc-950 font-bold flex items-center justify-center text-[10px] shrink-0">
                 {hoveredNote.note}
               </span>
               <span className="font-semibold text-[#171717] dark:text-[#F5F5F4]">
@@ -575,8 +590,8 @@ export default function GuitarPreview() {
               <span className="text-[#77746F] dark:text-[#A8A29E]">
                 String {hoveredNote.stringIdx + 1}, Fret {hoveredNote.fret}
               </span>
-              <span className="text-zinc-400 dark:text-zinc-600">•</span>
-              <span className="text-emerald-600 dark:text-emerald-400">
+              <span className="text-zinc-400 dark:text-zinc-600 hidden min-[360px]:inline">•</span>
+              <span className="text-emerald-600 dark:text-emerald-400 hidden min-[360px]:inline">
                 {hoveredNote.frequency} Hz
               </span>
             </motion.div>

@@ -325,7 +325,7 @@ export default function MacBookShowcase() {
       {/* MACBOOK HARDWARE ENCLOSURE (CSS-ONLY REALISTIC MODEL)                 */}
       {/* ==================================================================== */}
       <div
-        className="w-full max-w-[1040px] mx-auto relative perspective-[1400px] transition-transform duration-500 ease-out"
+        className="w-full max-w-[1040px] mx-auto relative perspective-[1400px] transition-transform duration-500 ease-out overflow-hidden sm:overflow-visible"
         style={{
           perspective: '1400px',
         }}
@@ -414,12 +414,12 @@ export default function MacBookShowcase() {
                   </div>
 
                   {/* Actions: Bot Toggle & Copy Link */}
-                  <div className="flex items-center gap-2 relative">
+                  <div className="flex items-center gap-1.5 sm:gap-2 relative flex-wrap sm:flex-nowrap">
                     
                     {/* Jam Bot Action Button */}
                     <div
                       data-target="btn-jambot"
-                      className={`px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold transition-all duration-200 inline-flex items-center gap-1.5 whitespace-nowrap border cursor-default select-none ${
+                      className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-[10px] sm:text-xs font-semibold transition-all duration-200 inline-flex items-center gap-1.5 whitespace-nowrap border cursor-default select-none ${
                         isClicking && activeTargetKey === 'btn-jambot'
                           ? 'scale-95 brightness-90'
                           : ''
@@ -436,13 +436,13 @@ export default function MacBookShowcase() {
                       ) : (
                         <Play size={12} weight="fill" className="text-emerald-600 shrink-0" />
                       )}
-                      <span>{isJamBotActive ? 'Pause Jam Bot' : 'Play with Jam Bot (Alex)'}</span>
+                      <span>{isJamBotActive ? 'Pause Bot' : <><span className="hidden sm:inline">Play with </span>Jam Bot<span className="hidden min-[480px]:inline"> (Alex)</span></>}</span>
                     </div>
 
                     {/* Invite Link Action Button */}
                     <div
                       data-target="btn-invite"
-                      className={`text-[11px] sm:text-xs font-medium px-3 py-1.5 rounded-xl transition-all duration-200 inline-flex items-center gap-1.5 whitespace-nowrap border cursor-default select-none ${
+                      className={`text-[10px] sm:text-xs font-medium px-2.5 sm:px-3 py-1.5 rounded-xl transition-all duration-200 inline-flex items-center gap-1.5 whitespace-nowrap border cursor-default select-none ${
                         isClicking && activeTargetKey === 'btn-invite'
                           ? 'scale-95 brightness-90'
                           : ''

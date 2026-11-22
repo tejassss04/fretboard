@@ -129,7 +129,7 @@ export default function ChordExplorer() {
           </div>
 
           {/* Chord Cards List */}
-          <div className="space-y-2 max-h-[460px] overflow-y-auto pr-1">
+          <div className="space-y-2 max-h-[260px] sm:max-h-[460px] overflow-y-auto pr-1">
             {filtered.map((chord) => {
               const isSelected = selected.id === chord.id;
               const tab = deriveTabString(chord.fingers);

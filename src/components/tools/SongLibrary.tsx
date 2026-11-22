@@ -521,7 +521,7 @@ export default function SongLibrary() {
           {/* Filter and Search Bar */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white dark:bg-[#121110] border border-[#EAE8E4] dark:border-white/10 rounded-2xl p-2 shadow-xs">
             {/* Difficulty Segment Pills */}
-            <div className="flex items-center gap-1 overflow-x-auto">
+            <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
               {['All', 'Beginner', 'Intermediate', 'Advanced'].map((diff) => (
                 <button
                   key={diff}

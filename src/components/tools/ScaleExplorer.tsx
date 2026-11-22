@@ -254,8 +254,22 @@ export default function ScaleExplorer() {
       </div>
 
       {/* 3. Master 12-Fret Rosewood Neck Matrix */}
-      <div className="rounded-3xl bg-[#140F0E] border border-[#3E2A27] p-5 sm:p-7 shadow-2xl overflow-x-auto">
-        <div className="min-w-[700px]">
+      {/* Mobile Scroll Hint Affordance */}
+      <div className="sm:hidden flex items-center justify-between text-[10px] font-mono text-[#A8A29E] px-1 mb-1.5 select-none">
+        <span className="flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#D4AD61] animate-pulse" />
+          <span>Swipe horizontally for 12 frets</span>
+        </span>
+        <span className="text-zinc-500">Nut • Frets 1–12</span>
+      </div>
+
+      <div className="relative rounded-3xl bg-[#140F0E] border border-[#3E2A27] p-3 sm:p-7 shadow-2xl overflow-hidden group">
+        {/* Horizontal edge gradient shadow cues */}
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-6 sm:w-10 bg-gradient-to-r from-[#140F0E] to-transparent z-30 opacity-70" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 sm:w-10 bg-gradient-to-l from-[#140F0E] to-transparent z-30 opacity-70" />
+
+        <div className="overflow-x-auto touch-pan-x scroll-smooth no-scrollbar">
+          <div className="min-w-[700px]">
           
           {/* Header Info */}
           <div className="flex items-center justify-between mb-4">
@@ -362,6 +376,7 @@ export default function ScaleExplorer() {
 
           </div>
 
+        </div>
         </div>
       </div>
 

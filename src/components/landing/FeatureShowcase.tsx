@@ -264,8 +264,13 @@ export default function FeatureShowcase() {
                 </div>
 
                 {/* Large Fretboard Visualizer */}
-                <div className="w-full relative overflow-x-auto no-scrollbar rounded-2xl bg-[#201513] p-4 sm:p-5 shadow-inner border border-[#38211F]/40 select-none">
-                  <div className="min-w-[720px] relative">
+                <div className="relative w-full rounded-2xl bg-[#201513] p-2.5 sm:p-5 shadow-inner border border-[#38211F]/40 select-none overflow-hidden group">
+                  {/* Edge gradient cues */}
+                  <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-6 sm:w-10 bg-gradient-to-r from-[#201513] to-transparent z-30 opacity-70" />
+                  <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 sm:w-10 bg-gradient-to-l from-[#201513] to-transparent z-30 opacity-70" />
+
+                  <div className="overflow-x-auto no-scrollbar touch-pan-x scroll-smooth">
+                    <div className="min-w-[720px] relative">
 
                     {/* Fret Numbers Header */}
                     <div className="relative h-5 mb-1.5 text-[10px] font-mono text-zinc-400">
@@ -413,6 +418,7 @@ export default function FeatureShowcase() {
                     </div>
                   </div>
                 </div>
+                </div>
 
                 <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-[#77746F] dark:text-[#A8A29E] font-mono">
                   <span className="inline-flex items-center gap-1.5">
@@ -510,8 +516,13 @@ export default function FeatureShowcase() {
                 </div>
 
                 {/* 12-Fret Theory Visualization */}
-                <div className="w-full overflow-x-auto no-scrollbar rounded-2xl bg-[#201513] p-4 sm:p-5 shadow-inner border border-[#38211F]/30 select-none">
-                  <div className="min-w-[700px]">
+                <div className="relative w-full rounded-2xl bg-[#201513] p-2.5 sm:p-5 shadow-inner border border-[#38211F]/30 select-none overflow-hidden group">
+                  {/* Edge gradient cues */}
+                  <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-6 sm:w-10 bg-gradient-to-r from-[#201513] to-transparent z-30 opacity-70" />
+                  <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 sm:w-10 bg-gradient-to-l from-[#201513] to-transparent z-30 opacity-70" />
+
+                  <div className="overflow-x-auto no-scrollbar touch-pan-x scroll-smooth">
+                    <div className="min-w-[700px]">
                     <div className="grid grid-cols-13 text-center text-[10px] font-mono text-zinc-400 mb-2">
                       {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((fret) => (
                         <div key={fret} className={fret === 12 ? 'text-[#D4AD61] font-bold' : ''}>
@@ -574,6 +585,7 @@ export default function FeatureShowcase() {
                       ))}
                     </div>
                   </div>
+                </div>
                 </div>
 
                 <div className="text-xs text-[#77746F] dark:text-[#A8A29E] font-mono">

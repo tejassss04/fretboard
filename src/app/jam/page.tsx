@@ -401,14 +401,23 @@ export default function JamPage() {
                 )}
               </div>
 
+              {/* Mobile Scroll Hint Affordance */}
+              <div className="sm:hidden flex items-center justify-between text-[10px] font-mono text-[#A8A29E] px-1 mb-1 select-none">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#D4AD61] animate-pulse" />
+                  <span>Swipe to play frets 0–12</span>
+                </span>
+                <span className="text-zinc-500">Nut • Frets 1–12</span>
+              </div>
+
               {/* Fretboard Strings Interaction Grid */}
-              <div className="space-y-2.5 pt-2">
+              <div className="space-y-2.5 pt-1">
                 {TUNINGS.standard.strings.map((str, strIdx) => (
                   <div key={strIdx} className="flex items-center gap-2">
-                    <span className="w-8 text-[11px] font-mono text-[#D4AD61] font-semibold text-right">
+                    <span className="w-8 text-[11px] font-mono text-[#D4AD61] font-semibold text-right shrink-0">
                       {str.note}{str.octave}
                     </span>
-                    <div className="flex-1 flex gap-1.5 sm:gap-2 overflow-x-auto pb-1">
+                    <div className="flex-1 flex gap-1.5 sm:gap-2 overflow-x-auto pb-1 touch-pan-x no-scrollbar">
                       {[0, 1, 3, 5, 7, 8, 10, 12].map((fret) => {
                         const fretInfo = getFretInfo(str.note, str.octave, fret);
                         return (

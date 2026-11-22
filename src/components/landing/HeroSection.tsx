@@ -86,7 +86,7 @@ export default function HeroSection({ onStartPlaying, onExploreFeatures }: HeroS
               {/* Main Editorial Headline with Kinetic Highlight Pill & Serif Accent */}
               <motion.h1
                 variants={itemVariants}
-                className="text-4xl sm:text-5xl lg:text-[3.75rem] font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.032em] leading-[1.12] mb-5 text-left transition-colors"
+                className="text-[clamp(2.1rem,6.2vw,3.75rem)] font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.032em] leading-[1.12] mb-5 text-left transition-colors"
               >
                 <span className="block">Explore the</span>
 
@@ -187,7 +187,7 @@ export default function HeroSection({ onStartPlaying, onExploreFeatures }: HeroS
               {/* Supporting Description */}
               <motion.p
                 variants={itemVariants}
-                className="text-base sm:text-lg text-[#77746F] dark:text-[#A8A29E] font-normal leading-[1.65] max-w-lg mb-8 transition-colors"
+                className="text-[clamp(0.95rem,2vw,1.125rem)] text-[#77746F] dark:text-[#A8A29E] font-normal leading-[1.65] max-w-lg mb-7 sm:mb-8 transition-colors"
               >
                 Learn scales, discover chord shapes, create beautiful tones and jam with friends, all through an interactive guitar experience that lives right in your browser.
               </motion.p>
@@ -195,7 +195,7 @@ export default function HeroSection({ onStartPlaying, onExploreFeatures }: HeroS
               {/* Action Buttons */}
               <motion.div
                 variants={itemVariants}
-                className="flex flex-wrap items-center gap-3.5 mb-6"
+                className="flex flex-wrap items-center gap-3 sm:gap-3.5 mb-6"
               >
                 {/* Primary Pill Button */}
                 <StartPlayingButton onClick={onStartPlaying} />

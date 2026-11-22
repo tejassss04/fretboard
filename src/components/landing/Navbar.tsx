@@ -52,6 +52,17 @@ export default function Navbar({ onStartPlaying }: NavbarProps = {}) {
   const navContainerRef = useRef<HTMLDivElement>(null);
   const centerNavRef = useRef<HTMLDivElement>(null);
 
+  // Prevent background scrolling when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [mobileMenuOpen]);
+
   // Global outside click and Escape listeners
   useEffect(() => {
     const handlePointerDown = (e: MouseEvent) => {
@@ -608,14 +619,26 @@ export default function Navbar({ onStartPlaying }: NavbarProps = {}) {
       {/* ========================================================================= */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div
-            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -8, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -8, scale: 0.98 }}
-            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:hidden absolute top-full left-0 right-0 px-3 sm:px-6 pt-1 pb-4 z-50 pointer-events-auto"
-          >
-            <div className="w-full max-w-lg mx-auto rounded-2xl p-4 backdrop-blur-xl border border-[#EAE8E4] dark:border-white/10 bg-[#FCFBF9]/96 dark:bg-[#15111B]/96 text-[#171717] dark:text-[#F5F5F4] shadow-[0_20px_50px_rgba(23,23,23,0.14)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.7)] transition-colors space-y-1">
+          <>
+            {/* Backdrop overlay for outside tap dismissal */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-xs z-30"
+              aria-hidden="true"
+            />
+
+            <motion.div
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -8, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -8, scale: 0.98 }}
+              transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="lg:hidden absolute top-full left-0 right-0 px-3 sm:px-6 pt-1 pb-4 z-50 pointer-events-auto"
+            >
+              <div className="w-full max-w-lg mx-auto rounded-2xl p-4 backdrop-blur-xl border border-[#EAE8E4] dark:border-white/10 bg-[#FCFBF9]/96 dark:bg-[#15111B]/96 text-[#171717] dark:text-[#F5F5F4] shadow-[0_20px_50px_rgba(23,23,23,0.14)] dark:shadow-[0_24px_60px_rgba(0,0,0,0.7)] transition-colors space-y-1 max-h-[calc(100vh-5.5rem)] overflow-y-auto">
               {/* Direct Link: Fretboard */}
               <Link
                 href="/fretboard"
@@ -791,6 +814,7 @@ export default function Navbar({ onStartPlaying }: NavbarProps = {}) {
               <AuthNav variant="mobile" onNavigate={() => setMobileMenuOpen(false)} />
             </div>
           </motion.div>
+          </>
         )}
       </AnimatePresence>
     </header>

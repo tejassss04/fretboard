@@ -47,7 +47,7 @@ export default function StudioMiniDock({
       )}
 
       {/* Floating Bottom Quick-Launcher Mini-Dock */}
-      <div className={`fixed bottom-6 right-6 z-40 select-none ${className}`}>
+      <div className={`fixed bottom-[calc(1.25rem+env(safe-area-inset-bottom,0px))] right-4 sm:right-6 z-40 select-none ${className}`}>
         {isDockCollapsed ? (
           <button
             type="button"
@@ -100,16 +100,16 @@ export default function StudioMiniDock({
       {/* In-Studio Modal Dialog Overlay (Preserves parent page timer & state) */}
       <AnimatePresence>
         {activeModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm overflow-y-auto">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-sm overflow-y-auto">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 12 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 12 }}
               transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="relative w-full max-w-2xl bg-[#FCFBF9] dark:bg-[#0C0A09] border border-[#EAE8E4] dark:border-white/15 rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,0.5)] overflow-hidden my-auto max-h-[90vh] flex flex-col"
+              className="relative w-full max-w-2xl bg-[#FCFBF9] dark:bg-[#0C0A09] border border-[#EAE8E4] dark:border-white/15 rounded-2xl sm:rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,0.5)] overflow-hidden my-auto max-h-[90vh] flex flex-col"
             >
               {/* Modal Top Bar */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-[#EAE8E4] dark:border-white/10 bg-white/60 dark:bg-[#151311]/60 backdrop-blur-md shrink-0">
+              <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-[#EAE8E4] dark:border-white/10 bg-white/60 dark:bg-[#151311]/60 backdrop-blur-md shrink-0">
                 <div className="flex items-center gap-2">
                   <div className="w-7 h-7 rounded-xl bg-[#F5EEDF] dark:bg-[#201D1A] text-[#D4AD61] flex items-center justify-center">
                     {activeModal === 'tuner' ? (

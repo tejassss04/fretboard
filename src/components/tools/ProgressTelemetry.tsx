@@ -136,18 +136,18 @@ export default function ProgressTelemetry() {
           </div>
 
           <div className="pt-2">
-            <div className="grid grid-cols-7 gap-2 mb-2 text-center font-mono text-[11px] text-[#77746F] dark:text-[#A8A29E]">
+            <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-2 text-center font-mono text-[9px] sm:text-[11px] text-[#77746F] dark:text-[#A8A29E]">
               {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, i) => (
                 <span key={`${day}-${i}`}>{day}</span>
               ))}
             </div>
 
-            <div className="grid grid-cols-7 gap-2">
+            <div className="grid grid-cols-7 gap-1 sm:gap-2">
               {calendar.length > 0 ? (
                 calendar.map((cell, i) => (
                   <div
                     key={`${cell.dateStr}-${i}`}
-                    className={`aspect-square rounded-xl flex flex-col items-center justify-center font-mono text-xs transition-all relative group ${
+                    className={`aspect-square rounded-lg sm:rounded-xl flex flex-col items-center justify-center font-mono text-[10px] sm:text-xs transition-all relative group ${
                       cell.active
                         ? 'bg-[#D4AD61] text-zinc-950 font-bold shadow-xs'
                         : cell.isToday
@@ -164,7 +164,7 @@ export default function ProgressTelemetry() {
                   >
                     <span>{cell.dayOfMonth}</span>
                     {cell.active && (
-                      <span className="text-[9px] font-mono leading-none opacity-80 mt-0.5">
+                      <span className="text-[8px] sm:text-[9px] font-mono leading-none opacity-80 mt-0.5">
                         {cell.minutes}m
                       </span>
                     )}

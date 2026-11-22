@@ -9,9 +9,7 @@ export default function AnnouncementBar() {
     >
       <span className="w-1.5 h-1.5 rounded-full bg-[#D4AD61]" />
       <span>A complete guitar studio, right in your browser</span>
-      <span className="text-[#171717]/60 dark:text-white/60">
-        →
-      </span>
+      <span className="text-[#171717]/60 dark:text-white/60">→</span>
     </div>
   );
 }
