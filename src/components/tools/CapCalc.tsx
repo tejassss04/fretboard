@@ -9,10 +9,10 @@ const CAPO_FRETS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const;
 export default function CapCalc() {
   const shouldReduceMotion = useReducedMotion();
 
-  // 1. User types the chord they want to change (default 'C')
+  // 1. User types the chord or progression (e.g. "C", "Dmaj7", "C Am F G")
   const [inputChord, setInputChord] = useState<string>('C');
 
-  // 2. User selects the fret where they want to place their capo (default 2)
+  // 2. User selects the fret where they want to place their capo (0..12)
   const [capoFret, setCapoFret] = useState<number>(2);
 
   // 3. Instant sounding chord calculation
@@ -21,41 +21,47 @@ export default function CapCalc() {
   }, [inputChord, capoFret]);
 
   const hasTyped = inputChord.trim().length > 0;
-  const isInvalid = hasTyped && !result.isValid;
+  const isInvalid = hasTyped && !result.allValid;
 
   return (
-    <div className="w-full max-w-xl mx-auto py-6 sm:py-12 select-none">
+    <div className="w-full max-w-2xl mx-auto py-6 sm:py-12 select-none font-sans">
       {/* Editorial Title */}
       <div className="text-center space-y-2 mb-8 sm:mb-10">
         <h1 className="text-3xl sm:text-4xl font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.025em]">
-          CapCalc <span className="font-serif italic text-[#E9D8B7]">Capo Calculator</span>
+          CapCalc <span className="text-[#D4AD61] font-medium">Capo Calculator</span>
         </h1>
-        <p className="text-xs sm:text-sm text-[#77746F] dark:text-[#A8A29E] max-w-sm mx-auto">
-          Type your chord, choose your capo position, and see the sounding result.
+        <p className="text-xs sm:text-sm text-[#77746F] dark:text-[#A8A29E] max-w-md mx-auto">
+          Type any chord or progression (e.g. C, Dmaj7, or C Am F G), select your capo, and see the sounding result.
         </p>
       </div>
 
-      {/* Main Minimal Studio Card */}
+      {/* Main Studio Card */}
       <div className="bg-[#FCFBF9] dark:bg-[#12100E] border border-[#EAE8E4] dark:border-white/10 rounded-3xl p-6 sm:p-9 shadow-sm space-y-8">
         
-        {/* Element A: Chord Input */}
+        {/* Element A: Chord Input (Geist font) */}
         <div className="space-y-2.5">
-          <label
-            htmlFor="chord-input"
-            className="block text-[11px] font-mono uppercase tracking-wider text-[#77746F] dark:text-[#A8A29E] font-semibold"
-          >
-            Chord
-          </label>
+          <div className="flex items-center justify-between">
+            <label
+              htmlFor="chord-input"
+              className="block text-[11px] font-mono uppercase tracking-wider text-[#77746F] dark:text-[#A8A29E] font-semibold"
+            >
+              Chord or Progression
+            </label>
+            <span className="text-[10px] font-mono text-[#77746F] dark:text-[#A8A29E]">
+              Supports numbers &amp; progressions (e.g. Dmaj7, Cadd9, G7)
+            </span>
+          </div>
+
           <div className="relative">
             <input
               id="chord-input"
               type="text"
               value={inputChord}
               onChange={(e) => setInputChord(e.target.value)}
-              placeholder="Type your chord..."
+              placeholder="Type your chord (e.g. C, Dmaj7, C Am F G)..."
               spellCheck={false}
               autoComplete="off"
-              className={`w-full text-2xl sm:text-3xl font-mono font-medium py-3.5 px-4 rounded-2xl bg-white dark:bg-[#1A1816] border text-[#171717] dark:text-[#F5F5F4] placeholder:text-[#A8A29E]/50 focus:outline-none transition-all ${
+              className={`w-full text-xl sm:text-2xl md:text-3xl font-sans font-medium py-3.5 px-4 pr-12 rounded-2xl bg-white dark:bg-[#1A1816] border text-[#171717] dark:text-[#F5F5F4] placeholder:text-[#A8A29E]/45 focus:outline-none transition-all ${
                 isInvalid
                   ? 'border-red-400 dark:border-red-500/60 focus:ring-2 focus:ring-red-400/20'
                   : 'border-[#EAE8E4] dark:border-white/10 focus:border-[#D4AD61] focus:ring-2 focus:ring-[#D4AD61]/20'
@@ -76,7 +82,7 @@ export default function CapCalc() {
           {/* Subtle format validation hint */}
           {isInvalid && (
             <p className="text-xs text-amber-600 dark:text-amber-400 font-mono pt-0.5">
-              Enter a valid chord name (e.g. C, G, Am, F#m, Bb, Cmaj7, Dm7)
+              Please enter valid chord symbols (e.g. C, G, Am, F#m, Dmaj7, G7, Cadd9)
             </p>
           )}
         </div>
@@ -88,7 +94,7 @@ export default function CapCalc() {
               Capo
             </span>
             <span className="text-[11px] font-mono text-[#D4AD61] font-medium">
-              {capoFret === 0 ? 'No Capo (Open)' : `Fret ${capoFret}`}
+              {capoFret === 0 ? 'No Capo (Concert pitch)' : `Capo Fret ${capoFret}`}
             </span>
           </div>
 
@@ -125,35 +131,47 @@ export default function CapCalc() {
           </div>
         </div>
 
-        {/* Element C: Result Display */}
-        <div className="pt-6 sm:pt-8 border-t border-[#EAE8E4] dark:border-white/10 text-center space-y-3">
+        {/* Element C: Result Display (Same Geist font as input box with generous gaps) */}
+        <div className="pt-6 sm:pt-8 border-t border-[#EAE8E4] dark:border-white/10 text-center space-y-4">
           <span className="block text-xs font-mono uppercase tracking-wider text-[#77746F] dark:text-[#A8A29E]">
-            Your chord will sound like
+            Your chord{result.chords.length > 1 ? 's' : ''} will sound like
           </span>
 
-          <div className="min-h-[96px] sm:min-h-[112px] flex items-center justify-center">
-            {result.isValid ? (
+          <div className="min-h-[100px] sm:min-h-[120px] flex items-center justify-center px-2">
+            {result.allValid && result.chords.length > 0 ? (
               <motion.div
-                key={`${result.soundingChord}-${capoFret}`}
+                key={`${result.soundingString}-${capoFret}`}
                 initial={shouldReduceMotion ? undefined : { opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.18, ease: 'easeOut' }}
-                className="text-7xl sm:text-8xl md:text-9xl font-serif text-[#171717] dark:text-[#F5F5F4] tracking-tight leading-none"
+                className="w-full flex flex-wrap items-center justify-center gap-6 sm:gap-10 md:gap-14 py-2"
               >
-                {result.soundingChord}
+                {result.chords.map((chordToken, idx) => (
+                  <div key={idx} className="inline-flex items-center">
+                    <span
+                      className={`font-sans font-bold tracking-tight text-[#171717] dark:text-[#F5F5F4] leading-none ${
+                        result.chords.length === 1
+                          ? 'text-6xl sm:text-7xl md:text-8xl lg:text-9xl'
+                          : result.chords.length <= 3
+                          ? 'text-5xl sm:text-6xl md:text-7xl'
+                          : 'text-4xl sm:text-5xl md:text-6xl'
+                      }`}
+                    >
+                      {chordToken.soundingChord}
+                    </span>
+                  </div>
+                ))}
               </motion.div>
             ) : (
-              <div className="text-4xl font-serif text-zinc-300 dark:text-zinc-700 italic">
+              <div className="text-4xl font-sans font-medium text-zinc-300 dark:text-zinc-700">
                 —
               </div>
             )}
           </div>
 
-          {result.isValid && (
-            <div className="text-xs font-mono text-[#D4AD61] font-medium">
-              {capoFret === 0
-                ? 'Original chord • Standard concert pitch'
-                : `Transposed +${capoFret} semitone${capoFret === 1 ? '' : 's'}`}
+          {result.allValid && (
+            <div className="text-xs font-mono text-[#D4AD61] font-medium pt-1">
+              {result.explanation}
             </div>
           )}
         </div>
