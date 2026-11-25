@@ -37,6 +37,75 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* Normalized typography scale across studio, landing, and tools */
+@utility text-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.25;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@utility text-card-title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+@utility text-display-h1 {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+}
+
+@utility text-display-h2 {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.14;
+}
+
+@utility trim-cap {
+  text-box: trim-both cap alphabetic;
+}
+
+/* Stageshow dark rosewood + studio gold theme binding */
+.fretboard-jam-stage .ss-stage,
+.fretboard-jam-stage.ss-stage {
+  --ss-canvas: #0E0B14;
+  --ss-surface: #14101B;
+  --ss-chrome: #1A1523;
+  --ss-raised: #1F1929;
+  --ss-well: #110E18;
+  --ss-fill: #231D2D;
+  --ss-ink-1: rgba(255, 255, 255, 0.035);
+  --ss-ink-2: rgba(255, 255, 255, 0.06);
+  --ss-ink-3: rgba(255, 255, 255, 0.09);
+  --ss-ink-4: rgba(255, 255, 255, 0.14);
+  --ss-ink-5: rgba(255, 255, 255, 0.22);
+  --ss-line: rgba(255, 255, 255, 0.08);
+  --ss-line-faint: rgba(255, 255, 255, 0.045);
+  --ss-text: #A8A29E;
+  --ss-text-strong: #F5F5F4;
+  --ss-text-faint: #78716C;
+  --ss-icon: #A8A29E;
+  --ss-icon-faint: #57534E;
+  --ss-accent: #D4AD61;
+  --ss-accent-soft: rgba(212, 173, 97, 0.14);
+  --ss-accent-2: #E9D8B7;
+  --ss-accent-text: #E9D8B7;
+  --ss-success: #34D399;
+  --ss-success-soft: rgba(52, 211, 153, 0.14);
+  --ss-success-text: #6EE7B7;
+  --ss-shadow-hero: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 32px 70px -16px rgba(0, 0, 0, 0.72), 0 18px 36px -18px rgba(0, 0, 0, 0.6);
+  --ss-shadow-float: 0 0 0 1px rgba(212, 173, 97, 0.22), 0 16px 36px -8px rgba(0, 0, 0, 0.72);
+  --ss-font: var(--font-geist-sans);
+  --ss-mono: var(--font-geist-mono);
+}
+
 /* Amber Light Ribbons Ambient Lighting & Gradients - Light Mode */
 .hero-beside-ambient {
   background:

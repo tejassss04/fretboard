@@ -83,7 +83,7 @@ export default function Footer({ onStartPlaying }: FooterProps = {}) {
           >
             {/* Core Product */}
             <div className="min-w-0">
-              <span className="text-[11px] font-mono font-bold tracking-[0.14em] uppercase text-[#171717] dark:text-[#F5F5F4] block mb-3">
+              <span className="text-eyebrow text-[#171717] dark:text-[#F5F5F4] block mb-3">
                 Product
               </span>
               <ul className="space-y-1 text-xs">
@@ -136,7 +136,7 @@ export default function Footer({ onStartPlaying }: FooterProps = {}) {
 
             {/* Practice Tools */}
             <div className="min-w-0">
-              <span className="text-[11px] font-mono font-bold tracking-[0.14em] uppercase text-[#171717] dark:text-[#F5F5F4] block mb-3">
+              <span className="text-eyebrow text-[#171717] dark:text-[#F5F5F4] block mb-3">
                 Practice Tools
               </span>
               <ul className="space-y-1 text-xs">
@@ -209,7 +209,7 @@ export default function Footer({ onStartPlaying }: FooterProps = {}) {
 
             {/* Theory Engines & Account (Spans full width cleanly in 2-col mobile mode to prevent orphan gap) */}
             <div className="min-w-0 min-[360px]:col-span-2 min-[600px]:col-span-1 pt-2 min-[600px]:pt-0 border-t border-[#EAE8E4]/50 dark:border-white/5 min-[600px]:border-t-0">
-              <span className="text-[11px] font-mono font-bold tracking-[0.14em] uppercase text-[#171717] dark:text-[#F5F5F4] block mb-3">
+              <span className="text-eyebrow text-[#171717] dark:text-[#F5F5F4] block mb-3">
                 Architecture
               </span>
               <ul className="grid grid-cols-1 min-[360px]:grid-cols-2 min-[600px]:grid-cols-1 gap-x-6 gap-y-1 text-xs">

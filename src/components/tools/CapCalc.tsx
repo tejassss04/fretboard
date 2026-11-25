@@ -24,32 +24,22 @@ export default function CapCalc() {
   const isInvalid = hasTyped && !result.allValid;
 
   return (
-    <div className="w-full max-w-2xl mx-auto py-6 sm:py-10 select-none font-sans">
-      {/* Editorial Header */}
-      <div className="text-center space-y-2 mb-8 sm:mb-10">
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider text-[#D4AD61] bg-[#D4AD61]/10 border border-[#D4AD61]/25 mb-1">
-          Resources • Music Theory
-        </div>
-        <h1 className="text-3xl sm:text-4xl font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.025em]">
-          CapCalc <span className="text-[#D4AD61] font-medium">Capo Calculator</span>
-        </h1>
-        <p className="text-xs sm:text-sm text-[#77746F] dark:text-[#A8A29E] max-w-md mx-auto">
-          Type any chord or progression, pick your capo fret, and instantly see what it sounds like.
-        </p>
-      </div>
-
+    <div className="w-full max-w-2xl mx-auto select-none font-sans">
       {/* Main Studio Card */}
-      <div className="bg-[#FCFBF9] dark:bg-[#12100E] border border-[#EAE8E4] dark:border-white/10 rounded-3xl p-6 sm:p-8 md:p-10 shadow-sm space-y-8">
+      <div className="bg-[#FCFBF9] dark:bg-[#12100E] border border-[#EAE8E4] dark:border-white/[0.08] rounded-3xl p-6 sm:p-8 md:p-10 shadow-sm space-y-8">
         
         {/* Element A: Chord Input (Geist font, symmetrically aligned) */}
         <div className="space-y-3">
           <div className="flex items-center justify-between gap-2">
             <label
               htmlFor="chord-input"
-              className="text-[11px] font-mono font-bold tracking-[0.14em] uppercase text-[#77746F] dark:text-[#A8A29E]"
+              className="text-eyebrow text-[#77746F] dark:text-[#A8A29E]"
             >
               Chord or Progression
             </label>
+            <span className="text-[11px] font-mono text-[#77746F] dark:text-[#A8A29E] bg-black/[0.03] dark:bg-white/[0.04] px-2 py-0.5 rounded border border-black/5 dark:border-white/[0.06]">
+              e.g. C, Dmaj7, C Am F G
+            </span>
           </div>
 
           <div className="relative">
@@ -90,50 +80,75 @@ export default function CapCalc() {
         {/* Element B: Capo Selector (Matching header alignment) */}
         <div className="space-y-3">
           <div className="flex items-center justify-between gap-2">
-            <span className="text-[11px] font-mono font-bold tracking-[0.14em] uppercase text-[#77746F] dark:text-[#A8A29E]">
+            <span className="text-eyebrow text-[#77746F] dark:text-[#A8A29E]">
               Capo Position
             </span>
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#D4AD61] bg-[#D4AD61]/10 px-2 py-0.5 rounded border border-[#D4AD61]/25">
+            <span className="text-[11px] font-mono font-medium uppercase tracking-[0.1em] text-[#D4AD61] bg-[#D4AD61]/10 px-2.5 py-0.5 rounded border border-[#D4AD61]/25">
               {capoFret === 0 ? 'No Capo (Open)' : `Capo Fret ${capoFret}`}
             </span>
           </div>
 
-          {/* Horizontally scrollable segmented selector */}
-          <div className="overflow-x-auto no-scrollbar touch-pan-x p-1.5 bg-[#F1F0ED] dark:bg-[#1A1816] rounded-2xl border border-[#EAE8E4] dark:border-white/10 flex items-center gap-1">
+          {/* Horizontally scrollable segmented selector with tactile spring pill */}
+          <div className="overflow-x-auto no-scrollbar touch-pan-x p-1.5 bg-[#F1F0ED] dark:bg-[#1A1816] rounded-2xl border border-[#EAE8E4] dark:border-white/[0.08] flex items-center gap-1">
             <button
               type="button"
               onClick={() => setCapoFret(0)}
-              className={`px-3 py-2 rounded-xl text-xs font-mono font-semibold transition-all cursor-pointer shrink-0 ${
+              className={`relative px-3 py-2 rounded-xl text-xs font-mono font-semibold transition-colors cursor-pointer shrink-0 ${
                 capoFret === 0
-                  ? 'bg-[#D4AD61] text-zinc-950 shadow-xs'
+                  ? 'text-zinc-950'
                   : 'text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
               }`}
             >
-              No Capo
+              {capoFret === 0 && (
+                <motion.span
+                  layoutId="capoFretActivePill"
+                  transition={
+                    shouldReduceMotion
+                      ? { duration: 0 }
+                      : { type: 'spring', stiffness: 480, damping: 34 }
+                  }
+                  className="absolute inset-0 rounded-xl bg-[#D4AD61] shadow-xs"
+                />
+              )}
+              <span className="relative z-10">No Capo</span>
             </button>
 
             <div className="w-[1px] h-4 bg-[#EAE8E4] dark:bg-white/10 shrink-0 mx-0.5" />
 
-            {CAPO_FRETS.filter((f) => f > 0).map((f) => (
-              <button
-                key={f}
-                type="button"
-                onClick={() => setCapoFret(f)}
-                className={`w-9 h-9 rounded-xl text-xs font-mono font-semibold transition-all cursor-pointer shrink-0 flex items-center justify-center ${
-                  capoFret === f
-                    ? 'bg-[#D4AD61] text-zinc-950 shadow-xs'
-                    : 'text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
-                }`}
-              >
-                {f}
-              </button>
-            ))}
+            {CAPO_FRETS.filter((f) => f > 0).map((f) => {
+              const active = capoFret === f;
+              return (
+                <button
+                  key={f}
+                  type="button"
+                  onClick={() => setCapoFret(f)}
+                  className={`relative w-9 h-9 rounded-xl text-xs font-mono font-semibold transition-colors cursor-pointer shrink-0 flex items-center justify-center ${
+                    active
+                      ? 'text-zinc-950'
+                      : 'text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
+                  }`}
+                >
+                  {active && (
+                    <motion.span
+                      layoutId="capoFretActivePill"
+                      transition={
+                        shouldReduceMotion
+                          ? { duration: 0 }
+                          : { type: 'spring', stiffness: 480, damping: 34 }
+                      }
+                      className="absolute inset-0 rounded-xl bg-[#D4AD61] shadow-xs"
+                    />
+                  )}
+                  <span className="relative z-10">{f}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
         {/* Element C: Result Display (Aligned, Geist font, generous gaps) */}
-        <div className="pt-6 sm:pt-8 border-t border-[#EAE8E4] dark:border-white/10 text-center space-y-4">
-          <span className="block text-[11px] font-mono font-bold tracking-[0.14em] uppercase text-[#77746F] dark:text-[#A8A29E]">
+        <div className="pt-6 sm:pt-8 border-t border-[#EAE8E4] dark:border-white/[0.08] text-center space-y-4">
+          <span className="block text-eyebrow text-[#77746F] dark:text-[#A8A29E]">
             Your chord{result.chords.length > 1 ? 's' : ''} will sound like
           </span>
 

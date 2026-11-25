@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Microphone, MicrophoneSlash, SpeakerHigh, Waveform, Sparkle } from '@phosphor-icons/react';
+import { Microphone, MicrophoneSlash, SpeakerHigh, Waveform, CheckCircle } from '@phosphor-icons/react';
 import { autoCorrelate, noteFromFrequency } from '@/lib/music';
 import { getAudioEngine } from '@/lib/audio';
 
@@ -187,9 +187,16 @@ export default function Tuner() {
 
         {/* Pitch Reading & Big Note Display */}
         <div className="flex flex-col items-center mb-4">
-          <div className={`text-6xl sm:text-7xl md:text-8xl font-mono font-bold tracking-tight transition-colors tabular-nums ${
-            isInTune ? 'text-emerald-500' : 'text-[#171717] dark:text-[#F5F5F4]'
+          <div className={`relative z-10 inline-flex items-center justify-center text-6xl sm:text-7xl md:text-8xl font-mono font-bold tracking-tight transition-all duration-300 tabular-nums ${
+            isInTune ? 'text-emerald-500 scale-[1.03]' : 'text-[#171717] dark:text-[#F5F5F4]'
           }`}>
+            {isInTune && !shouldReduceMotion && (
+              <span
+                aria-hidden
+                className="pointer-events-none absolute -inset-4 rounded-full border border-emerald-500/30 animate-ping"
+                style={{ animationDuration: '2.2s' }}
+              />
+            )}
             {detectedNote}
           </div>
 
@@ -208,7 +215,7 @@ export default function Tuner() {
             ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-600 dark:text-emerald-400'
             : 'bg-[#F7F6F3] dark:bg-[#1A1816] border-[#EAE8E4] dark:border-white/10 text-[#77746F] dark:text-[#A8A29E]'
         }`}>
-          {isInTune ? <Sparkle size={13} weight="regular" /> : <Waveform size={13} weight="regular" />}
+          {isInTune ? <CheckCircle size={13} weight="fill" /> : <Waveform size={13} weight="regular" />}
           <span>{message}</span>
         </div>
 
@@ -260,10 +267,10 @@ export default function Tuner() {
                     : 'bg-[#F7F6F3] dark:bg-[#1A1816] hover:bg-white dark:hover:bg-[#24201D] border-[#EAE8E4] dark:border-white/10 hover:border-[#D4AD61]/50'
                 }`}
               >
-                <span className="text-[10px] font-mono text-[#77746F] dark:text-[#A8A29E]">
+                <span className="text-[11px] font-mono text-[#77746F] dark:text-[#A8A29E]">
                   String {target.stringNum} • {target.gauge}
                 </span>
-                <span className="text-lg font-serif font-bold text-[#171717] dark:text-[#F5F5F4] my-0.5">
+                <span className="text-lg font-sans font-bold tracking-tight text-[#171717] dark:text-[#F5F5F4] my-0.5 tabular-nums">
                   {target.note}{target.octave}
                 </span>
                 <span className="text-[10px] font-mono text-[#D4AD61]">

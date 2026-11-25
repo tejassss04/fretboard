@@ -63,18 +63,10 @@ export default function ChordExplorer() {
   const currentTab = deriveTabString(selected.fingers);
 
   return (
-    <div className="w-full max-w-6xl mx-auto space-y-8 select-none">
+    <div className="w-full space-y-6 select-none">
       
-      {/* 1. Header Toolbar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl sm:text-4xl font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.025em] leading-[1.12]">
-            Chord <span className="font-serif italic text-[#E9D8B7]">Voicings &amp; Shapes</span>
-          </h1>
-          <p className="text-xs sm:text-sm text-[#77746F] dark:text-[#A8A29E] mt-1">
-            Physical fretboard fingerings, tab positions, interval degrees, and authentic acoustic strumming.
-          </p>
-        </div>
+      {/* 1. Action Toolbar (Page title is rendered by StudioPageHeader) */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-end gap-4">
 
         {/* Master Strum Action Button */}
         <button
@@ -111,21 +103,35 @@ export default function ChordExplorer() {
           </div>
 
           {/* Filter Pills */}
-          <div className="flex items-center gap-1 p-1 bg-[#F1F0ED] dark:bg-[#1A1816] rounded-xl border border-[#EAE8E4] dark:border-white/10">
-            {(['All', 'Open', 'Barre', '7th'] as const).map((type) => (
-              <button
-                key={type}
-                type="button"
-                onClick={() => setFilterType(type)}
-                className={`flex-1 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all cursor-pointer text-center ${
-                  filterType === type
-                    ? 'bg-white dark:bg-[#25221F] text-[#171717] dark:text-[#F5F5F4] shadow-xs'
-                    : 'text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717] dark:hover:text-white'
-                }`}
-              >
-                {type}
-              </button>
-            ))}
+          <div className="flex items-center gap-1 p-1 bg-[#F1F0ED] dark:bg-[#1A1816] rounded-xl border border-[#EAE8E4] dark:border-white/[0.08]">
+            {(['All', 'Open', 'Barre', '7th'] as const).map((type) => {
+              const active = filterType === type;
+              return (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => setFilterType(type)}
+                  className={`relative flex-1 py-1.5 rounded-lg text-xs font-mono font-semibold transition-colors cursor-pointer text-center ${
+                    active
+                      ? 'text-[#171717] dark:text-[#F5F5F4]'
+                      : 'text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717] dark:hover:text-white'
+                  }`}
+                >
+                  {active && (
+                    <motion.span
+                      layoutId="chordFilterPillActive"
+                      transition={
+                        shouldReduceMotion
+                          ? { duration: 0 }
+                          : { type: 'spring', stiffness: 460, damping: 34 }
+                      }
+                      className="absolute inset-0 rounded-lg bg-white dark:bg-[#25221F] shadow-xs"
+                    />
+                  )}
+                  <span className="relative z-10">{type}</span>
+                </button>
+              );
+            })}
           </div>
 
           {/* Chord Cards List */}
@@ -198,7 +204,7 @@ export default function ChordExplorer() {
                 </span>
               </div>
 
-              <h3 className="text-3xl font-serif font-normal tracking-tight text-[#171717] dark:text-[#F5F5F4]">
+              <h3 className="text-card-title text-2xl sm:text-3xl text-[#171717] dark:text-[#F5F5F4]">
                 {selected.name}
               </h3>
 

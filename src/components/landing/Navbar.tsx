@@ -573,7 +573,7 @@ export default function Navbar({ onStartPlaying }: NavbarProps = {}) {
                       {/* Local-First Repertoire Card (Editorial feature spotlight) */}
                       <div className="col-span-5 flex flex-col justify-between p-4 rounded-2xl bg-[#F7F6F3] dark:bg-[#1A1816] border border-[#EAE8E4] dark:border-white/10">
                         <div>
-                          <h4 className="text-sm font-serif font-normal tracking-tight text-[#171717] dark:text-[#F5F5F4] leading-[1.25]">
+                          <h4 className="text-sm font-sans font-semibold tracking-[-0.015em] text-[#171717] dark:text-[#F5F5F4] leading-[1.25]">
                             Local-first <span className="italic text-[#D4AD61]">Practice Sync</span>
                           </h4>
                           <p className="text-xs text-[#77746F] dark:text-[#A8A29E] mt-1.5 leading-relaxed">

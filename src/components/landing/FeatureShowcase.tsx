@@ -232,33 +232,57 @@ export default function FeatureShowcase() {
                   <div className="flex flex-wrap items-center gap-3">
                     <div className="flex flex-wrap items-center gap-1.5">
                       <span className="text-xs font-mono text-[#77746F] dark:text-[#A8A29E] mr-0.5">Tuning:</span>
-                      {Object.values(TUNINGS).map((tuning) => (
-                        <button
-                          key={tuning.id}
-                          onClick={() => setExploreTuningKey(tuning.id)}
-                          className={`px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${exploreTuningKey === tuning.id
-                              ? 'bg-[#171717] dark:bg-[#F5F5F4] text-white dark:text-[#171717] shadow-xs'
-                              : 'bg-[#F7F6F3] dark:bg-[#201D1A] text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717]'
+                      {Object.values(TUNINGS).map((tuning) => {
+                        const active = exploreTuningKey === tuning.id;
+                        return (
+                          <button
+                            key={tuning.id}
+                            type="button"
+                            onClick={() => setExploreTuningKey(tuning.id)}
+                            className={`relative px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
+                              active
+                                ? 'text-white dark:text-[#171717]'
+                                : 'bg-[#F7F6F3] dark:bg-[#201D1A] text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717] dark:hover:text-[#F5F5F4]'
                             }`}
-                        >
-                          {tuning.name.split(' (')[0]}
-                        </button>
-                      ))}
+                          >
+                            {active && (
+                              <motion.span
+                                layoutId="featureExploreTuningPill"
+                                transition={{ type: 'spring', stiffness: 460, damping: 34 }}
+                                className="absolute inset-0 rounded-lg bg-[#171717] dark:bg-[#F5F5F4] shadow-xs"
+                              />
+                            )}
+                            <span className="relative z-10">{tuning.name.split(' (')[0]}</span>
+                          </button>
+                        );
+                      })}
                     </div>
 
                     <div className="flex flex-wrap items-center gap-1 bg-[#F7F6F3] dark:bg-[#201D1A] p-0.5 rounded-lg border border-[#EAE8E4] dark:border-white/10 w-fit">
-                      {[12, 15, 21, 24].map((count) => (
-                        <button
-                          key={count}
-                          onClick={() => setExploreFretCount(count)}
-                          className={`px-2 py-0.5 text-xs font-mono font-medium rounded transition-all cursor-pointer ${exploreFretCount === count
-                              ? 'bg-[#D4AD61] text-zinc-950 font-bold shadow-xs'
-                              : 'text-[#77746F] dark:text-[#A8A29E]'
+                      {[12, 15, 21, 24].map((count) => {
+                        const active = exploreFretCount === count;
+                        return (
+                          <button
+                            key={count}
+                            type="button"
+                            onClick={() => setExploreFretCount(count)}
+                            className={`relative px-2 py-0.5 text-xs font-mono font-medium rounded transition-colors cursor-pointer ${
+                              active
+                                ? 'text-zinc-950 font-bold'
+                                : 'text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717] dark:hover:text-[#F5F5F4]'
                             }`}
-                        >
-                          {count}F
-                        </button>
-                      ))}
+                          >
+                            {active && (
+                              <motion.span
+                                layoutId="featureExploreFretPill"
+                                transition={{ type: 'spring', stiffness: 460, damping: 34 }}
+                                className="absolute inset-0 rounded bg-[#D4AD61] shadow-xs"
+                              />
+                            )}
+                            <span className="relative z-10">{count}F</span>
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
@@ -482,19 +506,31 @@ export default function FeatureShowcase() {
                     </select>
 
                     {/* Display Mode Pills */}
-                    <div className="flex items-center bg-[#F7F6F3] dark:bg-[#201D1A] p-0.5 rounded-lg border border-[#EAE8E4] dark:border-white/10">
-                      {(['notes', 'intervals', 'clean'] as const).map((mode) => (
-                        <button
-                          key={mode}
-                          onClick={() => setTheoryDisplayMode(mode)}
-                          className={`px-2.5 py-0.5 text-xs font-medium rounded capitalize transition-all cursor-pointer ${theoryDisplayMode === mode
-                              ? 'bg-[#171717] dark:bg-[#F5F5F4] text-white dark:text-[#171717] shadow-xs'
-                              : 'text-[#77746F] dark:text-[#A8A29E]'
+                    <div className="flex items-center bg-[#F7F6F3] dark:bg-[#201D1A] p-0.5 rounded-lg border border-[#EAE8E4] dark:border-white/[0.08]">
+                      {(['notes', 'intervals', 'clean'] as const).map((mode) => {
+                        const active = theoryDisplayMode === mode;
+                        return (
+                          <button
+                            key={mode}
+                            type="button"
+                            onClick={() => setTheoryDisplayMode(mode)}
+                            className={`relative px-2.5 py-0.5 text-xs font-medium rounded capitalize transition-colors cursor-pointer ${
+                              active
+                                ? 'text-white dark:text-[#171717]'
+                                : 'text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717] dark:hover:text-[#F5F5F4]'
                             }`}
-                        >
-                          {mode}
-                        </button>
-                      ))}
+                          >
+                            {active && (
+                              <motion.span
+                                layoutId="featureDisplayModeActive"
+                                transition={{ type: 'spring', stiffness: 460, damping: 34 }}
+                                className="absolute inset-0 rounded bg-[#171717] dark:bg-[#F5F5F4] shadow-xs"
+                              />
+                            )}
+                            <span className="relative z-10">{mode}</span>
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
@@ -619,25 +655,36 @@ export default function FeatureShowcase() {
                   </div>
 
                   {/* 3 Tone Presets Pill Selector */}
-                  <div className="flex flex-wrap items-center gap-1.5 bg-[#F7F6F3] dark:bg-[#1E1B18] p-1 rounded-xl border border-[#EAE8E4] dark:border-white/10 w-fit max-w-full">
+                  <div className="flex flex-wrap items-center gap-1.5 bg-[#F7F6F3] dark:bg-[#1E1B18] p-1 rounded-xl border border-[#EAE8E4] dark:border-white/[0.08] w-fit max-w-full">
                     {[
                       { id: 'acoustic', label: 'Acoustic Steel', badge: 'Dreadnought' },
                       { id: 'electric', label: 'Electric Clean', badge: 'Single-Coil' },
                       { id: 'nylon', label: 'Mellow Nylon', badge: 'Classical' },
-                    ].map((tone) => (
-                      <button
-                        key={tone.id}
-                        type="button"
-                        onClick={() => handleSelectTone(tone.id as GuitarTone)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${selectedTone === tone.id
-                            ? 'bg-[#171717] dark:bg-[#F5F5F4] text-white dark:text-[#171717] shadow-xs'
-                            : 'text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717]'
+                    ].map((tone) => {
+                      const active = selectedTone === tone.id;
+                      return (
+                        <button
+                          key={tone.id}
+                          type="button"
+                          onClick={() => handleSelectTone(tone.id as GuitarTone)}
+                          className={`relative px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer flex items-center gap-1.5 ${
+                            active
+                              ? 'text-white dark:text-[#171717]'
+                              : 'text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717] dark:hover:text-[#F5F5F4]'
                           }`}
-                      >
-                        <span className={`w-1.5 h-1.5 rounded-full ${selectedTone === tone.id ? 'bg-[#D4AD61]' : 'bg-transparent'}`} />
-                        <span>{tone.label}</span>
-                      </button>
-                    ))}
+                        >
+                          {active && (
+                            <motion.span
+                              layoutId="featurePlayToneActive"
+                              transition={{ type: 'spring', stiffness: 460, damping: 34 }}
+                              className="absolute inset-0 rounded-lg bg-[#171717] dark:bg-[#F5F5F4] shadow-xs"
+                            />
+                          )}
+                          <span className={`relative z-10 w-1.5 h-1.5 rounded-full transition-colors ${active ? 'bg-[#D4AD61]' : 'bg-transparent'}`} />
+                          <span className="relative z-10">{tone.label}</span>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 

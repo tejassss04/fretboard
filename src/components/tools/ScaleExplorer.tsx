@@ -87,18 +87,10 @@ export default function ScaleExplorer() {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto space-y-8 select-none">
+    <div className="w-full space-y-6 select-none">
       
-      {/* 1. Header Toolbar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl sm:text-4xl font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.025em] leading-[1.12]">
-            Scale &amp; Mode <span className="font-serif italic text-[#E9D8B7]">Matrix</span>
-          </h1>
-          <p className="text-xs sm:text-sm text-[#77746F] dark:text-[#A8A29E] mt-1">
-            Map fretboard positions, hear scalar degrees, and practice soloing shapes in any key.
-          </p>
-        </div>
+      {/* 1. Action Toolbar (Page title is rendered by StudioPageHeader) */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-end gap-4">
 
         <div className="flex items-center gap-2.5 flex-wrap">
           {/* Toggle Display Mode: Notes vs Degrees */}
@@ -206,7 +198,7 @@ export default function ScaleExplorer() {
               </span>
             </div>
 
-            <h3 className="text-2xl font-serif font-normal tracking-tight text-[#171717] dark:text-[#F5F5F4] mb-2">
+            <h3 className="text-card-title text-xl sm:text-2xl text-[#171717] dark:text-[#F5F5F4] mb-2">
               {currentScale.blurb}
             </h3>
 
@@ -293,7 +285,7 @@ export default function ScaleExplorer() {
                   {f}
                 </span>
                 {ROMAN_MAP[f] && (
-                  <span className="text-[8px] text-[#D4AD61]/80 font-serif italic">
+                  <span className="text-[9px] text-[#D4AD61]/90 font-mono font-semibold">
                     {ROMAN_MAP[f]}
                   </span>
                 )}

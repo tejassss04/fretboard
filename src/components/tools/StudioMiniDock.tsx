@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Microphone, Metronome as MetronomeIcon, X, SlidersHorizontal } from '@phosphor-icons/react';
 import Tuner from './Tuner';
@@ -19,6 +19,15 @@ export default function StudioMiniDock({
 }: StudioMiniDockProps) {
   const [activeModal, setActiveModal] = useState<'tuner' | 'metronome' | null>(initialOpenTool);
   const [isDockCollapsed, setIsDockCollapsed] = useState(false);
+
+  useEffect(() => {
+    if (!activeModal) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setActiveModal(null);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [activeModal]);
 
   return (
     <>
@@ -119,8 +128,12 @@ export default function StudioMiniDock({
       {/* In-Studio Modal Dialog Overlay (Preserves parent page timer & state) */}
       <AnimatePresence>
         {activeModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-sm overflow-y-auto">
+          <div
+            onClick={() => setActiveModal(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-sm overflow-y-auto"
+          >
             <motion.div
+              onClick={(e) => e.stopPropagation()}
               initial={{ opacity: 0, scale: 0.95, y: 12 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 12 }}

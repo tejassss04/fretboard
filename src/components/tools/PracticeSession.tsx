@@ -233,11 +233,11 @@ export default function PracticeSession() {
         {/* Right: Daily Practice Checklist */}
         <div className="lg:col-span-7 flex flex-col gap-3">
           <div className="flex items-center justify-between mb-1">
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#77746F] dark:text-[#A8A29E] font-mono">
+            <span className="text-eyebrow text-[#77746F] dark:text-[#A8A29E]">
               Daily Practice Checklist ({doneCount}/{tasks.length})
             </span>
-            <span className="text-xs font-mono font-semibold text-[#D4AD61]">
-              {doneCount === tasks.length ? 'All Routine Goals Complete! 🎯' : `${tasks.length - doneCount} Remaining`}
+            <span className="text-xs font-mono font-semibold text-[#D4AD61] tabular-nums">
+              {doneCount === tasks.length ? 'Routine Complete' : `${tasks.length - doneCount} Remaining`}
             </span>
           </div>
 
@@ -245,21 +245,30 @@ export default function PracticeSession() {
             <div
               key={task.id}
               onClick={() => toggleTask(task.id)}
-              className={`p-3.5 sm:p-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3 ${
+              className={`p-3.5 sm:p-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3 active:scale-[0.99] ${
                 task.done
-                  ? 'bg-[#F7F6F3]/50 dark:bg-[#181614]/50 border-[#EAE8E4] dark:border-white/5 opacity-70'
+                  ? 'bg-[#F7F6F3]/50 dark:bg-[#181614]/50 border-[#EAE8E4] dark:border-white/[0.06] opacity-75'
                   : 'bg-white dark:bg-[#181614] border-[#EAE8E4] dark:border-white/10 hover:border-[#D4AD61]/50 shadow-xs'
               }`}
             >
               <div className="flex items-center gap-3.5">
                 <div
-                  className={`w-5 h-5 rounded-lg flex items-center justify-center border transition-all ${
+                  className={`w-5 h-5 rounded-lg flex items-center justify-center border transition-all duration-200 ${
                     task.done
-                      ? 'bg-[#D4AD61] border-[#8C6B24] text-zinc-950'
+                      ? 'bg-[#D4AD61] border-[#8C6B24] text-zinc-950 scale-105'
                       : 'border-[#EAE8E4] dark:border-white/20 bg-[#F7F6F3] dark:bg-[#201D1A]'
                   }`}
                 >
-                  {task.done && <Check size={12} weight="bold" />}
+                  {task.done && (
+                    <motion.span
+                      initial={shouldReduceMotion ? false : { scale: 0.5, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ type: 'spring', stiffness: 520, damping: 28 }}
+                      className="inline-flex items-center justify-center"
+                    >
+                      <Check size={12} weight="bold" />
+                    </motion.span>
+                  )}
                 </div>
                 <div>
                   <div

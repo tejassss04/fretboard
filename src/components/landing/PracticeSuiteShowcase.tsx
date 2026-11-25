@@ -130,15 +130,15 @@ export default function PracticeSuiteShowcase() {
                 >
                   <div>
                     <div className="flex items-center justify-between mb-3">
-                      <span className="w-8 h-8 rounded-xl bg-[#F7F6F3] dark:bg-[#1A1816] border border-[#EAE8E4] dark:border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] flex items-center justify-center text-[#171717] dark:text-[#F5F5F4] group-hover:text-[#D4AD61] transition-colors">
+                      <span className="w-8 h-8 rounded-xl bg-[#F7F6F3] dark:bg-[#1A1816] border border-[#EAE8E4] dark:border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] flex items-center justify-center text-[#171717] dark:text-[#F5F5F4] group-hover:text-[#D4AD61] transition-colors">
                         <Icon size={16} weight="regular" />
                       </span>
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-[#77746F] dark:text-[#A8A29E]">
+                      <span className="text-eyebrow text-[#77746F] dark:text-[#A8A29E]">
                         {tool.tag}
                       </span>
                     </div>
 
-                    <h3 className="text-base font-semibold text-[#171717] dark:text-[#F5F5F4] tracking-tight leading-[1.2] group-hover:text-[#D4AD61] transition-colors">
+                    <h3 className="text-card-title text-base sm:text-lg text-[#171717] dark:text-[#F5F5F4] group-hover:text-[#D4AD61] transition-colors">
                       {tool.title}
                     </h3>
                     <p className="text-xs text-[#77746F] dark:text-[#A8A29E] leading-relaxed mt-1 mb-4">

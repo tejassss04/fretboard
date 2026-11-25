@@ -370,13 +370,20 @@ export default function GuitarPreview() {
                 key={mode}
                 type="button"
                 onClick={() => setDisplayMode(mode)}
-                className={`px-2 py-1 text-[11px] font-medium rounded-md capitalize transition-all cursor-pointer ${
+                className={`relative px-2 py-1 text-[11px] font-medium rounded-md capitalize transition-colors cursor-pointer ${
                   displayMode === mode
-                    ? 'bg-white dark:bg-[#2B2623] text-[#171717] dark:text-[#F5F5F4] shadow-xs font-semibold'
+                    ? 'text-[#171717] dark:text-[#F5F5F4] font-semibold'
                     : 'text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717] dark:hover:text-[#F5F5F4]'
                 }`}
               >
-                {mode}
+                {displayMode === mode && (
+                  <motion.span
+                    layoutId="studioDisplayModeActive"
+                    transition={{ type: 'spring', stiffness: 460, damping: 34 }}
+                    className="absolute inset-0 rounded-md bg-white dark:bg-[#2B2623] shadow-xs"
+                  />
+                )}
+                <span className="relative z-10">{mode}</span>
               </button>
             ))}
           </div>
@@ -655,7 +662,7 @@ export default function GuitarPreview() {
                 )}
 
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-lg font-serif font-normal text-[#171717] dark:text-[#F5F5F4] group-hover:text-[#D4AD61] transition-colors">
+                  <span className="text-lg font-sans font-semibold tracking-tight text-[#171717] dark:text-[#F5F5F4] group-hover:text-[#D4AD61] transition-colors">
                     {chord.id}
                   </span>
                   <span className="text-[10px] font-mono text-[#77746F] dark:text-[#A8A29E] bg-black/5 dark:bg-white/5 px-1.5 py-0.5 rounded">

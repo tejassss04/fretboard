@@ -1,784 +1,554 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import React, { useState } from 'react';
+import Link from 'next/link';
 import {
-  LinkSimple,
   Check,
-  Play,
-  Pause,
-  LockSimple,
-  Sparkle,
+  Copy,
+  Link as LinkIcon,
+  Metronome,
+  MusicNotes,
+  Radio,
+  ShareNetwork,
   Users,
+  Waveform,
 } from '@phosphor-icons/react';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Collapse,
+  Count,
+  Divider,
+  Popover,
+  Roll,
+  Row,
+  Segmented,
+  Stage,
+  Window,
+  useLook,
+} from '@/components/stageshow/kit';
+import type { Act } from '@/components/stageshow/kit';
 
-interface ActivityItem {
-  id: string;
-  user: string;
-  avatar: string;
-  action: string;
-  time: string;
-  avatarBg?: string;
-  avatarColor?: string;
+type ChordId = 'Am7' | 'Fmaj7' | 'C' | 'G6';
+
+interface ChordShape {
+  id: ChordId;
+  name: string;
+  formula: string;
+  notes: string[];
+  frets: number[]; // 6 strings: E A D G B e (-1 = muted, 0 = open)
 }
 
-const INITIAL_ACTIVITIES: ActivityItem[] = [
-  {
-    id: 'act-1',
-    user: 'You',
-    avatar: 'YO',
-    action: 'connected to room #JAM-8402',
-    time: 'Just now',
-    avatarBg: 'bg-[#171717] dark:bg-white',
-    avatarColor: 'text-white dark:text-[#171717]',
+const CHORDS: Record<ChordId, ChordShape> = {
+  Am7: {
+    id: 'Am7',
+    name: 'A Minor 7',
+    formula: '1 · ♭3 · 5 · ♭7',
+    notes: ['A', 'C', 'E', 'G'],
+    frets: [-1, 0, 2, 0, 1, 0],
   },
+  Fmaj7: {
+    id: 'Fmaj7',
+    name: 'F Major 7',
+    formula: '1 · 3 · 5 · 7',
+    notes: ['F', 'A', 'C', 'E'],
+    frets: [-1, -1, 3, 2, 1, 0],
+  },
+  C: {
+    id: 'C',
+    name: 'C Major',
+    formula: '1 · 3 · 5',
+    notes: ['C', 'E', 'G'],
+    frets: [-1, 3, 2, 0, 1, 0],
+  },
+  G6: {
+    id: 'G6',
+    name: 'G Major 6',
+    formula: '1 · 3 · 5 · 6',
+    notes: ['G', 'B', 'D', 'E'],
+    frets: [3, 2, 0, 0, 0, 0],
+  },
+};
+
+const CHORD_ORDER: ChordId[] = ['Am7', 'Fmaj7', 'C', 'G6'];
+
+interface JamSceneState {
+  activeChord: ChordId;
+  bpm: number;
+  feel: '4/4' | '3/4';
+  inviteOpen: boolean;
+  copied: boolean;
+  syncDetailsOpen: boolean;
+  devonChord: ChordId;
+  shareOrigin: { left: number; top: number };
+}
+
+const INITIAL_SCENE: JamSceneState = {
+  activeChord: 'Am7',
+  bpm: 118,
+  feel: '4/4',
+  inviteOpen: false,
+  copied: false,
+  syncDetailsOpen: false,
+  devonChord: 'Am7',
+  shareOrigin: { left: 560, top: 82 },
+};
+
+const BANDMATES = [
+  { name: 'Tejas', role: 'Host · Lead Strat', tone: 'accent' as const },
+  { name: 'Maya', role: 'Acoustic Rhythm', tone: 'person' as const },
+  { name: 'Devon', role: 'Warm P-Bass', tone: 'person' as const },
 ];
 
-export default function MacBookShowcase() {
-  const shouldReduceMotion = useReducedMotion();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const activeTargetRef = useRef<{ key: string; xPct: number; yPct: number }>({
-    key: 'entrance',
-    xPct: 0.75,
-    yPct: 0.88,
-  });
+const STRING_LABELS = ['E', 'A', 'D', 'G', 'B', 'e'];
 
-  // Cursor & Accuracy State
-  const [coords, setCoords] = useState<{ x: number; y: number }>({ x: 450, y: 350 });
-  const [activeTargetKey, setActiveTargetKey] = useState<string>('entrance');
-  const [isClicking, setIsClicking] = useState<boolean>(false);
-  const [tooltip, setTooltip] = useState<string | null>(null);
-  const [showInvitePopover, setShowInvitePopover] = useState<boolean>(false);
+async function runJamScript(a: Act<JamSceneState>) {
+  a.mark('intro');
+  await a.snap(INITIAL_SCENE);
+  await a.wait(650);
 
-  // In-Screen Jamroom State
-  const [copiedLink, setCopiedLink] = useState<boolean>(shouldReduceMotion ? true : false);
-  const [isJamBotActive, setIsJamBotActive] = useState<boolean>(shouldReduceMotion ? true : false);
-  const [sarahInRoom, setSarahInRoom] = useState<boolean>(shouldReduceMotion ? true : false);
-  const [waveformActive, setWaveformActive] = useState<boolean>(shouldReduceMotion ? true : false);
-  const [highlightAll, setHighlightAll] = useState<boolean>(shouldReduceMotion ? true : false);
-  const [activities, setActivities] = useState<ActivityItem[]>(
-    shouldReduceMotion
-      ? [
-          {
-            id: 'act-5',
-            user: 'Alex',
-            avatar: 'AL',
-            action: 'plucked E4 in Pentatonic Box 1',
-            time: 'Just now',
-            avatarBg: 'bg-[#D4AD61]',
-            avatarColor: 'text-zinc-950',
-          },
-          {
-            id: 'act-4',
-            user: 'Sarah',
-            avatar: 'SR',
-            action: 'strummed A Minor',
-            time: '3s ago',
-            avatarBg: 'bg-[#A5AC94]',
-            avatarColor: 'text-white',
-          },
-          {
-            id: 'act-1',
-            user: 'You',
-            avatar: 'YO',
-            action: 'connected to room #JAM-8402',
-            time: '1m ago',
-            avatarBg: 'bg-[#171717] dark:bg-white',
-            avatarColor: 'text-white dark:text-[#171717]',
-          },
-        ]
-      : INITIAL_ACTIVITIES
-  );
+  a.mark('select-chord');
+  await a.enter('chord-Fmaj7');
+  await a.wait(180);
+  await a.click('chord-Fmaj7');
+  await a.set({ activeChord: 'Fmaj7' });
+  await a.wait(420);
+  await a.set({ devonChord: 'Fmaj7' });
+  await a.wait(550);
 
-  // Exact Coordinate Resolver (Measures actual DOM bounding boxes)
-  const moveToTarget = useCallback(
-    (targetKey: string, xPct = 0.5, yPct = 0.5, tipLabel?: string | null) => {
-      activeTargetRef.current = { key: targetKey, xPct, yPct };
-      setActiveTargetKey(targetKey);
-      if (tipLabel !== undefined) setTooltip(tipLabel);
+  a.mark('tempo-shift');
+  await a.click('bpm-up');
+  await a.set({ bpm: 122 });
+  await a.wait(280);
+  await a.click('chord-G6');
+  await a.set({ activeChord: 'G6', devonChord: 'G6' });
+  await a.wait(550);
 
-      if (!containerRef.current) return;
-      const c = containerRef.current.getBoundingClientRect();
-
-      if (targetKey === 'entrance') {
-        setCoords({ x: c.width * 0.82, y: c.height * 0.9 });
-        return;
-      }
-      if (targetKey === 'exit') {
-        setCoords({ x: c.width * 0.88, y: c.height * 0.94 });
-        return;
-      }
-
-      const el = containerRef.current.querySelector<HTMLElement>(`[data-target="${targetKey}"]`);
-      if (!el) return;
-
-      const r = el.getBoundingClientRect();
-      // Calculate exact pixel position relative to container
-      const targetX = r.left - c.left + r.width * xPct;
-      const targetY = r.top - c.top + r.height * yPct;
-
-      setCoords({ x: targetX, y: targetY });
+  a.mark('share-room');
+  await a.move('share-btn');
+  const btnRect = a.rect('share-btn');
+  const isCompactStage = btnRect.x + btnRect.width < 480;
+  const popWidth = isCompactStage ? 236 : 264;
+  await a.click('share-btn');
+  await a.set({
+    inviteOpen: true,
+    shareOrigin: {
+      left: Math.max(16, btnRect.x + btnRect.width - popWidth),
+      top: btnRect.y + btnRect.height + 8,
     },
-    []
-  );
+  });
+  await a.wait(480);
 
-  // Re-measure on window resize to ensure permanent micro-precision
-  useEffect(() => {
-    const handleResize = () => {
-      if (activeTargetRef.current) {
-        moveToTarget(
-          activeTargetRef.current.key,
-          activeTargetRef.current.xPct,
-          activeTargetRef.current.yPct
-        );
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [moveToTarget]);
+  await a.click('copy-invite');
+  await a.set({ copied: true });
+  await a.wait(1100);
 
-  // Guided Cursor Choreography Script
-  useEffect(() => {
-    if (shouldReduceMotion) return;
+  await a.click('close-invite');
+  await a.set({ inviteOpen: false });
+  await a.wait(320);
 
-    let isMounted = true;
-    const timeouts: NodeJS.Timeout[] = [];
+  a.mark('sync-telemetry');
+  await a.click('sync-toggle');
+  await a.set({ syncDetailsOpen: true });
+  await a.wait(1100);
 
-    const schedule = (fn: () => void, ms: number) => {
-      const t = setTimeout(() => {
-        if (isMounted) fn();
-      }, ms);
-      timeouts.push(t);
-      return t;
-    };
+  await a.click('chord-C');
+  await a.set({ activeChord: 'C', devonChord: 'C' });
+  await a.wait(1400);
 
-    const runLoop = () => {
-      // ------------------------------------------------------------------
-      // ACT 1: JOIN (0ms - 1800ms) - Quick entrance & room identification
-      // ------------------------------------------------------------------
-      setCopiedLink(false);
-      setIsJamBotActive(false);
-      setSarahInRoom(false);
-      setWaveformActive(false);
-      setHighlightAll(false);
-      setShowInvitePopover(false);
-      setActivities(INITIAL_ACTIVITIES);
+  await a.set({ syncDetailsOpen: false, copied: false });
+  await a.wait(500);
+}
 
-      // Start cursor at entrance
-      moveToTarget('entrance', 0.82, 0.9, null);
+function JamStageContent({ s }: { s: JamSceneState }) {
+  const { layout } = useLook();
+  const compact = layout === 'compact';
+  const [hoverManualChord, setHoverManualChord] = useState<ChordId | null>(null);
 
-      schedule(() => {
-        // Swift glide to Room Header
-        moveToTarget('room-header', 0.5, 0.5, 'Entering Jam Room Alpha...');
-      }, 350);
-
-      // ------------------------------------------------------------------
-      // ACT 2: INVITE (1800ms - 4600ms) - Rapid move, click & Sarah joins
-      // ------------------------------------------------------------------
-      schedule(() => {
-        moveToTarget('btn-invite', 0.5, 0.5, 'Invite musicians to collaborate');
-      }, 1800);
-
-      // Crisp click down
-      schedule(() => {
-        setIsClicking(true);
-      }, 2500);
-
-      // Click release & copy feedback
-      schedule(() => {
-        setIsClicking(false);
-        setCopiedLink(true);
-        setShowInvitePopover(true);
-      }, 2680);
-
-      // Sarah joins the room promptly
-      schedule(() => {
-        setShowInvitePopover(false);
-        setSarahInRoom(true);
-        setActivities((prev) => [
-          {
-            id: `act-sarah-${Date.now()}`,
-            user: 'Sarah',
-            avatar: 'SR',
-            action: 'connected via invite link',
-            time: 'Just now',
-            avatarBg: 'bg-[#A5AC94]',
-            avatarColor: 'text-white',
-          },
-          ...prev.slice(0, 3),
-        ]);
-      }, 3500);
-
-      // ------------------------------------------------------------------
-      // ACT 3: JAM BOT (4600ms - 7400ms) - Swift move to Jam Bot & activate
-      // ------------------------------------------------------------------
-      schedule(() => {
-        moveToTarget('btn-jambot', 0.5, 0.5, 'Activate Jam Bot (Alex) accompaniment');
-      }, 4600);
-
-      // Click down
-      schedule(() => {
-        setIsClicking(true);
-      }, 5300);
-
-      // Click release & activation
-      schedule(() => {
-        setIsClicking(false);
-        setIsJamBotActive(true);
-        setActivities((prev) => [
-          {
-            id: `act-bot-${Date.now()}`,
-            user: 'Alex (Bot)',
-            avatar: 'AL',
-            action: 'loaded A Pentatonic solo engine',
-            time: 'Just now',
-            avatarBg: 'bg-[#D4AD61]',
-            avatarColor: 'text-zinc-950',
-          },
-          ...prev.slice(0, 3),
-        ]);
-      }, 5480);
-
-      // ------------------------------------------------------------------
-      // ACT 4: COLLABORATE (7400ms - 10500ms) - Swift move to Waveform
-      // ------------------------------------------------------------------
-      schedule(() => {
-        moveToTarget('waveform', 0.5, 0.48, 'Low-latency synchronized Web Audio streams');
-        setWaveformActive(true);
-      }, 7400);
-
-      schedule(() => {
-        setActivities((prev) => [
-          {
-            id: `act-note-1-${Date.now()}`,
-            user: 'Sarah',
-            avatar: 'SR',
-            action: 'strummed A Minor',
-            time: 'Just now',
-            avatarBg: 'bg-[#A5AC94]',
-            avatarColor: 'text-white',
-          },
-          ...prev.slice(0, 3),
-        ]);
-      }, 8200);
-
-      schedule(() => {
-        setActivities((prev) => [
-          {
-            id: `act-note-2-${Date.now()}`,
-            user: 'Alex',
-            avatar: 'AL',
-            action: 'plucked E4 in Pentatonic Box 1',
-            time: 'Just now',
-            avatarBg: 'bg-[#D4AD61]',
-            avatarColor: 'text-zinc-950',
-          },
-          ...prev.slice(0, 3),
-        ]);
-      }, 9200);
-
-      // ------------------------------------------------------------------
-      // ACT 5: TOGETHER (10500ms - 13200ms) - Harmony highlight
-      // ------------------------------------------------------------------
-      schedule(() => {
-        moveToTarget('musicians-panel', 0.35, 0.45, 'All musicians in sync • Locked in');
-        setHighlightAll(true);
-      }, 10500);
-
-      // ------------------------------------------------------------------
-      // RESET LOOP (13200ms - 14500ms) - Swift exit and repeat
-      // ------------------------------------------------------------------
-      schedule(() => {
-        moveToTarget('exit', 0.88, 0.94, null);
-      }, 13200);
-
-      schedule(() => {
-        runLoop();
-      }, 14500);
-    };
-
-    // Small delay for DOM layout and fonts to settle before first measurement
-    const initTimer = setTimeout(runLoop, 200);
-
-    return () => {
-      isMounted = false;
-      clearTimeout(initTimer);
-      timeouts.forEach(clearTimeout);
-    };
-  }, [moveToTarget, shouldReduceMotion]);
-
-  // Waveform SVG Paths for Act 4 & 5
-  const hostWaveform = waveformActive
-    ? 'M 0 30 Q 100 10, 200 30 T 400 30 T 600 30 T 800 30'
-    : 'M 0 30 Q 100 20, 200 30 T 400 30 T 600 30 T 800 30';
-
-  const remoteWaveform = waveformActive
-    ? 'M 0 30 Q 100 50, 200 30 T 400 30 T 600 30 T 800 30'
-    : 'M 0 30 Q 100 40, 200 30 T 400 30 T 600 30 T 800 30';
+  const displayChord = hoverManualChord ?? s.activeChord;
+  const chord = CHORDS[displayChord];
 
   return (
-    <div
-      aria-label="Animated demonstration showing how Fretboard Jamroom works"
-      className="relative w-full flex flex-col items-center justify-center select-none"
-    >
-      {/* ==================================================================== */}
-      {/* MACBOOK HARDWARE ENCLOSURE (CSS-ONLY REALISTIC MODEL)                 */}
-      {/* ==================================================================== */}
+    <div className="relative w-full h-full flex items-center justify-center p-4 sm:p-6">
+      {/* Ambient warm rosewood/amber glow anchored behind window */}
       <div
-        className="w-full max-w-[1040px] mx-auto relative perspective-[1400px] transition-transform duration-500 ease-out overflow-hidden sm:overflow-visible"
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
         style={{
-          perspective: '1400px',
+          background:
+            'radial-gradient(circle at 50% 24%, rgba(212, 173, 97, 0.11), transparent 58%), radial-gradient(circle at 80% 80%, rgba(124, 58, 237, 0.06), transparent 48%)',
+        }}
+      />
+
+      <Window
+        url="fretboard.app/jam/JAM-8402"
+        title="Fretboard Jamroom"
+        style={{
+          width: compact ? 378 : 836,
+          height: compact ? 542 : 484,
         }}
       >
-        {/* Ambient Display Glow behind the MacBook */}
-        <div className="absolute -inset-4 sm:-inset-8 bg-gradient-to-b from-[#D4AD61]/10 via-[#F59E0B]/5 to-transparent rounded-[40px] blur-2xl -z-10 pointer-events-none" />
-
-        {/* MacBook Display Lid (Tilted subtly for realistic depth) */}
-        <div
-          className="relative rounded-[22px] sm:rounded-[30px] p-[6px] sm:p-[10px] bg-gradient-to-b from-[#383340] via-[#221E29] to-[#15121B] border border-white/15 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85),0_12px_24px_-10px_rgba(0,0,0,0.65),inset_0_1px_1px_rgba(255,255,255,0.25)] transition-all duration-300"
-          style={{
-            transform: 'rotateX(2.2deg) rotateY(-0.5deg)',
-            transformOrigin: 'bottom center',
-          }}
-        >
-          {/* Inner Matte Bezel */}
-          <div className="relative rounded-[16px] sm:rounded-[22px] bg-[#09080C] p-2 sm:p-3 overflow-hidden ring-1 ring-black">
-            
-            {/* Camera / iSight Sensor Housing */}
-            <div className="hidden sm:flex items-center justify-center pb-2 relative z-20">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#050407] ring-1 ring-white/10 flex items-center justify-center shadow-inner">
-                <div className="w-1 h-1 rounded-full bg-[#18152B] ring-0.5 ring-emerald-500/30" />
-              </div>
-            </div>
-
-            {/* Glass Glare / Screen Sheen Overlay */}
-            <div className="pointer-events-none absolute inset-0 z-30 bg-gradient-to-tr from-transparent via-white/[0.015] to-white/[0.04]" />
-
-            {/* ============================================================== */}
-            {/* DISPLAY SCREEN CONTENT: FRETBOARD JAMROOM INSIDE BROWSER        */}
-            {/* ============================================================== */}
-            <div
-              ref={containerRef}
-              className="relative w-full rounded-[10px] sm:rounded-[14px] bg-[#0E0B14] border border-white/[0.08] shadow-[inset_0_2px_8px_rgba(0,0,0,0.7)] overflow-hidden text-left"
-            >
-              {/* Browser Window Chrome / Navigation Bar */}
-              <div className="w-full bg-[#14101A] border-b border-white/[0.07] px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between gap-3">
-                
-                {/* macOS Window Controls (Red, Yellow, Green) */}
-                <div className="flex items-center gap-1.5 sm:gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F56] border border-black/20" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E] border border-black/20" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#27C93F] border border-black/20" />
-                </div>
-
-                {/* Browser URL Bar */}
-                <div className="flex-1 max-w-[280px] sm:max-w-md mx-auto bg-[#0A080E] border border-white/[0.08] rounded-md px-2.5 py-1 flex items-center justify-center sm:justify-between text-[10px] sm:text-[11px] font-mono text-[#A8A29E] shadow-inner">
-                  <div className="flex items-center gap-1.5 truncate">
-                    <LockSimple size={11} weight="fill" className="text-emerald-400 shrink-0" />
-                    <span className="text-[#E9D8B7] font-semibold">fretboard.app</span>
-                    <span className="text-[#77746F]">/jam/JAM-8402</span>
-                  </div>
-                  <span className="hidden sm:inline-flex items-center gap-1 text-[9px] text-emerald-400 font-mono">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    18ms
-                  </span>
-                </div>
-
-                {/* Right Status Pill */}
-                <div className="hidden sm:flex items-center gap-1.5 text-[10px] font-mono text-[#77746F]">
-                  <Users size={12} weight="regular" className="text-[#D4AD61]" />
-                  <span>3 in room</span>
-                </div>
-              </div>
-
-              {/* Jamroom Application Canvas */}
-              <div className="p-3.5 sm:p-6 lg:p-7 relative min-h-[460px] sm:min-h-[510px] flex flex-col justify-between">
-                
-                {/* 1. Top Room Header & Action Buttons */}
-                <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-4 border-b border-white/[0.08] relative">
-                  
-                  {/* Room Status & Identity */}
-                  <div
-                    data-target="room-header"
-                    className="flex items-center gap-2.5 p-1 rounded-lg transition-colors duration-200"
-                  >
-                    <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm sm:text-base font-semibold text-[#F5F5F4] tracking-tight">
-                        Jam Room Alpha
-                      </span>
-                      <span className="text-[10px] sm:text-xs font-mono text-[#A8A29E] bg-[#1A1816] px-2 py-0.5 rounded border border-white/10">
-                        #JAM-8402
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Actions: Bot Toggle & Copy Link */}
-                  <div className="flex items-center gap-1.5 sm:gap-2 relative flex-wrap sm:flex-nowrap">
-                    
-                    {/* Jam Bot Action Button */}
-                    <div
-                      data-target="btn-jambot"
-                      className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-[10px] sm:text-xs font-semibold transition-all duration-200 inline-flex items-center gap-1.5 whitespace-nowrap border cursor-default select-none ${
-                        isClicking && activeTargetKey === 'btn-jambot'
-                          ? 'scale-95 brightness-90'
-                          : ''
-                      } ${
-                        isJamBotActive
-                          ? 'bg-emerald-500 text-zinc-950 border-emerald-400 shadow-[0_0_14px_rgba(16,185,129,0.4)]'
-                          : activeTargetKey === 'btn-jambot'
-                          ? 'bg-white text-[#171717] border-white ring-2 ring-[#D4AD61]/40'
-                          : 'bg-[#F5F5F4] text-[#171717] border-white/20'
-                      }`}
-                    >
-                      {isJamBotActive ? (
-                        <Pause size={12} weight="fill" className="shrink-0" />
-                      ) : (
-                        <Play size={12} weight="fill" className="text-emerald-600 shrink-0" />
-                      )}
-                      <span>{isJamBotActive ? 'Pause Bot' : <><span className="hidden sm:inline">Play with </span>Jam Bot<span className="hidden min-[480px]:inline"> (Alex)</span></>}</span>
-                    </div>
-
-                    {/* Invite Link Action Button */}
-                    <div
-                      data-target="btn-invite"
-                      className={`text-[10px] sm:text-xs font-medium px-2.5 sm:px-3 py-1.5 rounded-xl transition-all duration-200 inline-flex items-center gap-1.5 whitespace-nowrap border cursor-default select-none ${
-                        isClicking && activeTargetKey === 'btn-invite'
-                          ? 'scale-95 brightness-90'
-                          : ''
-                      } ${
-                        copiedLink
-                          ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.25)]'
-                          : activeTargetKey === 'btn-invite'
-                          ? 'bg-[#221F28] border-[#D4AD61]/60 text-[#F5F5F4] ring-2 ring-[#D4AD61]/30'
-                          : 'bg-[#1A1816] border-white/10 text-[#A8A29E]'
-                      }`}
-                    >
-                      {copiedLink ? (
-                        <>
-                          <Check size={12} weight="bold" className="text-emerald-400" />
-                          <span>Copied</span>
-                        </>
-                      ) : (
-                        <>
-                          <LinkSimple size={12} weight="regular" />
-                          <span>Invite Link</span>
-                        </>
-                      )}
-                    </div>
-
-                    {/* Invite Link Popover Notification */}
-                    <AnimatePresence>
-                      {showInvitePopover && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -6, scale: 0.94 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: -4, scale: 0.94 }}
-                          transition={{ duration: 0.2 }}
-                          className="absolute -bottom-10 right-0 z-40 bg-[#1A1828] border border-emerald-500/50 text-emerald-300 text-[10px] sm:text-[11px] font-mono px-2.5 py-1 rounded-lg shadow-xl flex items-center gap-1.5 whitespace-nowrap backdrop-blur-md"
-                        >
-                          <Check size={12} weight="bold" className="text-emerald-400" />
-                          <span>Invite link copied to clipboard!</span>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </div>
-
-                {/* 2. Collaborative Web Audio Streams Waveform Visualization */}
-                <div
-                  data-target="waveform"
-                  className={`w-full h-20 sm:h-24 rounded-2xl bg-[#14101A] border transition-all duration-500 p-3 sm:p-4 mb-4 relative overflow-hidden flex items-center justify-center ${
-                    waveformActive
-                      ? 'border-[#D4AD61]/60 shadow-[0_0_24px_rgba(212,173,97,0.16),inset_0_2px_6px_rgba(0,0,0,0.6)]'
-                      : 'border-white/10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.45)]'
-                  }`}
-                >
-                  {/* Ambient Label */}
-                  <div className="absolute top-2 left-3 text-[9px] sm:text-[10px] font-mono text-[#A8A29E] uppercase tracking-wider flex items-center gap-1.5 z-10">
-                    <span
-                      className={`w-1.5 h-1.5 rounded-full ${
-                        waveformActive ? 'bg-[#D4AD61] animate-ping' : 'bg-[#D4AD61]'
-                      }`}
-                    />
-                    <span>Synchronized Web Audio Streams (Local & Remote)</span>
-                  </div>
-
-                  {/* Dynamic SVG Waveform */}
-                  <svg className="w-full h-12 sm:h-16" viewBox="0 0 800 60" fill="none">
-                    {/* Waveform 1: Host (You - Golden Amber) */}
-                    <motion.path
-                      animate={{
-                        d: waveformActive
-                          ? [
-                              'M 0 30 Q 100 8, 200 30 T 400 30 T 600 30 T 800 30',
-                              'M 0 30 Q 100 50, 200 30 T 400 30 T 600 30 T 800 30',
-                              'M 0 30 Q 100 8, 200 30 T 400 30 T 600 30 T 800 30',
-                            ]
-                          : hostWaveform,
-                      }}
-                      transition={{
-                        repeat: waveformActive ? Infinity : 0,
-                        duration: 1.8,
-                        ease: 'easeInOut',
-                      }}
-                      stroke="#D4AD61"
-                      strokeWidth={waveformActive ? '2.6' : '2'}
-                      strokeLinecap="round"
-                    />
-
-                    {/* Waveform 2: Remote Peer (Alex / Sarah - Subtle Gray-Silver) */}
-                    <motion.path
-                      animate={{
-                        d: waveformActive
-                          ? [
-                              'M 0 30 Q 100 52, 200 30 T 400 30 T 600 30 T 800 30',
-                              'M 0 30 Q 100 12, 200 30 T 400 30 T 600 30 T 800 30',
-                              'M 0 30 Q 100 52, 200 30 T 400 30 T 600 30 T 800 30',
-                            ]
-                          : remoteWaveform,
-                      }}
-                      transition={{
-                        repeat: waveformActive ? Infinity : 0,
-                        duration: 2.1,
-                        ease: 'easeInOut',
-                      }}
-                      stroke="#A8A29E"
-                      strokeWidth="1.8"
-                      strokeLinecap="round"
-                      style={{ opacity: isJamBotActive || sarahInRoom ? 0.85 : 0.3 }}
-                    />
-                  </svg>
-                </div>
-
-                {/* 3. Musicians & Live Activity Stream Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start flex-1">
-                  
-                  {/* Connected Musicians Column (5 cols) */}
-                  <div data-target="musicians-panel" className="lg:col-span-5 flex flex-col gap-2">
-                    <span className="text-[10px] sm:text-[11px] font-mono font-semibold uppercase tracking-wider text-[#A8A29E] mb-0.5">
-                      Connected Musicians
-                    </span>
-
-                    {/* You (Host) */}
-                    <div
-                      className={`p-2.5 sm:p-3 rounded-2xl border transition-all duration-300 flex items-center justify-between ${
-                        highlightAll
-                          ? 'bg-[#201D1A] border-[#D4AD61] shadow-[0_0_14px_rgba(212,173,97,0.22)]'
-                          : 'bg-[#1A1816] border-white/5'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2.5 sm:gap-3">
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white text-[#171717] font-bold text-[11px] sm:text-xs flex items-center justify-center shadow-sm">
-                          YO
-                        </div>
-                        <div>
-                          <span className="text-xs font-semibold text-[#F5F5F4] block">You</span>
-                          <span className="text-[9px] sm:text-[10px] text-emerald-400 font-mono">
-                            Host • Plucking Active
-                          </span>
-                        </div>
-                      </div>
-                      <span className="text-[9px] sm:text-[10px] font-mono text-zinc-400">48 kHz</span>
-                    </div>
-
-                    {/* Alex (Bot) */}
-                    <div
-                      className={`p-2.5 sm:p-3 rounded-2xl border transition-all duration-300 flex items-center justify-between ${
-                        highlightAll || isJamBotActive
-                          ? 'bg-[#D4AD61]/15 border-[#D4AD61] shadow-[0_0_14px_rgba(212,173,97,0.22)]'
-                          : 'bg-[#1A1816] border-white/5'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2.5 sm:gap-3">
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#D4AD61] text-zinc-950 font-bold text-[11px] sm:text-xs flex items-center justify-center">
-                          AL
-                        </div>
-                        <div>
-                          <span className="text-xs font-semibold text-[#F5F5F4] block">Alex (Bot)</span>
-                          <span className="text-[9px] sm:text-[10px] text-[#D4AD61] font-mono">
-                            {isJamBotActive ? 'Soloing • In Sync' : 'Jam Bot • Ready'}
-                          </span>
-                        </div>
-                      </div>
-                      <span className="text-[9px] sm:text-[10px] font-mono text-[#D4AD61]">
-                        {isJamBotActive ? 'Active' : 'Interactive'}
-                      </span>
-                    </div>
-
-                    {/* Sarah */}
-                    <div
-                      className={`p-2.5 sm:p-3 rounded-2xl border transition-all duration-300 flex items-center justify-between ${
-                        highlightAll || sarahInRoom
-                          ? 'bg-[#1F1D20] border-[#A5AC94]/80 shadow-[0_0_14px_rgba(165,172,148,0.2)]'
-                          : 'bg-[#1A1816]/60 border-white/5 opacity-60'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2.5 sm:gap-3">
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#A5AC94] text-white font-bold text-[11px] sm:text-xs flex items-center justify-center">
-                          SR
-                        </div>
-                        <div>
-                          <span className="text-xs font-semibold text-[#F5F5F4] block">Sarah</span>
-                          <span className="text-[9px] sm:text-[10px] text-zinc-400 font-mono">
-                            {sarahInRoom ? 'Rhythm • In Room' : 'Invited • Waiting'}
-                          </span>
-                        </div>
-                      </div>
-                      <span className="text-[9px] sm:text-[10px] font-mono text-zinc-400">
-                        {sarahInRoom ? 'Listening' : 'Standby'}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Real-Time Activity Stream Column (7 cols) */}
-                  <div data-target="activity-stream" className="lg:col-span-7 flex flex-col gap-2">
-                    <span className="text-[10px] sm:text-[11px] font-mono font-semibold uppercase tracking-wider text-[#A8A29E] mb-0.5">
-                      Real-Time Activity Stream
-                    </span>
-
-                    <div className="space-y-1.5 sm:space-y-2">
-                      <AnimatePresence initial={false}>
-                        {activities.map((log) => (
-                          <motion.div
-                            key={log.id}
-                            initial={{ opacity: 0, x: -8, y: -4 }}
-                            animate={{ opacity: 1, x: 0, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.95 }}
-                            transition={{ duration: 0.3 }}
-                            className="flex items-center justify-between p-2 sm:p-2.5 rounded-xl bg-[#1A1816] border border-white/5 text-[11px] sm:text-xs font-mono"
-                          >
-                            <div className="flex items-center gap-2 truncate">
-                              <span
-                                className={`w-5 h-5 rounded-full ${
-                                  log.avatarBg || 'bg-zinc-800'
-                                } ${
-                                  log.avatarColor || 'text-zinc-300'
-                                } font-bold text-[9px] flex items-center justify-center shrink-0`}
-                              >
-                                {log.avatar}
-                              </span>
-                              <span className="font-semibold text-[#F5F5F4] shrink-0">{log.user}</span>
-                              <span className="text-[#A8A29E] truncate">{log.action}</span>
-                            </div>
-                            <span className="text-[9px] sm:text-[10px] text-zinc-500 shrink-0 ml-2">
-                              {log.time}
-                            </span>
-                          </motion.div>
-                        ))}
-                      </AnimatePresence>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 4. Bottom Understated Disclaimer Ribbon */}
-                <div className="mt-4 pt-3.5 border-t border-white/[0.08] flex flex-wrap items-center justify-between gap-2 text-xs text-[#A8A29E]">
-                  <span className="font-mono text-[10px] sm:text-[11px] inline-flex items-center gap-1.5">
-                    <Sparkle size={12} weight="regular" className="text-[#D4AD61] shrink-0" />
-                    <span>DEMO PREVIEW • Instant room link sharing with local browser-synthesized audio.</span>
-                  </span>
-                  <span className="text-[10px] sm:text-[11px] font-mono text-[#D4AD61]">
-                    Zero software installation required
-                  </span>
-                </div>
-              </div>
-
-              {/* ============================================================ */}
-              {/* HIGH-PRECISION FAUX CURSOR STORYTELLER                        */}
-              {/* Point of arrow is locked directly onto measured target pixels */}
-              {/* ============================================================ */}
-              {!shouldReduceMotion && (
-                <motion.div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute z-50 select-none"
-                  animate={{
-                    x: coords.x,
-                    y: coords.y,
-                    scale: isClicking ? 0.82 : 1,
-                  }}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 220,
-                    damping: 24,
-                    mass: 0.45,
-                  }}
-                  style={{
-                    left: 0,
-                    top: 0,
-                    // Hotspot of the arrow tip is exactly at (0, 0)
-                    transformOrigin: '0px 0px',
-                  }}
-                >
-                  {/* Apple / macOS Precision Pointer Arrow */}
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="drop-shadow-[0_4px_8px_rgba(0,0,0,0.85)] filter"
-                    style={{
-                      display: 'block',
-                      transform: 'translate(0px, 0px)',
-                    }}
-                  >
-                    <path
-                      d="M0.5 0.5L7.5 21.5L11.5 12.5L20.5 8.5L0.5 0.5Z"
-                      fill="#120F17"
-                      stroke="#F5F5F4"
-                      strokeWidth="1.5"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-
-                  {/* Concentric Precision Click Ring Feedback (Originating from tip) */}
-                  {isClicking && (
-                    <motion.span
-                      initial={{ scale: 0.2, opacity: 1 }}
-                      animate={{ scale: 2.2, opacity: 0 }}
-                      transition={{ duration: 0.35, ease: 'easeOut' }}
-                      className="absolute -top-3.5 -left-3.5 w-7 h-7 rounded-full border-2 border-[#D4AD61] pointer-events-none"
-                    />
-                  )}
-
-                  {/* Contextual Story Tooltip */}
-                  <AnimatePresence>
-                    {tooltip && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 6, scale: 0.94 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -4, scale: 0.94 }}
-                        transition={{ duration: 0.18 }}
-                        className="absolute left-6 top-3 px-2.5 py-1 rounded-full bg-[#181422]/95 border border-[#D4AD61]/60 text-[#F5F5F4] text-[10px] sm:text-[11px] font-mono whitespace-nowrap shadow-[0_8px_20px_rgba(0,0,0,0.7)] flex items-center gap-1.5 backdrop-blur-md z-50 pointer-events-none"
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#D4AD61] animate-ping" />
-                        <span className="tracking-tight">{tooltip}</span>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
+        <div className="flex flex-col h-full text-[var(--ss-text-strong)]">
+          {/* Top Studio Toolbar */}
+          <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-[var(--ss-line)] bg-[var(--ss-chrome)]">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <Badge tone="success" dot>
+                Live · 14 ms
+              </Badge>
+              <span className="text-[12px] font-medium text-[var(--ss-text-strong)] truncate">
+                Late Night Progression
+              </span>
+              {!compact && (
+                <span className="text-[11px] font-mono text-[var(--ss-text-faint)]">
+                  #JAM-8402
+                </span>
               )}
             </div>
+
+            <div className="flex items-center gap-2 shrink-0">
+              {!compact && (
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-[var(--ss-line)] bg-[var(--ss-surface)]">
+                  <Metronome size={12} className="text-[#D4AD61]" />
+                  <span className="text-[12px] font-mono font-semibold text-[var(--ss-text-strong)]">
+                    <Count value={s.bpm} /> BPM
+                  </span>
+                  <button
+                    type="button"
+                    data-target="bpm-up"
+                    className="ml-1 px-1.5 py-0.5 rounded bg-[var(--ss-ink-2)] hover:bg-[var(--ss-ink-3)] text-[10px] font-mono text-[#D4AD61] transition-colors cursor-pointer"
+                  >
+                    +4
+                  </button>
+                </div>
+              )}
+
+              <Button
+                data-target="sync-toggle"
+                variant="ghost"
+                size="small"
+                icon={<Waveform size={13} />}
+              >
+                Sync
+              </Button>
+
+              <Button
+                data-target="share-btn"
+                variant="primary"
+                size="small"
+                icon={<ShareNetwork size={13} weight="bold" />}
+              >
+                Share Room
+              </Button>
+            </div>
+          </div>
+
+          {/* Main Split Studio Workspace */}
+          <div
+            className={`flex-1 min-h-0 grid ${
+              compact ? 'grid-cols-1' : 'grid-cols-[240px_1fr]'
+            }`}
+          >
+            {/* Left Sidebar: Active Musicians (desktop/tablet) */}
+            {!compact && (
+              <aside className="border-r border-[var(--ss-line)] bg-[var(--ss-well)] p-3 flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between px-1">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-[var(--ss-text-faint)]">
+                      Bandmates (3)
+                    </span>
+                    <Users size={13} className="text-[var(--ss-text-faint)]" />
+                  </div>
+
+                  <div className="space-y-1">
+                    {BANDMATES.map((member, idx) => {
+                      const followingChord =
+                        idx < 2 ? displayChord : s.devonChord;
+                      return (
+                        <Row
+                          key={member.name}
+                          pad={8}
+                          selected={idx === 0}
+                          lead={
+                            <Avatar
+                              name={member.name}
+                              size={26}
+                              tone={member.tone}
+                              ring="confirmed"
+                            />
+                          }
+                          title={member.name}
+                          subtitle={member.role}
+                          meta={
+                            <span className="text-[10px] font-mono font-semibold text-[#D4AD61]">
+                              {followingChord}
+                            </span>
+                          }
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Collapsible Sync Telemetry Drawer */}
+                <div className="pt-2 border-t border-[var(--ss-line)]">
+                  <Collapse open={s.syncDetailsOpen} reveal="clip">
+                    <div className="p-2.5 rounded-lg bg-[var(--ss-surface)] border border-[var(--ss-line)] space-y-1.5 mb-2">
+                      <div className="flex items-center justify-between text-[11px]">
+                        <span className="text-[var(--ss-text)]">WebRTC Mesh</span>
+                        <span className="font-mono text-emerald-400">Locked</span>
+                      </div>
+                      <div className="flex items-center justify-between text-[11px]">
+                        <span className="text-[var(--ss-text)]">Jitter Buffer</span>
+                        <span className="font-mono text-[var(--ss-text-strong)]">4.2 ms</span>
+                      </div>
+                    </div>
+                  </Collapse>
+
+                  <div className="flex items-center justify-between px-1 text-[11px] text-[var(--ss-text)]">
+                    <span className="inline-flex items-center gap-1.5">
+                      <Radio size={12} className="text-[#D4AD61]" />
+                      Clock Master
+                    </span>
+                    <span className="font-mono text-[10px] text-[var(--ss-text-faint)]">
+                      {s.feel}
+                    </span>
+                  </div>
+                </div>
+              </aside>
+            )}
+
+            {/* Center Stage: Live Chord & Fretboard Mirror */}
+            <main className="p-4 sm:p-5 flex flex-col justify-between gap-4 bg-[var(--ss-surface)] min-w-0">
+              {/* Chord Progression Strip + Meter */}
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-1.5 p-1 rounded-lg bg-[var(--ss-well)] border border-[var(--ss-line)]">
+                  {CHORD_ORDER.map((id) => {
+                    const active = displayChord === id;
+                    return (
+                      <button
+                        key={id}
+                        type="button"
+                        data-target={`chord-${id}`}
+                        onMouseEnter={() => setHoverManualChord(id)}
+                        onMouseLeave={() => setHoverManualChord(null)}
+                        className={`px-3 py-1 rounded-md text-[12px] font-mono font-semibold transition-colors cursor-pointer ${
+                          active
+                            ? 'bg-[#D4AD61] text-[#0C0A09] shadow-sm'
+                            : 'text-[var(--ss-text)] hover:text-[var(--ss-text-strong)]'
+                        }`}
+                      >
+                        {id}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Segmented
+                    value={s.feel === '4/4' ? 0 : 1}
+                    items={['4/4', '3/4']}
+                  />
+                  {compact && (
+                    <span
+                      data-target="bpm-up"
+                      className="px-2 py-1 rounded-md bg-[var(--ss-well)] border border-[var(--ss-line)] text-[11px] font-mono text-[#D4AD61]"
+                    >
+                      <Count value={s.bpm} /> BPM
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Active Sounding Voicing Banner */}
+              <div className="rounded-xl border border-[var(--ss-line)] bg-[var(--ss-well)] px-4 py-3 flex items-center justify-between gap-4">
+                <div className="min-w-0">
+                  <div className="text-[10px] font-mono uppercase tracking-[0.14em] text-[#D4AD61] mb-1">
+                    Synchronized Voicing
+                  </div>
+                  <div className="flex items-baseline gap-2.5">
+                    <span className="text-2xl font-bold tracking-tight text-[var(--ss-text-strong)]">
+                      <Roll variant="fade">{chord.id}</Roll>
+                    </span>
+                    <span className="text-xs text-[var(--ss-text)] truncate">
+                      <Roll variant="fade">{chord.name}</Roll>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1.5">
+                  {chord.notes.map((note) => (
+                    <span
+                      key={note}
+                      className="w-7 h-7 rounded-md bg-[var(--ss-surface)] border border-[var(--ss-line)] flex items-center justify-center text-[11px] font-mono font-semibold text-[#E9D8B7]"
+                    >
+                      {note}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Live Synchronized Fretboard Grid */}
+              <div className="rounded-xl border border-[var(--ss-line)] bg-[#1B1312] p-3.5 sm:p-4 relative overflow-hidden">
+                <div className="flex items-center justify-between text-[10px] font-mono text-[#A8A29E]/80 mb-2.5">
+                  <span>FRETS 1 — 5</span>
+                  <span className="text-[#D4AD61]">{chord.formula}</span>
+                </div>
+
+                <div className="space-y-2 relative">
+                  {/* Vertical fret wires */}
+                  <div className="absolute inset-y-0 left-7 right-1 grid grid-cols-5 pointer-events-none">
+                    {[1, 2, 3, 4, 5].map((f) => (
+                      <div
+                        key={f}
+                        className="border-r border-white/10 h-full last:border-r-0"
+                      />
+                    ))}
+                  </div>
+
+                  {STRING_LABELS.slice()
+                    .reverse()
+                    .map((label, revIdx) => {
+                      const stringIdx = 5 - revIdx;
+                      const fret = chord.frets[stringIdx];
+                      const thickness = 1 + (5 - stringIdx) * 0.25;
+
+                      return (
+                        <div
+                          key={label}
+                          className="relative h-5 flex items-center gap-2"
+                        >
+                          <span className="w-5 text-[10px] font-mono text-[#A8A29E] text-right shrink-0">
+                            {label}
+                          </span>
+
+                          <div className="relative flex-1 h-full grid grid-cols-5 items-center">
+                            <div
+                              className="absolute inset-x-0 top-1/2 -translate-y-1/2 bg-gradient-to-r from-[#D4AD61]/40 via-[#E9D8B7]/35 to-[#D4AD61]/30"
+                              style={{ height: `${thickness}px` }}
+                            />
+
+                            {[1, 2, 3, 4, 5].map((fretCol) => {
+                              const pressed = fret === fretCol;
+                              return (
+                                <div
+                                  key={fretCol}
+                                  className="relative z-10 flex items-center justify-center"
+                                >
+                                  {pressed && (
+                                    <span className="w-4 h-4 rounded-full bg-[#D4AD61] text-[#0C0A09] text-[9px] font-mono font-bold flex items-center justify-center shadow-[0_0_12px_rgba(212,173,97,0.7)] transition-transform duration-300 scale-100">
+                                      {fretCol}
+                                    </span>
+                                  )}
+                                </div>
+                              );
+                            })}
+
+                            {fret === 0 && (
+                              <span
+                                title="Open string"
+                                className="absolute -left-2 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full border border-[#D4AD61]"
+                              />
+                            )}
+                            {fret === -1 && (
+                              <span className="absolute -left-2.5 top-1/2 -translate-y-1/2 text-[9px] font-mono text-[#78716C]">
+                                ×
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+
+              {/* Compact footer cue */}
+              <div className="flex items-center justify-between text-[11px] text-[var(--ss-text)]">
+                <span className="inline-flex items-center gap-1.5">
+                  <MusicNotes size={13} className="text-[#D4AD61]" />
+                  {BANDMATES[1].name} &amp; {BANDMATES[2].name} synced on {chord.id}
+                </span>
+                <Link
+                  href="/jam"
+                  className="font-mono text-[11px] text-[#E9D8B7] hover:text-[#D4AD61] transition-colors"
+                >
+                  Launch Room →
+                </Link>
+              </div>
+            </main>
           </div>
         </div>
+      </Window>
 
-        {/* ==================================================================== */}
-        {/* MACBOOK HINGE & LOWER CHASSIS / KEYBOARD LIP                         */}
-        {/* ==================================================================== */}
-        <div className="relative w-full z-10 flex flex-col items-center">
-          
-          {/* Screen Hinge Recess Bar */}
-          <div className="h-1.5 sm:h-2 w-[88%] bg-gradient-to-b from-[#131019] to-[#1E1A26] rounded-t-sm border-t border-black/80" />
-
-          {/* Lower Aluminum Base Plate (Extends subtly wider than screen) */}
-          <div className="w-[103%] -ml-[1.5%] h-3.5 sm:h-4.5 rounded-b-[16px] sm:rounded-b-[20px] bg-gradient-to-b from-[#342F3D] via-[#24202B] to-[#17141D] border-t border-white/25 shadow-[0_20px_45px_rgba(0,0,0,0.85),inset_0_-1px_2px_rgba(255,255,255,0.15)] relative">
-            
-            {/* Center Thumb Notch for Opening Lid */}
-            <div className="w-14 sm:w-20 h-1 sm:h-1.5 rounded-b-[4px] bg-[#0E0C12] mx-auto border-t border-black/80 shadow-inner" />
+      {/* Native Stageshow Popover anchored to Share Room */}
+      <Popover
+        show={s.inviteOpen}
+        origin="top right"
+        style={{
+          position: 'absolute',
+          left: s.shareOrigin.left,
+          top: s.shareOrigin.top,
+          width: compact ? 236 : 264,
+          zIndex: 30,
+        }}
+      >
+        <div className="rounded-xl bg-[var(--ss-raised)] border border-[var(--ss-line)] p-3.5 shadow-[var(--ss-shadow-float)] space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-mono uppercase tracking-[0.14em] text-[#D4AD61]">
+              Invite Link
+            </span>
+            <button
+              type="button"
+              data-target="close-invite"
+              className="text-[11px] font-mono text-[var(--ss-text-faint)] hover:text-[var(--ss-text-strong)] cursor-pointer"
+            >
+              Esc
+            </button>
           </div>
 
-          {/* Ground Ambient Reflection & Soft Contact Shadow */}
-          <div className="w-[90%] mx-auto h-3 bg-gradient-to-r from-transparent via-black/80 to-transparent blur-md -mt-1" />
+          <div className="flex items-center justify-between gap-2 px-2.5 py-2 rounded-lg bg-[var(--ss-well)] border border-[var(--ss-line)]">
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-[var(--ss-text-strong)] truncate">
+              <LinkIcon size={12} className="text-[#D4AD61] shrink-0" />
+              fretboard.app/jam/8402
+            </span>
+          </div>
+
+          <Divider />
+
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[11px] text-[var(--ss-text)]">
+              Low-latency P2P active
+            </span>
+            <Button
+              data-target="copy-invite"
+              variant={s.copied ? 'secondary' : 'primary'}
+              size="small"
+              icon={s.copied ? <Check size={12} weight="bold" /> : <Copy size={12} />}
+            >
+              {s.copied ? 'Copied' : 'Copy Link'}
+            </Button>
+          </div>
         </div>
+      </Popover>
+    </div>
+  );
+}
+
+export default function MacBookShowcase() {
+  return (
+    <div className="w-full max-w-5xl mx-auto">
+      <div className="rounded-[24px] p-1.5 sm:p-2.5 bg-white/[0.02] border border-white/[0.07] shadow-[0_28px_80px_rgba(0,0,0,0.45)] backdrop-blur-sm">
+        <Stage<JamSceneState>
+          width={900}
+          height={540}
+          compact={{ below: 640, width: 410, height: 590 }}
+          theme="dark"
+          initial={INITIAL_SCENE}
+          script={runJamScript}
+          className="rounded-[18px] overflow-hidden fretboard-jam-stage"
+        >
+          {(s) => <JamStageContent s={s} />}
+        </Stage>
       </div>
     </div>
   );

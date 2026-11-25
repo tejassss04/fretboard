@@ -126,21 +126,35 @@ export default function Metronome() {
         </div>
 
         {/* Time Signature Segmented Control */}
-        <div className="flex items-center gap-1 bg-[#F1F0ED] dark:bg-[#1A1816] p-1 rounded-xl border border-[#EAE8E4] dark:border-white/10">
-          {TIME_SIGNATURES.map((sig) => (
-            <button
-              key={sig.id}
-              type="button"
-              onClick={() => handleSignatureChange(sig.count)}
-              className={`px-3 py-1 rounded-lg text-xs font-mono font-semibold transition-all cursor-pointer ${
-                signature === sig.count
-                  ? 'bg-white dark:bg-[#25221F] text-[#171717] dark:text-[#F5F5F4] shadow-xs'
-                  : 'text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717] dark:hover:text-white'
-              }`}
-            >
-              {sig.label}
-            </button>
-          ))}
+        <div className="flex items-center gap-1 bg-[#F1F0ED] dark:bg-[#1A1816] p-1 rounded-xl border border-[#EAE8E4] dark:border-white/[0.08]">
+          {TIME_SIGNATURES.map((sig) => {
+            const active = signature === sig.count;
+            return (
+              <button
+                key={sig.id}
+                type="button"
+                onClick={() => handleSignatureChange(sig.count)}
+                className={`relative px-3 py-1 rounded-lg text-xs font-mono font-semibold transition-colors cursor-pointer ${
+                  active
+                    ? 'text-[#171717] dark:text-[#F5F5F4]'
+                    : 'text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717] dark:hover:text-white'
+                }`}
+              >
+                {active && (
+                  <motion.span
+                    layoutId="metronomeSigActive"
+                    transition={
+                      shouldReduceMotion
+                        ? { duration: 0 }
+                        : { type: 'spring', stiffness: 460, damping: 34 }
+                    }
+                    className="absolute inset-0 rounded-lg bg-white dark:bg-[#25221F] shadow-xs"
+                  />
+                )}
+                <span className="relative z-10">{sig.label}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 

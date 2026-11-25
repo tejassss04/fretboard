@@ -215,12 +215,12 @@ export default function JamPage() {
             <BlurReveal
               as="h1"
               immediate
-              className="text-2xl sm:text-4xl font-normal text-[#F5F5F4] tracking-[-0.025em] leading-[1.15]"
+              className="text-3xl sm:text-4xl lg:text-[42px] text-display-h1 text-[#F5F5F4]"
             >
               Live Collaborative{' '}
               <span className="font-serif italic text-[#E9D8B7]">Jamroom</span>
             </BlurReveal>
-            <p className="text-xs sm:text-sm text-[#A8A29E] mt-1 max-w-2xl">
+            <p className="text-xs sm:text-sm text-[#A8A29E] mt-1.5 max-w-2xl leading-relaxed">
               Play together with synchronized audio streams, harmonic scale visualizers, and AI accompaniment.
             </p>
           </div>

@@ -402,16 +402,8 @@ export default function SongLibrary() {
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-8 select-none">
-      {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-3xl sm:text-4xl font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.025em] leading-[1.15]">
-            Song <span className="font-serif italic text-[#E9D8B7]">Library</span>
-          </h2>
-          <p className="text-xs sm:text-sm text-[#77746F] dark:text-[#A8A29E] mt-1">
-            Curate chord progressions, track mastery progress, and practice with real Web Audio feedback.
-          </p>
-        </div>
+      {/* Top Action Toolbar (Page title is rendered by StudioPageHeader) */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-end gap-4">
 
         <div className="flex items-center gap-2">
           {activeTab === 'library' ? (
@@ -491,7 +483,7 @@ export default function SongLibrary() {
               <span className="text-[11px] font-mono uppercase tracking-wider text-[#77746F] dark:text-[#A8A29E] block mb-1">
                 Saved to Repertoire
               </span>
-              <div className="text-3xl font-serif font-normal tracking-tight leading-[1.2] text-[#171717] dark:text-[#F5F5F4]">
+              <div className="text-3xl font-sans font-semibold tracking-tight leading-[1.15] tabular-nums text-[#171717] dark:text-[#F5F5F4]">
                 {songList.length}
               </div>
               <p className="text-[11px] text-[#77746F] dark:text-[#A8A29E] mt-1">Total pieces in practice rotation</p>
@@ -501,7 +493,7 @@ export default function SongLibrary() {
               <span className="text-[11px] font-mono uppercase tracking-wider text-[#77746F] dark:text-[#A8A29E] block mb-1">
                 In Active Rotation
               </span>
-              <div className="text-3xl font-serif font-normal tracking-tight leading-[1.2] text-[#D4AD61]">
+              <div className="text-3xl font-sans font-semibold tracking-tight leading-[1.15] tabular-nums text-[#D4AD61]">
                 {songList.filter((s) => s.progress > 0 && s.progress < 100).length}
               </div>
               <p className="text-[11px] text-[#77746F] dark:text-[#A8A29E] mt-1">Currently building fluency</p>
@@ -511,7 +503,7 @@ export default function SongLibrary() {
               <span className="text-[11px] font-mono uppercase tracking-wider text-[#77746F] dark:text-[#A8A29E] block mb-1">
                 Mastered & Polished
               </span>
-              <div className="text-3xl font-serif font-normal tracking-tight leading-[1.2] text-emerald-500">
+              <div className="text-3xl font-sans font-semibold tracking-tight leading-[1.15] tabular-nums text-emerald-500">
                 {songList.filter((s) => s.progress === 100).length}
               </div>
               <p className="text-[11px] text-[#77746F] dark:text-[#A8A29E] mt-1">Ready for performance</p>
@@ -522,20 +514,30 @@ export default function SongLibrary() {
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white dark:bg-[#121110] border border-[#EAE8E4] dark:border-white/10 rounded-2xl p-2 shadow-xs">
             {/* Difficulty Segment Pills */}
             <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
-              {['All', 'Beginner', 'Intermediate', 'Advanced'].map((diff) => (
-                <button
-                  key={diff}
-                  type="button"
-                  onClick={() => setFilterDifficulty(diff)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer whitespace-nowrap ${
-                    filterDifficulty === diff
-                      ? 'bg-[#171717] dark:bg-[#F5F5F4] text-white dark:text-[#171717] shadow-xs'
-                      : 'text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717] dark:hover:text-[#F5F5F4] hover:bg-[#F7F6F3] dark:hover:bg-[#1C1A18]'
-                  }`}
-                >
-                  {diff}
-                </button>
-              ))}
+              {['All', 'Beginner', 'Intermediate', 'Advanced'].map((diff) => {
+                const active = filterDifficulty === diff;
+                return (
+                  <button
+                    key={diff}
+                    type="button"
+                    onClick={() => setFilterDifficulty(diff)}
+                    className={`relative px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors cursor-pointer whitespace-nowrap ${
+                      active
+                        ? 'text-white dark:text-[#171717]'
+                        : 'text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717] dark:hover:text-[#F5F5F4]'
+                    }`}
+                  >
+                    {active && (
+                      <motion.span
+                        layoutId="songDifficultyFilterPill"
+                        transition={{ type: 'spring', stiffness: 460, damping: 34 }}
+                        className="absolute inset-0 rounded-full bg-[#171717] dark:bg-[#F5F5F4] shadow-xs"
+                      />
+                    )}
+                    <span className="relative z-10">{diff}</span>
+                  </button>
+                );
+              })}
             </div>
 
             {/* Search Field */}
@@ -590,7 +592,7 @@ export default function SongLibrary() {
                     </div>
 
                     <div className="mb-4">
-                      <h3 className="text-xl font-serif font-normal text-[#171717] dark:text-[#F5F5F4] tracking-tight leading-[1.2]">
+                      <h3 className="text-card-title text-lg sm:text-xl text-[#171717] dark:text-[#F5F5F4]">
                         {song.title}
                       </h3>
                       <p className="text-xs text-[#77746F] dark:text-[#A8A29E] mt-0.5">
@@ -780,7 +782,7 @@ export default function SongLibrary() {
                   <span className="text-[10px] font-mono uppercase tracking-wider text-[#D4AD61] font-bold">
                     Harmonic Analysis &amp; Compatible Scales
                   </span>
-                  <h3 className="text-2xl font-serif font-normal text-[#171717] dark:text-[#F5F5F4] tracking-tight leading-[1.2] mt-0.5">
+                  <h3 className="text-card-title text-xl sm:text-2xl text-[#171717] dark:text-[#F5F5F4] mt-0.5">
                     {selectedAnalysisSong.title}
                   </h3>
                   <p className="text-xs text-[#77746F] dark:text-[#A8A29E] mt-1">
@@ -822,7 +824,7 @@ export default function SongLibrary() {
                       className="p-4 rounded-2xl bg-[#F7F6F3] dark:bg-[#1A1816] border border-[#EAE8E4] dark:border-white/10 space-y-2 hover:border-[#D4AD61]/50 transition-colors"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-lg font-serif font-bold text-[#D4AD61]">{token}</span>
+                        <span className="text-base sm:text-lg font-mono font-bold tracking-tight text-[#D4AD61]">{token}</span>
                         <button
                           type="button"
                           onClick={() => {
@@ -888,7 +890,7 @@ export default function SongLibrary() {
                             {scale.mode}
                           </span>
                         </div>
-                        <h5 className="text-base font-serif font-normal text-[#171717] dark:text-[#F5F5F4]">
+                        <h5 className="text-card-title text-base text-[#171717] dark:text-[#F5F5F4]">
                           {scale.name}
                         </h5>
                         <p className="text-xs text-[#77746F] dark:text-[#A8A29E] mt-1 leading-relaxed">
@@ -956,7 +958,7 @@ export default function SongLibrary() {
                       </div>
                     </div>
 
-                    <h4 className="text-lg font-serif font-normal text-[#171717] dark:text-[#F5F5F4] tracking-tight">
+                    <h4 className="text-card-title text-lg text-[#171717] dark:text-[#F5F5F4]">
                       {col.name}
                     </h4>
                     <p className="text-xs text-[#77746F] dark:text-[#A8A29E] mt-1 leading-relaxed">
@@ -1028,7 +1030,7 @@ export default function SongLibrary() {
                   <span className="text-[10px] font-mono uppercase tracking-wider text-[#D4AD61] font-semibold">
                     New Piece
                   </span>
-                  <h3 className="text-xl font-serif font-normal tracking-tight leading-[1.2] text-[#171717] dark:text-[#F5F5F4]">
+                  <h3 className="text-card-title text-lg sm:text-xl text-[#171717] dark:text-[#F5F5F4]">
                     Add to Repertoire
                   </h3>
                 </div>
@@ -1135,7 +1137,7 @@ export default function SongLibrary() {
                   <span className="text-[10px] font-mono uppercase tracking-wider text-[#D4AD61] font-semibold">
                     New Playlist / Folder
                   </span>
-                  <h3 className="text-xl font-serif font-normal tracking-tight leading-[1.2] text-[#171717] dark:text-[#F5F5F4]">
+                  <h3 className="text-card-title text-lg sm:text-xl text-[#171717] dark:text-[#F5F5F4]">
                     Create Collection
                   </h3>
                 </div>
@@ -1244,7 +1246,7 @@ export default function SongLibrary() {
                   <span className="text-[10px] font-mono uppercase tracking-wider text-[#D4AD61] font-semibold">
                     Manage Collection
                   </span>
-                  <h3 className="text-xl font-serif font-normal tracking-tight text-[#171717] dark:text-[#F5F5F4]">
+                  <h3 className="text-card-title text-lg sm:text-xl text-[#171717] dark:text-[#F5F5F4]">
                     {editingCollection.name}
                   </h3>
                 </div>

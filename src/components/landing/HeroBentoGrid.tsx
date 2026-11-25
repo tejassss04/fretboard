@@ -136,15 +136,15 @@ export default function HeroBentoGrid() {
           <SpotlightCard className="p-5 sm:p-6 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between gap-2 mb-2.5">
-                <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-[#D4AD61] bg-[#D4AD61]/10 px-2 py-0.5 rounded border border-[#D4AD61]/25">
-                  01 • ANATOMY
+                <span className="text-eyebrow text-[#D4AD61] bg-[#D4AD61]/10 px-2 py-0.5 rounded border border-[#D4AD61]/25">
+                  01 • Anatomy
                 </span>
-                <span className="text-[10px] font-mono text-[#77746F] dark:text-[#A8A29E]">
+                <span className="text-[11px] font-mono text-[#77746F] dark:text-[#A8A29E]">
                   Click note to play
                 </span>
               </div>
 
-              <h3 className="text-lg font-semibold text-[#171717] dark:text-[#F5F5F4] tracking-tight leading-[1.2] mb-1">
+              <h3 className="text-card-title text-lg text-[#171717] dark:text-[#F5F5F4] mb-1">
                 Living Fretboard
               </h3>
               <p className="text-xs text-[#77746F] dark:text-[#A8A29E] leading-relaxed mb-4">
@@ -224,11 +224,11 @@ export default function HeroBentoGrid() {
           <SpotlightCard className="p-5 sm:p-6 flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-[#D4AD61] bg-[#D4AD61]/10 px-2 py-0.5 rounded border border-[#D4AD61]/25">
-                  03 • SOUND
+                <span className="text-eyebrow text-[#D4AD61] bg-[#D4AD61]/10 px-2 py-0.5 rounded border border-[#D4AD61]/25">
+                  03 • Sound
                 </span>
               </div>
-              <h3 className="text-base font-semibold text-[#171717] dark:text-[#F5F5F4] tracking-tight leading-[1.2] mb-1">
+              <h3 className="text-card-title text-base sm:text-lg text-[#171717] dark:text-[#F5F5F4] mb-1">
                 Tone Studio
               </h3>
               <p className="text-xs text-[#77746F] dark:text-[#A8A29E] leading-relaxed mb-3">
@@ -237,7 +237,7 @@ export default function HeroBentoGrid() {
             </div>
 
             {/* 3 Tone Selector Pills */}
-            <div className="flex flex-col gap-1.5 bg-[#F7F6F3] dark:bg-[#1A1816] p-2 rounded-xl border border-[#EAE8E4] dark:border-white/10">
+            <div className="flex flex-col gap-1.5 bg-[#F7F6F3] dark:bg-[#1A1816] p-2 rounded-xl border border-[#EAE8E4] dark:border-white/[0.08]">
               {[
                 { id: 'acoustic', label: 'Acoustic Steel' },
                 { id: 'electric', label: 'Electric Clean' },
@@ -249,14 +249,25 @@ export default function HeroBentoGrid() {
                     key={tone.id}
                     type="button"
                     onClick={() => handleSelectTone(tone.id as GuitarTone)}
-                    className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg border text-left transition-all cursor-pointer ${
+                    className={`relative flex items-center justify-between px-2.5 py-1.5 rounded-lg border text-left transition-colors cursor-pointer ${
                       isActive
-                        ? 'bg-[#171717] dark:bg-[#F5F5F4] text-white dark:text-[#171717] border-transparent shadow-xs'
+                        ? 'text-white dark:text-[#171717] border-transparent'
                         : 'bg-white dark:bg-[#201D1A] text-[#171717] dark:text-[#F5F5F4] border-[#EAE8E4] dark:border-white/10 hover:border-[#D4AD61]/50'
                     }`}
                   >
-                    <span className="text-xs font-semibold">{tone.label}</span>
-                    <span className="flex items-end gap-0.5 h-3">
+                    {isActive && (
+                      <motion.span
+                        layoutId="heroBentoTonePillActive"
+                        transition={
+                          shouldReduceMotion
+                            ? { duration: 0 }
+                            : { type: 'spring', stiffness: 460, damping: 34 }
+                        }
+                        className="absolute inset-0 rounded-lg bg-[#171717] dark:bg-[#F5F5F4] shadow-xs"
+                      />
+                    )}
+                    <span className="relative z-10 text-xs font-semibold">{tone.label}</span>
+                    <span className="relative z-10 flex items-end gap-0.5 h-3">
                       <span className={`w-0.5 rounded-full transition-all ${isActive ? 'bg-[#D4AD61] h-3 animate-pulse' : 'bg-zinc-400 h-1.5'}`} />
                       <span className={`w-0.5 rounded-full transition-all ${isActive ? 'bg-[#D4AD61] h-2 animate-pulse' : 'bg-zinc-400 h-1'}`} style={{ animationDelay: '0.15s' }} />
                       <span className={`w-0.5 rounded-full transition-all ${isActive ? 'bg-[#D4AD61] h-2.5 animate-pulse' : 'bg-zinc-400 h-1.5'}`} style={{ animationDelay: '0.3s' }} />
@@ -278,11 +289,11 @@ export default function HeroBentoGrid() {
           <SpotlightCard className="p-5 sm:p-6 flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-[#D4AD61] bg-[#D4AD61]/10 px-2 py-0.5 rounded border border-[#D4AD61]/25">
-                  02 • THEORY
+                <span className="text-eyebrow text-[#D4AD61] bg-[#D4AD61]/10 px-2 py-0.5 rounded border border-[#D4AD61]/25">
+                  02 • Theory
                 </span>
               </div>
-              <h3 className="text-base font-semibold text-[#171717] dark:text-[#F5F5F4] tracking-tight leading-[1.2] mb-1">
+              <h3 className="text-card-title text-base sm:text-lg text-[#171717] dark:text-[#F5F5F4] mb-1">
                 Dynamic Scales
               </h3>
               <p className="text-xs text-[#77746F] dark:text-[#A8A29E] leading-relaxed mb-3">
@@ -293,41 +304,63 @@ export default function HeroBentoGrid() {
             {/* Key Selector & Interval Badges */}
             <div className="flex flex-col gap-2.5 bg-[#F7F6F3] dark:bg-[#1A1816] p-2.5 rounded-xl border border-[#EAE8E4] dark:border-white/10">
               <div className="flex items-center justify-between">
-                <span className="text-[9px] font-mono text-[#77746F] dark:text-[#A8A29E]">ROOT</span>
-                <div className="flex items-center gap-1">
-                  {(['A', 'C', 'G', 'E'] as NoteName[]).map((k) => (
-                    <button
-                      key={k}
-                      type="button"
-                      onClick={() => setSelectedKey(k)}
-                      className={`w-5 h-5 rounded text-[9px] font-mono font-bold transition-all cursor-pointer ${
-                        selectedKey === k
-                          ? 'bg-[#171717] dark:bg-[#F5F5F4] text-white dark:text-[#171717] shadow-xs'
-                          : 'text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717]'
-                      }`}
-                    >
-                      {k}
-                    </button>
-                  ))}
+                <span className="text-eyebrow text-[#77746F] dark:text-[#A8A29E]">Root</span>
+                <div className="flex items-center gap-1 p-0.5 rounded-lg bg-black/[0.03] dark:bg-white/[0.03] border border-[#EAE8E4] dark:border-white/[0.08]">
+                  {(['A', 'C', 'G', 'E'] as NoteName[]).map((k) => {
+                    const active = selectedKey === k;
+                    return (
+                      <button
+                        key={k}
+                        type="button"
+                        onClick={() => setSelectedKey(k)}
+                        className={`relative w-6 h-6 rounded-md text-[11px] font-mono font-bold transition-colors cursor-pointer ${
+                          active
+                            ? 'text-white dark:text-[#171717]'
+                            : 'text-[#77746F] dark:text-[#A8A29E] hover:text-[#171717] dark:hover:text-[#F5F5F4]'
+                        }`}
+                      >
+                        {active && (
+                          <motion.span
+                            layoutId="heroBentoKeyActive"
+                            transition={
+                              shouldReduceMotion
+                                ? { duration: 0 }
+                                : { type: 'spring', stiffness: 480, damping: 34 }
+                            }
+                            className="absolute inset-0 rounded-md bg-[#171717] dark:bg-[#F5F5F4] shadow-xs"
+                          />
+                        )}
+                        <span className="relative z-10">{k}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
-              {/* Formula */}
-              <div className="flex items-center gap-1 pt-1 border-t border-[#EAE8E4] dark:border-white/5">
-                <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-[#D4AD61] text-zinc-950">
-                  R
-                </span>
-                <span className="text-[9px] font-mono text-[#77746F] dark:text-[#A8A29E] bg-white dark:bg-[#201D1A] px-1 py-0.5 rounded border border-[#EAE8E4] dark:border-white/10">
-                  ♭3
-                </span>
-                <span className="text-[9px] font-mono text-[#77746F] dark:text-[#A8A29E] bg-white dark:bg-[#201D1A] px-1 py-0.5 rounded border border-[#EAE8E4] dark:border-white/10">
-                  4
-                </span>
-                <span className="text-[9px] font-mono text-[#77746F] dark:text-[#A8A29E] bg-white dark:bg-[#201D1A] px-1 py-0.5 rounded border border-[#EAE8E4] dark:border-white/10">
-                  5
-                </span>
-                <span className="text-[9px] font-mono text-[#77746F] dark:text-[#A8A29E] bg-white dark:bg-[#201D1A] px-1 py-0.5 rounded border border-[#EAE8E4] dark:border-white/10">
-                  ♭7
+              {/* Formula & Dynamic Pitch Readout */}
+              <div className="flex items-center justify-between gap-2 pt-2 border-t border-[#EAE8E4] dark:border-white/[0.06]">
+                <div className="flex items-center gap-1">
+                  {['R', '♭3', '4', '5', '♭7'].map((deg, idx) => (
+                    <span
+                      key={deg}
+                      className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
+                        idx === 0
+                          ? 'font-bold bg-[#D4AD61] text-zinc-950'
+                          : 'text-[#77746F] dark:text-[#A8A29E] bg-white dark:bg-[#201D1A] border border-[#EAE8E4] dark:border-white/10'
+                      }`}
+                    >
+                      {deg}
+                    </span>
+                  ))}
+                </div>
+                <span className="text-[11px] font-mono text-[#D4AD61] tabular-nums">
+                  {selectedKey === 'A'
+                    ? 'A·C·D·E·G'
+                    : selectedKey === 'C'
+                      ? 'C·Eb·F·G·Bb'
+                      : selectedKey === 'G'
+                        ? 'G·Bb·C·D·F'
+                        : 'E·G·A·B·D'}
                 </span>
               </div>
             </div>

@@ -35,17 +35,9 @@ export default function ProgressTelemetry() {
   const hasSessions = sessions.length > 0;
 
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-8 select-none">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-3xl sm:text-4xl font-normal text-[#171717] dark:text-[#F5F5F4] tracking-[-0.025em] leading-[1.15]">
-            Small work. <span className="font-serif italic text-[#E9D8B7]">Real change.</span>
-          </h2>
-          <p className="text-xs sm:text-sm text-[#77746F] dark:text-[#A8A29E] mt-1">
-            Real-time consistency telemetry, weekly volume metrics, and milestone achievements.
-          </p>
-        </div>
+    <div className="w-full space-y-6 select-none">
+      {/* Action Toolbar (Page title is rendered by StudioPageHeader) */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-end gap-4">
 
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-mono font-medium border border-[#EAE8E4] dark:border-white/10 bg-white dark:bg-[#121110] text-[#77746F] dark:text-[#A8A29E] shadow-xs">
           <CalendarBlank size={13} weight="regular" className="text-[#D4AD61]" />
@@ -87,7 +79,7 @@ export default function ProgressTelemetry() {
           <span className="text-[11px] font-mono uppercase tracking-wider text-[#77746F] dark:text-[#A8A29E] block mb-1">
             Active Streak
           </span>
-          <div className="text-3xl font-serif font-normal tracking-tight leading-[1.2] text-[#D4AD61]">
+          <div className="text-3xl font-sans font-semibold tracking-tight leading-[1.15] tabular-nums text-[#D4AD61]">
             {streakDays} <span className="text-sm font-sans font-normal text-[#77746F] dark:text-[#A8A29E]">days</span>
           </div>
           <p className="text-[11px] text-[#77746F] dark:text-[#A8A29E] mt-1">
@@ -99,7 +91,7 @@ export default function ProgressTelemetry() {
           <span className="text-[11px] font-mono uppercase tracking-wider text-[#77746F] dark:text-[#A8A29E] block mb-1">
             Weekly Practice Volume
           </span>
-          <div className="text-3xl font-serif font-normal tracking-tight leading-[1.2] text-[#171717] dark:text-[#F5F5F4]">
+          <div className="text-3xl font-sans font-semibold tracking-tight leading-[1.15] tabular-nums text-[#171717] dark:text-[#F5F5F4]">
             {weeklyMinutes} <span className="text-sm font-sans font-normal text-[#77746F] dark:text-[#A8A29E]">min</span>
           </div>
           <p className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-1">
@@ -111,7 +103,7 @@ export default function ProgressTelemetry() {
           <span className="text-[11px] font-mono uppercase tracking-wider text-[#77746F] dark:text-[#A8A29E] block mb-1">
             Total Time Logged
           </span>
-          <div className="text-3xl font-serif font-normal tracking-tight leading-[1.2] text-[#171717] dark:text-[#F5F5F4]">
+          <div className="text-3xl font-sans font-semibold tracking-tight leading-[1.15] tabular-nums text-[#171717] dark:text-[#F5F5F4]">
             {totalMinutes} <span className="text-sm font-sans font-normal text-[#77746F] dark:text-[#A8A29E]">min</span>
           </div>
           <p className="text-[11px] text-[#77746F] dark:text-[#A8A29E] mt-1 capitalize">
@@ -210,15 +202,18 @@ export default function ProgressTelemetry() {
               weeklyData.map((d) => {
                 const heightPercent = d.mins > 0 ? Math.max(8, Math.round((d.mins / maxWeeklyMins) * 100)) : 0;
                 return (
-                  <div key={d.dateStr} className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
-                    <span className="text-[10px] font-mono text-[#77746F] dark:text-[#A8A29E]">
-                      {d.mins > 0 ? `${d.mins}m` : '-'}
+                  <div
+                    key={d.dateStr}
+                    className="group/bar flex-1 flex flex-col items-center gap-2 h-full justify-end"
+                  >
+                    <span className="text-[11px] font-mono tabular-nums text-[#77746F] dark:text-[#A8A29E] group-hover/bar:text-[#F5F5F4] transition-colors">
+                      {d.mins > 0 ? `${d.mins}m` : '—'}
                     </span>
-                    <div className="w-full bg-[#F1F0ED] dark:bg-[#1F1C19] rounded-lg h-full flex items-end overflow-hidden p-1">
+                    <div className="w-full bg-[#F1F0ED] dark:bg-[#1F1C19] rounded-lg h-full flex items-end overflow-hidden p-1 border border-transparent group-hover/bar:border-[#D4AD61]/30 transition-colors">
                       {heightPercent > 0 ? (
                         <div
-                          className={`w-full rounded-md transition-all duration-500 ${
-                            d.isToday ? 'bg-[#D4AD61] shadow-xs' : 'bg-[#D4AD61]/60'
+                          className={`w-full rounded-md transition-all duration-500 ease-out group-hover/bar:brightness-110 ${
+                            d.isToday ? 'bg-[#D4AD61] shadow-[0_0_12px_rgba(212,173,97,0.3)]' : 'bg-[#D4AD61]/65'
                           }`}
                           style={{ height: `${heightPercent}%` }}
                         />
@@ -226,7 +221,7 @@ export default function ProgressTelemetry() {
                         <div className="w-full h-1 rounded-sm bg-transparent" />
                       )}
                     </div>
-                    <span className={`text-[11px] font-mono ${d.isToday ? 'font-bold text-[#D4AD61]' : 'text-[#77746F] dark:text-[#A8A29E]'}`}>
+                    <span className={`text-[11px] font-mono tabular-nums ${d.isToday ? 'font-bold text-[#D4AD61]' : 'text-[#77746F] dark:text-[#A8A29E] group-hover/bar:text-[#F5F5F4] transition-colors'}`}>
                       {d.day}
                     </span>
                   </div>
@@ -260,7 +255,7 @@ export default function ProgressTelemetry() {
       <div className="bg-white dark:bg-[#121110] border border-[#EAE8E4] dark:border-white/10 rounded-3xl p-6 shadow-xs">
         <div className="flex items-center gap-2 mb-4">
           <Trophy size={16} weight="regular" className="text-[#D4AD61]" />
-          <h3 className="text-lg font-serif font-normal tracking-tight leading-[1.2] text-[#171717] dark:text-[#F5F5F4]">
+          <h3 className="text-card-title text-lg text-[#171717] dark:text-[#F5F5F4]">
             Milestones &amp; Practice Badges
           </h3>
         </div>
