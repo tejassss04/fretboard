@@ -54,7 +54,7 @@ export default function SplitLoginForm() {
     };
   }, []);
 
-  const handleOAuthSignIn = async (providerId: 'google' | 'apple', providerName: string) => {
+  const handleOAuthSignIn = async (providerId: 'google', providerName: string) => {
     setError(null);
     setInfoNotice(null);
 
@@ -77,7 +77,7 @@ export default function SplitLoginForm() {
   const handleForgotPassword = (e: React.MouseEvent) => {
     e.preventDefault();
     setInfoNotice(
-      'Password recovery: Fretboard operates with secure credentials. You can sign in via Google or Apple, or register a new studio account.',
+      'Password recovery: Fretboard operates with secure credentials. You can sign in via Google, or register a new studio account.',
     );
   };
 
@@ -228,15 +228,13 @@ export default function SplitLoginForm() {
             </p>
           </div>
 
-          {/* OAuth Buttons (Google & Apple) */}
-          <div className="grid grid-cols-2 gap-2.5">
-            
-            {/* 1. Google */}
+          {/* OAuth Button (Google) */}
+          <div>
             <button
               type="button"
               onClick={() => handleOAuthSignIn('google', 'Google')}
               disabled={isBusy || loadingProviders}
-              className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-xs font-medium bg-black/[0.02] dark:bg-[#110E17] text-[#171717] dark:text-[#F5F5F4] border border-[#EAE8E4] dark:border-white/[0.12] hover:border-[#D4AD61]/50 hover:bg-white dark:hover:bg-[#181422] transition-all cursor-pointer active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-lg text-xs font-medium bg-black/[0.02] dark:bg-[#110E17] text-[#171717] dark:text-[#F5F5F4] border border-[#EAE8E4] dark:border-white/[0.12] hover:border-[#D4AD61]/50 hover:bg-white dark:hover:bg-[#181422] transition-all cursor-pointer active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {pendingProvider === 'google' ? (
                 <CircleNotch size={14} className="animate-spin text-[#D4AD61]" />
@@ -260,24 +258,7 @@ export default function SplitLoginForm() {
                   />
                 </svg>
               )}
-              <span>Google</span>
-            </button>
-
-            {/* 2. Apple */}
-            <button
-              type="button"
-              onClick={() => handleOAuthSignIn('apple', 'Apple')}
-              disabled={isBusy || loadingProviders}
-              className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-xs font-medium bg-black/[0.02] dark:bg-[#110E17] text-[#171717] dark:text-[#F5F5F4] border border-[#EAE8E4] dark:border-white/[0.12] hover:border-[#D4AD61]/50 hover:bg-white dark:hover:bg-[#181422] transition-all cursor-pointer active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed"
-            >
-              {pendingProvider === 'apple' ? (
-                <CircleNotch size={14} className="animate-spin text-[#D4AD61]" />
-              ) : (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
-                </svg>
-              )}
-              <span>Apple</span>
+              <span>Continue with Google</span>
             </button>
           </div>
 

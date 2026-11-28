@@ -17,7 +17,7 @@ export default function OAuthButtons({
 }: OAuthButtonsProps) {
   const [providers, setProviders] = useState<ProvidersMap>(null);
   const [loadingProviders, setLoadingProviders] = useState(true);
-  const [pendingProvider, setPendingProvider] = useState<'google' | 'apple' | null>(null);
+  const [pendingProvider, setPendingProvider] = useState<'google' | null>(null);
   const [unavailableNotice, setUnavailableNotice] = useState<string | null>(null);
 
   useEffect(() => {
@@ -38,17 +38,12 @@ export default function OAuthButtons({
     };
   }, []);
 
-  const handleOAuthSignIn = async (providerId: 'google' | 'apple') => {
+  const handleOAuthSignIn = async (providerId: 'google') => {
     setUnavailableNotice(null);
 
     if (!providers || !providers[providerId]) {
-      const label = providerId === 'google' ? 'Google OAuth' : 'Apple Sign-In';
-      const envHint =
-        providerId === 'google'
-          ? 'AUTH_GOOGLE_ID and AUTH_GOOGLE_SECRET'
-          : 'AUTH_APPLE_ID and AUTH_APPLE_SECRET';
       setUnavailableNotice(
-        `${label} is not configured in this environment yet. Set ${envHint} in .env to enable it.`,
+        'Google OAuth is not configured in this environment yet. Set AUTH_GOOGLE_ID and AUTH_GOOGLE_SECRET in .env to enable it.',
       );
       return;
     }
@@ -66,13 +61,13 @@ export default function OAuthButtons({
 
   return (
     <div className="space-y-2.5">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+      <div className="grid grid-cols-1 gap-2.5">
         {/* Continue with Google */}
         <button
           type="button"
           onClick={() => handleOAuthSignIn('google')}
           disabled={isBusy || loadingProviders}
-          className="inline-flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium bg-[#F7F6F3] dark:bg-[#1A1816] text-[#171717] dark:text-[#F5F5F4] border border-[#EAE8E4] dark:border-white/10 hover:border-[#D4AD61]/50 hover:bg-white dark:hover:bg-[#221F26] transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer active:scale-[0.99]"
+          className="w-full inline-flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium bg-[#F7F6F3] dark:bg-[#1A1816] text-[#171717] dark:text-[#F5F5F4] border border-[#EAE8E4] dark:border-white/10 hover:border-[#D4AD61]/50 hover:bg-white dark:hover:bg-[#221F26] transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer active:scale-[0.99]"
         >
           {pendingProvider === 'google' ? (
             <CircleNotch size={15} weight="regular" className="animate-spin text-[#D4AD61]" />
@@ -96,24 +91,7 @@ export default function OAuthButtons({
               />
             </svg>
           )}
-          <span>Google</span>
-        </button>
-
-        {/* Continue with Apple */}
-        <button
-          type="button"
-          onClick={() => handleOAuthSignIn('apple')}
-          disabled={isBusy || loadingProviders}
-          className="inline-flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium bg-[#F7F6F3] dark:bg-[#1A1816] text-[#171717] dark:text-[#F5F5F4] border border-[#EAE8E4] dark:border-white/10 hover:border-[#D4AD61]/50 hover:bg-white dark:hover:bg-[#221F26] transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer active:scale-[0.99]"
-        >
-          {pendingProvider === 'apple' ? (
-            <CircleNotch size={15} weight="regular" className="animate-spin text-[#D4AD61]" />
-          ) : (
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
-            </svg>
-          )}
-          <span>Apple</span>
+          <span>Continue with Google</span>
         </button>
       </div>
 

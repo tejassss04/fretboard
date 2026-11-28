@@ -4,17 +4,12 @@ import type { Provider } from 'next-auth/providers';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import Credentials from 'next-auth/providers/credentials';
 import Google from 'next-auth/providers/google';
-import Apple from 'next-auth/providers/apple';
 import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
 import { loginSchema, normalizeEmail } from '@/schemas';
 
 export const isGoogleAuthConfigured = Boolean(
   process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET,
-);
-
-export const isAppleAuthConfigured = Boolean(
-  process.env.AUTH_APPLE_ID && process.env.AUTH_APPLE_SECRET,
 );
 
 const providers: Provider[] = [
@@ -73,15 +68,6 @@ if (isGoogleAuthConfigured) {
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
-    }),
-  );
-}
-
-if (isAppleAuthConfigured) {
-  providers.push(
-    Apple({
-      clientId: process.env.AUTH_APPLE_ID,
-      clientSecret: process.env.AUTH_APPLE_SECRET,
     }),
   );
 }
